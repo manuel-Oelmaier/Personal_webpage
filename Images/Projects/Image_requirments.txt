@@ -1,0 +1,1 @@
+To Look good and uniform we need that every image has roughly an Aspect Ratio of 2:1.
