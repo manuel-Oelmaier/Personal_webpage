@@ -151,6 +151,7 @@ a {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
     display: flex;
     flex-direction: column;
+    justify-content:space-between;
 }
 .card-image-container {
     width: 100%;               /* fills card width */
@@ -170,6 +171,21 @@ a {
 .icon {
     width: 1.2em;
     height: 1.2em;
+}
+
+.project-link {
+    display: inline-flex;           /* icon + text horizontally */
+    align-items: center;            /* vertical alignment */
+    gap: 0.5rem;                    /* space between icon and text */
+    padding: 0.5rem 1rem;           /* internal padding */
+    border-radius: 1rem;            /* rounded corners */
+    background-color: hsl(216, 90%, 40%); /* a strong color */
+    color: white;                   /* text color */
+    text-decoration: none;          /* remove underline */
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 1rem auto 0 auto;   /* top margin + horizontal centering */
+    width: fit-content;             /* shrink to content */
 }
 
 
@@ -196,12 +212,18 @@ a {
 .tag.HTML {
     background-color: hsl(6, 78%, 57%);
 }
+.tag.MongoDB {
+    background-color: hsl(100, 60%, 40%);
+}
+.tag.Webstack {
+    background-color: hsl(300, 70%, 45%);
+}
 
 
 .tag {
     display: inline-block;
     padding: 5px 10px;
-    margin: 2px;
+    margin: 1em auto;
     border-radius: 12px;
     font-size: 0.85rem;
     color: black;
