@@ -10,7 +10,8 @@
 
 # TODO:
 - Hero image optimization
-- uploading website ;)
+- (upload fixes, clown)
+- collect feedback !!!
 - blog
 - Search engine optimization:(correct meta tags,compressed everything,...)
 - Analytics -> Plausible open source

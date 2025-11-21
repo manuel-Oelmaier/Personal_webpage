@@ -1,1 +1,4 @@
 To Look good and uniform we need that every image has roughly an Aspect Ratio of 2:1.
+Theo: 800x500
+example Query:850x400
+PlaceholderChess: 500x500
