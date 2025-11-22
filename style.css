@@ -1,4 +1,9 @@
 /* I want a dark colored minimalistic website, that still shows off some of my personality*/
+/* Also be aware that i didnt style for anything below 300px screen width */
+* {
+    margin: 0;
+
+}
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
     --backgroundColor: hsl(216.49, 85.06%, 15.12%);
@@ -8,7 +13,6 @@
 
 main {
     text-align: center;
-    margin: 0;
     color: var(--normal-TextColor);
     font-size: 1.3rem;
     font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -22,9 +26,6 @@ main {
     color: hsl(216, 40%, 90%);
 }
 
-h1 {
-    font-size: 5em;
-}
 
 h2 {
     font-size: 3.5em;
@@ -62,27 +63,33 @@ a {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* smaller shadow */
 }
 
-.hero-image {
-    background-image: url("Images/edited-HeroImage.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 
+.hero {
     display: flex;
-    min-height: 100vh;
+    flex-direction: column; /* stack brain + text */
+    align-items: center;    /* center horizontally */
+    justify-content: flex-start; /* top alignment, adjust if needed */
+}
+
+.hero-img {
+    width: 50%;
 }
 
 .hero-text {
-    text-align: left;
-    margin-left: 5%;
-    margin-top: 150px;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    margin-top: -2rem; /* pulls text up so it “nests” under brain */
 
 }
 
-#hero-h2 {
+#name {
+    font-size: 4.5em;
+}
+#name-description {
     font-style: italic;
+    font-size: 3rem;
 }
+
+
 
 .about-me-content {
     text-align: center;
@@ -249,8 +256,10 @@ a {
 }
 
 .contact-links {
-    display: inline-block;
-    padding: 3rem 4rem;
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+    padding: 3rem;
 }
 
 .contact-icon {
@@ -264,17 +273,28 @@ footer {
 }
 
 
-/* ----------------------------- */
-/* 📱 1. Mobile (phones ≤ 768px) */
-/* ----------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 1250px) {
 
-    body {
-        font-size: 1rem
+    .principles-grid {
+        grid-template-columns:  1fr;
     }
 
-    h1 {
+    .projects-grid {
+        grid-template-columns:  1fr;
+    }
+    #name {
+        font-size: 4.5em;
+    }
+    #name-description {
+        font-style: italic;
         font-size: 3rem;
+    }
+
+}
+@media (max-width: 768px) {
+
+    main {
+        font-size: 1rem
     }
 
     h2 {
@@ -285,10 +305,12 @@ footer {
         font-size: 1.5rem;
     }
 
-    .hero-text {
-        margin-left: 2rem;
-        margin-top: 100px;
-        text-align: left;
+    #name {
+        font-size: 4.5em;
+    }
+    #name-description {
+        font-style: italic;
+        font-size: 3rem;
     }
 
     .principle, .about-me-content {
@@ -303,21 +325,29 @@ footer {
         width: 90%;
     }
 
-}
-
-
-/* ----------------------------------- */
-/* 📱📗 2. Tablets (768px to 1024px)   */
-/* ----------------------------------- */
-@media (max-width: 1250px) {
-
-    .principles-grid {
-        grid-template-columns:  1fr;
-    }
-
-    .projects-grid {
-        grid-template-columns:  1fr;
-    }
 
 }
+
+@media (max-width: 400px) {
+    main {
+        font-size: 0.85rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    #name {
+        font-size: 2.5rem;
+    }
+    #name-description {
+        font-style: italic;
+        font-size: 1.5rem;
+    }
+}
+
 
