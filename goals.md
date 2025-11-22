@@ -9,10 +9,10 @@
 - viewable on mobile, etc
 
 # TODO:
-- Hero image optimization
-- (upload fixes, clown)
+
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
+- netcup assets fav icon same
 - collect feedback !!!
 - blog
 - Search engine optimization:(correct meta tags,compressed everything,...)

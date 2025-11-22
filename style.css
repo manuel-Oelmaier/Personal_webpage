@@ -20,7 +20,7 @@
     --normal-TextColor: hsl(185, 49%, 50%);
 }
 
-html{
+html,body{
     overflow-x: hidden;
 }
 
