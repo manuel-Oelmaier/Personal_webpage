@@ -20,6 +20,9 @@
     --normal-TextColor: hsl(185, 49%, 50%);
 }
 
+html{
+    overflow-x: hidden;
+}
 
 main {
     text-align: center;
