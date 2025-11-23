@@ -18,6 +18,12 @@
 - Search engine optimization:(correct meta tags,compressed everything,...)
 - Analytics -> Plausible open source
 - navigation with keyboard ?
+
+# feedback:
+- design: resume colors
+- link colors 
+- check font sizes again
+
 # future ideas:
 - finish ManuChess and add!
 - GitHub activity embedded, (not enough activity to look good)
