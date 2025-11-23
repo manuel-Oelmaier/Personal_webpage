@@ -16,7 +16,7 @@
 
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
-    --backgroundColor: hsl(216.49, 85.06%, 15.12%);
+    /*--backgroundColor: hsl(216.49, 85.06%, 15.12%); */
     --normal-TextColor: hsl(185, 49%, 50%);
     --buttonBackgroundBlue:hsl(216, 90%, 40%);;
 }
@@ -59,13 +59,16 @@ section + section {
 }
 
 a {
-    color: hsl(220, 100%, 70%);
+    color: hsl(270, 50%, 60%);
     text-decoration: none;
 }
 
 .button-link {
     display: inline-block;
     font-weight: 600;
+    border-radius: 1rem;
+    background-color: var(--buttonBackgroundBlue);
+    color: white;
     transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.2s ease;
 }
 
@@ -83,8 +86,8 @@ a {
 .hero {
     display: flex;
     flex-direction: column; /* stack brain + text */
-    align-items: center; /* center horizontally */
-    justify-content: flex-start; /* top alignment, adjust if needed */
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .hero-img {
@@ -112,7 +115,7 @@ a {
 
 .about-me-content {
     text-align: center;
-    max-width: 650px;
+    max-width: 750px; /* TODO hmm unsure about this*/
     margin: 0 auto;
     line-height: 1.6;
 }
@@ -128,29 +131,15 @@ a {
     padding: 0 2rem;
 }
 
-
-#Resume {
-    padding: 5rem 2rem;
-    background-color: hsl(216, 25%, 40%);
-
-}
-
-#Resume h2 {
-    color: hsl(0, 0%, 6.67%)
-}
-
 #Resume p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
-    color: hsl(0, 0%, 20%);
 }
 
 .resume-button {
     padding: 1rem 2.5rem;
     background-color: var(--buttonBackgroundBlue);
-    color: white;
     border-radius: 8px;
-    font-size: 1rem;
 }
 
 
@@ -192,9 +181,7 @@ a {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem; /* internal padding */
-    border-radius: 1rem;
-    background-color: var(--buttonBackgroundBlue);
-    color: white;
+
     margin: 1rem auto 0 auto; /* top margin + horizontal centering */
     width: fit-content; /* shrink to content */
 }
@@ -267,8 +254,6 @@ a {
     border: white;
     color: black;
     padding: 1rem 1.5rem; /* comfortable clickable size */
-    font-size: 1.5rem;
-
     margin: 1rem; /* space above/below */
 }
 

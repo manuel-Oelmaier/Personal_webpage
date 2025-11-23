@@ -13,15 +13,13 @@
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
 - netcup assets fav icon same
-- collect feedback !!!
 - blog
-- Search engine optimization:(correct meta tags,compressed everything,...)
+- Search engine optimization:(compressed everything,...)
+- Webmaster google & bing 
 - Analytics -> Plausible open source
 - navigation with keyboard ?
 
 # feedback:
-- design: resume colors
-- link colors 
 - check font sizes again
 
 # future ideas:
