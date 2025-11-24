@@ -12,7 +12,6 @@
 
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
-- favicon in content root
 - Better icons, e.g for firefox search engine
 - blog
 - Search engine optimization:(compressed everything,...)
