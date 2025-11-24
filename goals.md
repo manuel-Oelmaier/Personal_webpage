@@ -12,15 +12,18 @@
 
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
-- netcup assets fav icon same
+- favicon in content root
+- Better icons, e.g for firefox search engine
 - blog
 - Search engine optimization:(compressed everything,...)
-- Webmaster google & bing 
-- Analytics -> Plausible open source
+- Webmaster google (only wait) & bing
 - navigation with keyboard ?
 
 # feedback:
-- check font sizes again
+- think over Bachelor student Informatics h2
+- Add personal photo (maybe AI generated)
+- work out what exatly my message is with the principles
+- and the order of them 
 
 # future ideas:
 - finish ManuChess and add!
