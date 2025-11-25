@@ -13,10 +13,10 @@
 - Make projects more interactable, 
 - aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
+- google 
 - blog
 
 # feedback:
-- think over Bachelor student Informatics h2
 - Add personal photo (maybe AI generated)
 - work out what exactly my message is with the principles
 - and the order of them 
