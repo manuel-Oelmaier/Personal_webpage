@@ -10,10 +10,9 @@
 
 # TODO:
 
-- Make projects more interactable, 
-- aka play chess, query the bot or do the quiz !!!!
+- Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
-- google 
+- google icon ? 
 - blog
 
 # feedback:

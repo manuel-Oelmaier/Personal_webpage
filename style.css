@@ -59,8 +59,9 @@ section + section {
 }
 
 a {
-    color: hsl(270, 50%, 60%);
+    color: hsl(270, 60%, 60%);
     text-decoration: none;
+    font-style: italic;
 }
 
 .button-link {
