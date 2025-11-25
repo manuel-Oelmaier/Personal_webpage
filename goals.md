@@ -10,23 +10,19 @@
 
 # TODO:
 
-- Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
+- Make projects more interactable, 
+- aka play chess, query the bot or do the quiz !!!!
 - icons for Tags (e.g Python icon ) 
-- Better icons, e.g for firefox search engine
 - blog
-- Search engine optimization:(compressed everything,...)
-- Webmaster google (only wait) & bing
-- navigation with keyboard ?
 
 # feedback:
 - think over Bachelor student Informatics h2
 - Add personal photo (maybe AI generated)
-- work out what exatly my message is with the principles
+- work out what exactly my message is with the principles
 - and the order of them 
 
 # future ideas:
 - finish ManuChess and add!
-- GitHub activity embedded, (not enough activity to look good)
 - navbar if website gets more complex
 
 # Websites as inspiration:

@@ -106,7 +106,8 @@ a {
 
 #name-description {
     font-style: italic;
-    font-size: 3rem;
+    font-weight: 300;
+    font-size: 3.4rem;
 }
 
 .fade-in {
