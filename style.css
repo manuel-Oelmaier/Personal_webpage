@@ -291,7 +291,6 @@ footer {
     }
 
     #name-description {
-        font-style: italic;
         font-size: 3rem;
     }
 
@@ -316,7 +315,6 @@ footer {
     }
 
     #name-description {
-        font-style: italic;
         font-size: 2.5rem;
     }
 
@@ -353,7 +351,6 @@ footer {
     }
 
     #name-description {
-        font-style: italic;
         font-size: 1.5rem;
     }
 }
