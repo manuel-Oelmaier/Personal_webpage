@@ -11,17 +11,17 @@
 
 * {
     margin: 0;
-
+    padding: 0;
+    box-sizing: border-box;
 }
 
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
-    /*--backgroundColor: hsl(216.49, 85.06%, 15.12%); */
     --normal-TextColor: hsl(185, 49%, 50%);
-    --buttonBackgroundBlue:hsl(216, 90%, 40%);;
+    --buttonBackgroundBlue: hsl(216, 90%, 40%);
 }
 
-html,body{
+html, body {
     overflow-x: hidden;
 }
 
@@ -47,7 +47,7 @@ h2 {
 }
 
 h3 {
-    font-size: 2em;
+    font-size: 1.9em;
 }
 
 button:hover {
@@ -62,6 +62,10 @@ a {
     color: hsl(270, 60%, 60%);
     text-decoration: none;
     font-style: italic;
+}
+
+strong {
+    font-weight: 630;
 }
 
 .button-link {
@@ -96,7 +100,6 @@ a {
 }
 
 .hero-text {
-    text-align: center;
     margin-top: -1rem; /* pulls text up so it “nests” under brain */
 
 }
@@ -113,6 +116,13 @@ a {
 
 .fade-in {
     animation: fadeIn 3s;
+}
+
+#manu-img {
+    border-radius: 50%;
+    padding: 2rem;
+    width: 18rem;
+    height: auto;
 }
 
 .about-me-content {
@@ -176,6 +186,7 @@ a {
 .icon {
     width: 1.2em;
     height: 1.2em;
+    vertical-align: middle;
 }
 
 .project-link {
@@ -188,46 +199,14 @@ a {
     width: fit-content; /* shrink to content */
 }
 
-
-.tag.Python {
-    background-color: hsl(207, 90%, 50%);
-}
-
-.tag.Pytorch {
-    background-color: hsl(14, 90%, 55%);
-}
-
-.tag.Typescript {
-    background-color: hsl(204, 100%, 45%);
-}
-
-.tag.Javascript {
-    background-color: hsl(48, 100%, 50%);
-}
-
-.tag.CSS {
-    background-color: hsl(198, 80%, 50%);
-}
-
-.tag.HTML {
-    background-color: hsl(6, 78%, 57%);
-}
-
-.tag.MongoDB {
-    background-color: hsl(100, 60%, 40%);
-}
-
-.tag.Webstack {
-    background-color: hsl(300, 70%, 45%);
-}
-
-
 .tag {
     display: inline-block;
+    background-color: hsl(210, 10%, 30%);
+
+    gap: 2rem;
     padding: 5px 10px;
-    margin: 1em auto;
+    margin: 1rem auto;
     border-radius: 12px;
-    font-size: 0.85rem;
     color: black;
 }
 

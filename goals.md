@@ -11,14 +11,7 @@
 # TODO:
 
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
-- icons for Tags (e.g Python icon ) 
-- google icon ? 
 - blog
-
-# feedback:
-- Add personal photo (maybe AI generated)
-- work out what exactly my message is with the principles
-- and the order of them 
 
 # future ideas:
 - finish ManuChess and add!
