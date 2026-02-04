@@ -2,6 +2,8 @@
 
 Welcome to the repository for Manuel Oelmaier's personal webpage.
 
+[![Audit and Deploy Static Site](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml)
+
 ## 🚀 Overview
 This project contains the source code, assets, and content for the official webpage of Manuel Oelmaier, a Software Engineer and AI enthusiast.
 
