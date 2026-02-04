@@ -7,12 +7,33 @@ footer {
     padding: 2rem 0;
 }
 
+.blog-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.blog-footer {
+    margin-top: auto;
+}
+
 /* Specific Blog layout matching main theme */
 .blog-container {
     max-width: 800px;
     margin: 0 auto;
     text-align: left;
     padding: 2rem 2rem;
+}
+
+.main-blog-title {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+}
+
+.read-article-button {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
 }
 
 .post-card {
@@ -41,6 +62,7 @@ footer {
 }
 
 .post-title {
+    font-size: 2rem;
     margin-bottom: 1rem;
     color: hsl(216, 40%, 90%);
 }
