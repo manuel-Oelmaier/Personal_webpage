@@ -213,9 +213,14 @@ strong {
 }
 
 .card-Showcase {
-    width: 100%; /* scale image to container width */
-    height: auto;
+    width: 100%;
+    max-width: 600px;
+    height: 350px;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 1rem;
+    margin: 0 auto 2rem auto;
+    display: block;
 }
 
 .icon {
@@ -235,14 +240,17 @@ strong {
 }
 
 .tag {
-    display: inline-block;
-    background-color: hsl(210, 10%, 30%);
-    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
     margin: 0.5rem;
-    border-radius: 12px;
-    color: black;
-    font-size: 0.85rem;
-    font-weight: 500;
+    border-radius: 20px;
+    color: var(--normal-TextColor);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .tags {
@@ -267,18 +275,10 @@ strong {
 
 .resume-button {
     padding: 1rem 2.5rem;
-    background-color: white !important;
-    color: black !important;
-    border-radius: 0.8rem;
-    font-weight: 700;
-    font-size: 1.3rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-.resume-button:hover {
-    transform: translateY(-3px) scale(1.05);
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    background-color: var(--buttonBackgroundBlue);
+    color: white;
+    border-radius: 1rem;
+    font-weight: 600;
 }
 
 
