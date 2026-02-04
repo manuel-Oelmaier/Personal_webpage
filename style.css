@@ -19,6 +19,7 @@
     --backgroundImage-Color: hsl(259, 12%, 15%);
     --normal-TextColor: hsl(185, 49%, 50%);
     --buttonBackgroundBlue: hsl(216, 90%, 40%);
+    --mono-font: 'Fira Code', 'Courier New', monospace;
 }
 
 html, body {
@@ -32,6 +33,10 @@ main {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background-color: var(--backgroundImage-Color);
     line-height: 1.4;
+}
+
+code, pre, .tag, .post-date, .post-meta, abbr {
+    font-family: var(--mono-font);
 }
 
 
@@ -214,6 +219,8 @@ strong {
     margin: 1rem auto;
     border-radius: 12px;
     color: black;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .card:hover {
