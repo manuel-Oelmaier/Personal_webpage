@@ -1,4 +1,4 @@
-name: Audit and Deploy Static Site
+name: Lighthouse
 on:
   push:
     branches: [main]
