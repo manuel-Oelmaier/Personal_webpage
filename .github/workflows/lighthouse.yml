@@ -1,0 +1,35 @@
+name: Audit and Deploy Static Site
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  audit_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Run Lighthouse on your root folder
+      - name: Lighthouse Audit
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          staticDistDir: './' # Audits your root folder directly
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      # 2. Upload to GitHub Pages (No build step needed)
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './' # Deploy the root folder
+
+      # 3. Deploy
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
