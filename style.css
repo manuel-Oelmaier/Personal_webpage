@@ -170,6 +170,8 @@ strong {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card-image-container {
@@ -214,6 +216,7 @@ strong {
     transform-origin: center;
     transform: scale(1.05);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: var(--normal-TextColor);
 }
 
 
