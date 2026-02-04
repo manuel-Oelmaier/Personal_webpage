@@ -229,32 +229,42 @@ strong {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 4rem;
 }
 
 .contact-text {
-    background: hsl(216, 25%, 25%);
-    border-radius: 12px;
-    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    max-width: 600px;
 }
 
-#Contact .contact-text a {
-    background-color: hsl(0, 0%, 100%);
-    border: white;
-    color: black;
-    padding: 1rem 1.5rem; /* comfortable clickable size */
-    margin: 1rem; /* space above/below */
+.contact-button {
+    background-color: white !important;
+    color: black !important;
+    padding: 1rem 2rem;
+    margin: 1.5rem 0;
+    border-radius: 0.8rem;
 }
 
-.contact-links {
+.social-links {
     display: flex;
-    gap: 4rem;
+    gap: 3rem;
     align-items: center;
-    padding: 3rem;
+    padding: 2rem;
 }
 
-.contact-icon {
-    width: 10vw;
-    height: 10vw;
+.social-icon {
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover {
+    opacity: 1;
+    transform: translateY(-3px);
 }
 
 
