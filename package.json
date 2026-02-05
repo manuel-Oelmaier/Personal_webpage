@@ -4,8 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "nodemon --watch src --exec ts-node src/index.ts"
+    "build": "astro build",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

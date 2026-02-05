@@ -1,10 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+// Import assets
+import transparentImg from '../assets/transparent.webp';
+import manuImg from '../assets/manu.jpg';
+import placeholderChess from '../assets/Projects/Placeholder_Chess.png';
+import exampleQuery from '../assets/Projects/exampleQuery.png';
+import theoQuiz from '../assets/Projects/Theo-quiz.png';
+
+// Icon imports
+import webstackIcon from '../assets/Tech-icons/webstack.png';
+import mongodbIcon from '../assets/Tech-icons/mongodb.svg';
+import pytorchIcon from '../assets/Tech-icons/pytorch.svg';
+import pythonIcon from '../assets/Tech-icons/python.svg';
+import typescriptIcon from '../assets/Tech-icons/typescript.svg';
+import html5Icon from '../assets/Tech-icons/html5.svg';
+import css3Icon from '../assets/Tech-icons/CSS3.svg';
+import githubIcon from '../assets/github-mark-white.svg';
+import linkedinIcon from '../assets/linkedin.png';
 ---
 
 <BaseLayout title="Manuel Oelmaier">
     <section class="hero">
-        <img src="/Images/transparent.webp" alt="Hero Image" class="hero-img">
+        <Image src={transparentImg} alt="Hero Image" class="hero-img" loading="eager" />
         <div class="hero-text">
             <h1 id="name">Manuel Oelmaier</h1>
             <h2 id="name-description">Software Engineer focused on AI</h2>
@@ -13,7 +32,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <section id="about-me" class="fade-in">
         <h2>About me</h2>
-        <img id="manu-img" src="/Images/manu.jpg" alt="Profile picture of Manuel">
+        <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel" width={288} height={288} />
         <div class="about-me-content">
             Computer Science student at the Technical University of Munich.
             Experienced in building full-stack applications, primarily leveraging <strong>Python, Java,
@@ -83,16 +102,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                     small
                     Neural Net with all my Chess games (tournament and online), which at the end will play like me.
                     Coming soon!</p>
-                <img class="card-Showcase" src="/Images/Projects/Placeholder_Chess.png" alt="Placeholder for Manuchess."
-                     loading="lazy">
+                <Image class="card-Showcase" src={placeholderChess} alt="Placeholder for Manuchess." width={600} />
                 <a href="https://github.com/manuel-Oelmaier" target="_blank" class="project-link button-link">
-                    <img src="/Images/github-mark-white.svg" alt="GitHub Logo" class="icon">
+                    <Image src={githubIcon} alt="GitHub Logo" class="icon" />
                     <span>View on GitHub</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><img src="/Images/Tech-icons/webstack.png" alt="webstack logo" class="icon"> Webstack</span>
-                    <span class="tag"><img src="/Images/Tech-icons/mongodb.svg" alt="MongoDB logo" class="icon"> MongoDB</span>
-                    <span class="tag"><img src="/Images/Tech-icons/pytorch.svg" alt="pytorch logo" class="icon"> Pytorch</span>
+                    <span class="tag"><Image src={webstackIcon} alt="webstack logo" class="icon" /> Webstack</span>
+                    <span class="tag"><Image src={mongodbIcon} alt="MongoDB logo" class="icon" /> MongoDB</span>
+                    <span class="tag"><Image src={pytorchIcon} alt="pytorch logo" class="icon" /> Pytorch</span>
                 </div>
             </article>
 
@@ -102,17 +120,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                     We made the best one publicly available via a <abbr title="Visual Studio Code">VSC</abbr> Extension,
                     where the model can be queried locally.
                     Since LLMs almost always need the unencrypted text,a local models solves a key privacy issue.</p>
-                <img class="card-Showcase" src="/Images/Projects/exampleQuery.png" alt="Screenshot of a sample query"
-                     loading="lazy">
+                <Image class="card-Showcase" src={exampleQuery} alt="Screenshot of a sample query" width={600} />
                 <a href="https://github.com/manuel-Oelmaier/LocalPythonCodingLlm" target="_blank"
                    class="project-link button-link">
-                    <img src="/Images/github-mark-white.svg" alt="GitHub Logo" class="icon">
+                    <Image src={githubIcon} alt="GitHub Logo" class="icon" />
                     <span>View on GitHub</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><img src="/Images/Tech-icons/python.svg" alt="python logo" class="icon"> Python</span>
-                    <span class="tag"><img src="/Images/Tech-icons/pytorch.svg" alt="pytorch logo" class="icon"> Pytorch</span>
-                    <span class="tag"><img src="/Images/Tech-icons/typescript.svg" alt="typescript logo" class="icon">  Typescript</span>
+                    <span class="tag"><Image src={pythonIcon} alt="python logo" class="icon" /> Python</span>
+                    <span class="tag"><Image src={pytorchIcon} alt="pytorch logo" class="icon" /> Pytorch</span>
+                    <span class="tag"><Image src={typescriptIcon} alt="typescript logo" class="icon" />  Typescript</span>
                 </div>
             </article>
 
@@ -120,16 +137,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 <h3 class="title">Quiz App: Theoretical Informatics</h3>
                 <p>A small website with the Collection of the Past Multiple Choice questions of public
                     Exams, to help students prepare. Renders Formulas and Mathematical Expressions accurately.</p>
-                <img class="card-Showcase" src="/Images/Projects/Theo-quiz.png"
-                     alt="Screenshot of a sample question in the Quiz App." loading="lazy">
+                <Image class="card-Showcase" src={theoQuiz} alt="Screenshot of a sample question in the Quiz App." width={600} />
                 <a href="https://github.com/manuel-Oelmaier/Theo" target="_blank" class="project-link button-link">
-                    <img src="/Images/github-mark-white.svg" alt="GitHub Logo" class="icon">
+                    <Image src={githubIcon} alt="GitHub Logo" class="icon" />
                     <span>View on GitHub</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><img src="/Images/Tech-icons/typescript.svg" alt="typescript logo" class="icon">  Typescript</span>
-                    <span class="tag"><img src="/Images/Tech-icons/html5.svg" alt="html logo" class="icon">  HTML</span>
-                    <span class="tag"><img src="/Images/Tech-icons/CSS3.svg" alt="CSS logo" class="icon">  CSS</span>
+                    <span class="tag"><Image src={typescriptIcon} alt="typescript logo" class="icon" />  Typescript</span>
+                    <span class="tag"><Image src={html5Icon} alt="html logo" class="icon" />  HTML</span>
+                    <span class="tag"><Image src={css3Icon} alt="CSS logo" class="icon" />  CSS</span>
                 </div>
             </article>
         </div>
@@ -141,10 +157,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <a href="mailto:manuel@oelmaier.eu" class="button-link contact-button">Send me a mail</a>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/manuel-oelmaier/" target="_blank" aria-label="LinkedIn">
-                    <img src="/Images/linkedin.png" alt="LinkedIn" class="social-icon">
+                    <Image src={linkedinIcon} alt="LinkedIn" class="social-icon" />
                 </a>
                 <a href="https://github.com/manuel-Oelmaier" target="_blank" aria-label="GitHub">
-                    <img src="/Images/github-mark-white.svg" alt="GitHub" class="social-icon">
+                    <Image src={githubIcon} alt="GitHub" class="social-icon" />
                 </a>
             </div>
         </div>
