@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const posts = Object.values(import.meta.glob('./blog/posts/*.html', { eager: true, query: '?raw' }));
+const posts = Object.values(import.meta.glob('../content/*.html', { eager: true, query: '?raw' }));
 
 // Helper to extract title from HTML string
 function getTitle(html) {
@@ -8,14 +8,23 @@ function getTitle(html) {
     return match ? match[1] : 'Untitled Post';
 }
 
+// Helper to extract a short preview/description
+function getPreview(html) {
+    const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    const body = bodyMatch ? bodyMatch[1] : html;
+    // Strip HTML tags and get first 150 chars
+    return body.replace(/<[^>]*>/g, '').trim().substring(0, 150) + '...';
+}
+
 // Helper to extract filename/slug
 function getSlug(path) {
     return path.split('/').pop().replace('.html', '');
 }
 
-const allPosts = Object.entries(import.meta.glob('./blog/posts/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
+const allPosts = Object.entries(import.meta.glob('../content/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
     slug: getSlug(path),
     title: getTitle(file.default),
+    preview: getPreview(file.default),
 }));
 ---
 
@@ -25,15 +34,17 @@ const allPosts = Object.entries(import.meta.glob('./blog/posts/*.html', { query:
         <div class="about-me-content">
             <p>Thoughts on AI, Software Engineering, and more.</p>
             <br />
-            <ul style="list-style: none; padding: 0; text-align: left; max-width: 600px; margin: 0 auto;">
+            <div class="projects-grid" style="text-align: left;">
                 {allPosts.map((post) => (
-                    <li style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 255, 255, 0.02); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <a href={`/blog/${post.slug}`} style="font-size: 1.5rem; font-style: normal; font-weight: 600;">
-                            {post.title}
+                    <article class="card">
+                        <h3 class="title">{post.title}</h3>
+                        <p>{post.preview}</p>
+                        <a href={`/blog/${post.slug}`} class="button-link blog-button" style="font-style: normal; width: fit-content; margin: 0;">
+                            Read More
                         </a>
-                    </li>
+                    </article>
                 ))}
-            </ul>
+            </div>
         </div>
     </section>
 </BaseLayout>
