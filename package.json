@@ -8,9 +8,11 @@
     "dev": "astro dev",
     "start": "astro dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:links": "linkinator ./dist --recurse --silent"
   },
   "devDependencies": {
+    "linkinator": "^7.5.3",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
