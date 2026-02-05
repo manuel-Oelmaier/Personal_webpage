@@ -99,19 +99,15 @@ strong {
 
 .hero {
     display: flex;
-    flex-direction: column; /* stack brain + text */
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-}
-
-.hero-img {
-    width: 50%;
-    image-orientation: from-image;
+    justify-content: center;
+    min-height: 40vh; /* Give the text some room to breathe as a hero */
+    padding: 2rem 1rem;
 }
 
 .hero-text {
-    margin-top: -1rem; /* pulls text up so it “nests” under brain */
-
+    margin-top: 0;
 }
 
 #name {
