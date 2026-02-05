@@ -10,12 +10,14 @@ export async function getStaticPaths() {
     
     const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     const content = bodyMatch ? bodyMatch[1] : htmlContent;
+    
+    // Improved Title Extraction
     const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/i);
-    const title = titleMatch ? titleMatch[1] : 'Blog Post';
+    const rawTitle = titleMatch ? titleMatch[1].split('|')[0].trim() : 'Blog Post';
 
     return {
       params: { slug },
-      props: { content, title },
+      props: { content, title: rawTitle },
     };
   });
 }
@@ -24,11 +26,53 @@ const { content, title } = Astro.props;
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
-    <article class="fade-in about-me-content" style="text-align: left; padding: 2rem; flex-grow: 1;">
-        <Fragment set:html={content} />
+    <article class="fade-in about-me-content" style="text-align: left; padding: 4rem 2rem; flex-grow: 1; max-width: 900px;">
+        <h1 style="font-size: 3.5rem; color: hsl(216, 40%, 90%); margin-bottom: 0.5rem; text-align: center;">{title}</h1>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0 3rem 0;" />
         
-        <div style="margin-top: 4rem; text-align: center;">
-            <a href="/blog" class="button-link blog-button">Back to Blog</a>
+        <div class="post-content">
+            <Fragment set:html={content} />
+        </div>
+        
+        <div style="margin-top: 6rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
+            <a href="/blog" class="button-link blog-button">Back to Blog Archive</a>
         </div>
     </article>
 </BaseLayout>
+
+<style is:global>
+    .post-content h2 {
+        font-size: 2.2rem;
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    .post-content p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    .post-content ul {
+        margin-bottom: 2rem;
+        padding-left: 2rem;
+    }
+    .post-content li {
+        font-size: 1.2rem;
+        margin-bottom: 0.7rem;
+    }
+    .inbox-policy {
+        background: rgba(255, 255, 255, 0.03);
+        border-left: 4px solid var(--normal-TextColor);
+        padding: 1.8rem;
+        margin: 3rem 0;
+        font-style: italic;
+        border-radius: 0 1rem 1rem 0;
+    }
+    .post-meta {
+        text-align: center;
+        opacity: 0.7;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+</style>
