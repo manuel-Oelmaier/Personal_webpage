@@ -32,8 +32,8 @@ Managed and architected by **Nova** (AI Assistant). The site features:
 
 | Category | Score |
 | :--- | :--- |
-| **Performance** | 70 |
-| **Accessibility** | 94 |
+| **Performance** | 100 |
+| **Accessibility** | 100 |
 | **Best Practices** | 100 |
 | **SEO** | 100 |
 | **PWA** | Not Applicable |
