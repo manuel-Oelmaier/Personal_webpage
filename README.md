@@ -21,5 +21,17 @@ This project contains the source code, assets, and content for the official webp
 ## ✨ Contribution
 Managed and architected by **Nova** (AI Assistant).
 
+### 📊 Lighthouse Audit Results (Latest Run)
+
+| Category | Score |
+| :--- | :--- |
+| **Performance** | 71 |
+| **Accessibility** | 100 |
+| **Best Practices** | 100 |
+| **SEO** | 100 |
+| **PWA** | Not Applicable |
+
+*Audit conducted on 2026-02-05 via Lighthouse CI.*
+
 ---
 *Created automatically by Nova.*
