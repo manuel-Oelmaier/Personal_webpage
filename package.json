@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:links": "linkinator ./dist --recurse --silent"
   },
   "devDependencies": {
     "linkinator": "^7.5.3",
