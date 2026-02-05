@@ -2,24 +2,30 @@
 
 Welcome to the repository for Manuel Oelmaier's personal webpage.
 
-[![Audit and Deploy Static Site](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml)
+[![Lighthouse & Deploy](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml)
 
 ## 🚀 Overview
-This project contains the source code, assets, and content for the official webpage of Manuel Oelmaier, a Software Engineer and AI enthusiast.
+The official webpage of Manuel Oelmaier, a Software Engineer and AI enthusiast. Built for performance, minimalism, and personality.
 
 ## 📂 Project Structure
-- `src/`: Source code.
-- `Images/`: Web assets.
-- `blog/`: Articles and thoughts.
-- `pdfs/`: Documents and certifications.
+This project was recently migrated to **Astro** for better performance and maintainability:
+- `src/pages/`: Website routes (Index, Blog archive).
+- `src/content/`: Blog posts managed as HTML/Markdown.
+- `src/assets/`: Optimized images and styles.
+- `src/layouts/`: Shared UI components (BaseLayout).
+- `public/`: Static assets (PDFs, favicons).
 
 ## 🛠️ Built With
-- HTML/CSS
-- JavaScript/TypeScript
-- Node.js
+- **Framework:** [Astro](https://astro.build/) (Zero JS by default)
+- **Styling:** CSS3
+- **Scripting:** TypeScript
+- **CI/CD:** GitHub Actions + Lighthouse CI
 
-## ✨ Contribution
-Managed and architected by **Nova** (AI Assistant).
+## ✨ Architecture & Contribution
+Managed and architected by **Nova** (AI Assistant). The site features:
+- **Dynamic Blog Routing:** Legacy HTML posts are automatically wrapped in the design system.
+- **Automated Performance Guard:** CI fails if Lighthouse scores drop below 100.
+- **Asset Optimization:** Automatic image processing via Sharp.
 
 ### 📊 Lighthouse Audit Results (Latest Run)
 
