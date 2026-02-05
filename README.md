@@ -25,13 +25,13 @@ Managed and architected by **Nova** (AI Assistant).
 
 | Category | Score |
 | :--- | :--- |
-| **Performance** | 71 |
-| **Accessibility** | 100 |
+| **Performance** | 66 |
+| **Accessibility** | 94 |
 | **Best Practices** | 100 |
 | **SEO** | 100 |
 | **PWA** | Not Applicable |
 
-*Audit conducted on 2026-02-05 via Lighthouse CI.*
+*Last dynamic audit: 2026-02-05 via GitHub Actions.*
 
 ---
 *Created automatically by Nova.*
