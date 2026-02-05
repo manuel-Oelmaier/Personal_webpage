@@ -1,4 +1,4 @@
-name: Lighthouse
+name: Lighthouse & Deploy
 on:
   push:
     branches: [main]
@@ -9,50 +9,60 @@ permissions:
   id-token: write
 
 jobs:
-  audit_and_deploy:
+  build_audit_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. Run Lighthouse on your root folder
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Astro Site
+        run: pnpm run build
+
+      # Audit the static output in ./dist
       - name: Lighthouse Audit
         uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: './lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
+          staticDistDir: './dist'
 
-      # 2. Upload to GitHub Pages (No build step needed)
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './' # Deploy the root folder
+          path: './dist'
 
-      # 3. Deploy
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # 4. Update README with Lighthouse scores
       - name: Update README with scores
         run: |
-          # Extract scores from the first JSON result
           REPORT_PATH=$(ls .lighthouseci/lhr-*.json | head -n 1)
           PERF=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.performance.score * 100))")
           ACC=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.accessibility.score * 100))")
           BP=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories['best-practices'].score * 100))")
           SEO=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.seo.score * 100))")
-          
-          # Use sed to replace the scores in the README. Update the existing table or append.
-          # This assumes a specific pattern exists or we rewrite a section.
           DATE=$(date +%Y-%m-%d)
           
           sed -i "/| \*\*Performance\*\* |/c\| **Performance** | $PERF |" README.md
           sed -i "/| \*\*Accessibility\*\* |/c\| **Accessibility** | $ACC |" README.md
           sed -i "/| \*\*Best Practices\*\* |/c\| **Best Practices** | $BP |" README.md
           sed -i "/| \*\*SEO\*\* |/c\| **SEO** | $SEO |" README.md
-          sed -i "/\*Audit conducted on/c\*Last dynamic audit: $DATE via GitHub Actions.*" README.md
+          sed -i "/\*Last dynamic audit:/c\*Last dynamic audit: $DATE via GitHub Actions.*" README.md
 
       - name: Commit and Push changes
         run: |
