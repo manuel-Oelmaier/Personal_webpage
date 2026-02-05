@@ -6,10 +6,13 @@ export async function getStaticPaths() {
   
   return Object.entries(posts).map(([path, file]) => {
     const slug = path.split('/').pop().replace('.html', '');
+    // Support raw string or object with default property
+    const htmlContent = typeof file.default === 'string' ? file.default : (file as any).default;
+    
     // Basic body extraction (everything inside <body>)
-    const bodyMatch = file.default.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    const content = bodyMatch ? bodyMatch[1] : file.default;
-    const titleMatch = file.default.match(/<title>(.*?)<\/title>/i);
+    const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    const content = bodyMatch ? bodyMatch[1] : htmlContent;
+    const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/i);
     const title = titleMatch ? titleMatch[1] : 'Blog Post';
 
     return {
@@ -23,7 +26,7 @@ const { content, title } = Astro.props;
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
-    <article class="fade-in about-me-content" style="text-align: left; padding-top: 2rem;">
+    <article class="fade-in about-me-content" style="text-align: left; padding: 2rem; flex-grow: 1;">
         <Fragment set:html={content} />
         
         <div style="margin-top: 4rem; text-align: center;">

@@ -24,6 +24,7 @@
 
 html, body {
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 main {
@@ -33,6 +34,9 @@ main {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background-color: var(--backgroundImage-Color);
     line-height: 1.4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 code, pre, .tag, .post-date, .post-meta, abbr {
@@ -384,6 +388,8 @@ strong {
 
 footer {
     text-align: left;
+    margin-top: auto;
+    padding: 2rem;
 }
 
 
