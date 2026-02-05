@@ -32,5 +32,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: .././manueloelmaier.de/httpdocs/ # Adjust this if you need to deploy to a specific subdirectory
+          server-dir: /httpdocs/ # Adjust this if you need to deploy to a specific subdirectory
           dangerous-clean-slate: true
