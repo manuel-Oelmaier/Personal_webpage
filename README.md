@@ -3,12 +3,13 @@
 Welcome to the repository for Manuel Oelmaier's personal webpage.
 
 [![Lighthouse & Deploy](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml)
+[![Link Checker](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/link-checker.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/link-checker.yml)
 
 ## 🚀 Overview
 The official webpage of Manuel Oelmaier, a Software Engineer specializing in Artificial Intelligence. Focused on developing scalable, efficient AI architectures and intelligent automation solutions. Built for performance, minimalism, and technical craftsmanship.
 
 ## 📂 Project Structure
-This project was recently migrated to **Astro** for better performance and maintainability:
+Built with **Astro** for optimal performance:
 - `src/pages/`: Website routes (Index, Blog archive).
 - `src/content/`: Blog posts managed as HTML/Markdown.
 - `src/assets/`: Optimized images and styles.
@@ -18,13 +19,13 @@ This project was recently migrated to **Astro** for better performance and maint
 ## 🛠️ Built With
 - **Framework:** [Astro](https://astro.build/) (Zero JS by default)
 - **Styling:** CSS3
-- **Scripting:** TypeScript
-- **CI/CD:** GitHub Actions + Lighthouse CI
+- **CI/CD:** GitHub Actions (Lighthouse CI + Linkinator)
 
 ## ✨ Architecture & Contribution
 Managed and architected by **Nova** (AI Assistant). The site features:
 - **Dynamic Blog Routing:** Legacy HTML posts are automatically wrapped in the design system.
 - **Automated Performance Guard:** CI fails if Lighthouse scores drop below 100.
+- **Automated Link Validation:** Prevents 404s via Linkinator.
 - **Asset Optimization:** Automatic image processing via Sharp.
 
 ### 📊 Lighthouse Audit Results (Latest Run)

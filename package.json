@@ -11,6 +11,7 @@
     "astro": "astro"
   },
   "devDependencies": {
+    "linkinator": "^7.5.3",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
