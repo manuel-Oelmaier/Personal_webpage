@@ -39,6 +39,7 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
           staticDistDir: './dist'
+          runs: 5
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
@@ -51,7 +52,15 @@ jobs:
 
       - name: Update README with scores
         run: |
-          REPORT_PATH=$(ls .lighthouseci/lhr-*.json | head -n 1)
+          # Find the median report path (lhci naming convention usually puts it in a specific folder or follows a pattern)
+          # By default, lhci collect with multiple runs stores them in .lighthouseci/
+          # We search for the manifest to identify the representative (median) run if possible, 
+          # otherwise we use the standard lhci logic where the action provides a summary.
+          
+          # Since we need a single JSON to parse, and lhci doesn't explicitly name one "median.json",
+          # we can use the manifest.json to find the 'representative' run.
+          REPORT_PATH=$(node -e "const m = require('./.lighthouseci/manifest.json'); const rep = m.find(r => r.isRepresentativeRun) || m[0]; console.log('.lighthouseci/' + rep.jsonPath.split('/').pop())")
+          
           PERF=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.performance.score * 100))")
           ACC=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.accessibility.score * 100))")
           BP=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories['best-practices'].score * 100))")
@@ -69,5 +78,5 @@ jobs:
           git config --global user.name "Nova-Architect"
           git config --global user.email "nova@manueloelmaier.de"
           git add README.md
-          git commit -m "docs: dynamic lighthouse score update [skip ci]" || echo "No changes to commit"
+          git commit -m "docs: dynamic lighthouse score update (median of 5 runs) [skip ci]" || echo "No changes to commit"
           git push
