@@ -4,7 +4,4 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://manueloelmaier.de',
   outDir: './dist',
-  build: {
-    format: 'file'
-  }
 });
