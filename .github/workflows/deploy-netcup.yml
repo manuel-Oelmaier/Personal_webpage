@@ -1,4 +1,4 @@
-name: Deploy to Netcup
+name: Deploy to webserver
 on:
   workflow_dispatch: # Only manual trigger
 
@@ -28,7 +28,7 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ vars.FTP_SERVER_URL }}
+          server: ${{ vars.SITE_URL }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
