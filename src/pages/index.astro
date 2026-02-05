@@ -25,25 +25,31 @@ import linkedinIcon from '../assets/linkedin.png';
     <section class="hero">
         <div class="hero-text">
             <h1 id="name">Manuel Oelmaier</h1>
-            <h2 id="name-description">Software Engineer focused on AI</h2>
+            <h2 id="name-description">Architecting Intelligence • Software Engineer</h2>
+            <p class="hero-tagline">Building full-stack AI solutions with pragmatism and craftsmanship.</p>
         </div>
     </section>
 
     <section id="about-me" class="fade-in">
-        <h2>About me</h2>
-        <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel" width={288} height={288} />
-        <div class="about-me-content">
-            Computer Science student at the Technical University of Munich.
-            Experienced in building full-stack applications, primarily leveraging <strong>Python, Java,
-            Webstack</strong> and adept at
-            quickly adopting new technologies.
-            Specializing in <strong>Machine Learning and AI</strong>, with hands-on experience
-            pre-training, finetuning, evaluating and integrating large Language Models.
-            Passionate about developing solutions that bridge technical innovation with real-world impact.
-            In my free time I enjoy playing Chess, reading books and being active in the Gym.
-            <br><br>
-            <div class="about-me-links">
-                <a href="/blog" class="button-link blog-button">Read my Blog</a>
+        <div class="about-container">
+            <div class="about-image">
+                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel" width={320} height={320} />
+            </div>
+            <div class="about-content">
+                <h2>About me</h2>
+                <p>
+                    I'm a <strong>Computer Science student at TUM</strong> specializing in Machine Learning and AI. 
+                    I bridge the gap between technical innovation and real-world impact by pre-training, finetuning, 
+                    and integrating LLMs into robust full-stack applications.
+                </p>
+                <ul class="about-list">
+                    <li><strong>Focus:</strong> Python, Java, and modern Webstacks.</li>
+                    <li><strong>Interests:</strong> Linear attention, Transformers, and scalable architectures.</li>
+                    <li><strong>Off-duty:</strong> Competitive Chess player and gym enthusiast.</li>
+                </ul>
+                <div class="about-me-links">
+                    <a href="/blog" class="button-link blog-button">Explore my Blog</a>
+                </div>
             </div>
         </div>
     </section>
