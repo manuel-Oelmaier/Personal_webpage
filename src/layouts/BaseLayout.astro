@@ -3,6 +3,7 @@ interface Props {
 	title: string;
 	description?: string;
 }
+import '../styles/style.css';
 
 const { title, description = "Computer Science student at TUM, passionate about ML/AI, full-stack development and learning new technologies." } = Astro.props;
 ---
@@ -20,7 +21,6 @@ const { title, description = "Computer Science student at TUM, passionate about 
 		<link rel="manifest" href="/Images/favicons/site.webmanifest" />
 		<meta name="apple-mobile-web-app-title" content="Manuel-Oelmaier" />
 		<title>{title}</title>
-		<link rel="stylesheet" href="/src/styles/style.css" />
 	</head>
 	<body>
 		<main>
