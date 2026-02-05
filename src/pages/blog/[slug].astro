@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = import.meta.glob('./*.html', { query: '?raw', eager: true });
+  
+  return Object.entries(posts).map(([path, file]) => {
+    const slug = path.split('/').pop().replace('.html', '');
+    // Basic body extraction (everything inside <body>)
+    const bodyMatch = file.default.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    const content = bodyMatch ? bodyMatch[1] : file.default;
+    const titleMatch = file.default.match(/<title>(.*?)<\/title>/i);
+    const title = titleMatch ? titleMatch[1] : 'Blog Post';
+
+    return {
+      params: { slug },
+      props: { content, title },
+    };
+  });
+}
+
+const { content, title } = Astro.props;
+---
+
+<BaseLayout title={`${title} | Manuel Oelmaier`}>
+    <article class="fade-in about-me-content" style="text-align: left; padding-top: 2rem;">
+        <Fragment set:html={content} />
+        
+        <div style="margin-top: 4rem; text-align: center;">
+            <a href="/blog" class="button-link blog-button">Back to Blog</a>
+        </div>
+    </article>
+</BaseLayout>

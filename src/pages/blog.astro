@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const posts = Object.values(import.meta.glob('./posts/*.html', { eager: true, query: '?raw' }));
+
+// Helper to extract title from HTML string
+function getTitle(html) {
+    const match = html.match(/<title>(.*?)<\/title>/);
+    return match ? match[1] : 'Untitled Post';
+}
+
+// Helper to extract filename/slug
+function getSlug(path) {
+    return path.split('/').pop().replace('.html', '');
+}
+
+const allPosts = Object.entries(import.meta.glob('./posts/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
+    slug: getSlug(path),
+    title: getTitle(file.default),
+}));
+---
+
+<BaseLayout title="Blog | Manuel Oelmaier">
+    <section class="fade-in">
+        <h2>Blog</h2>
+        <div class="about-me-content">
+            <p>Thoughts on AI, Software Engineering, and more.</p>
+            <br />
+            <ul style="list-style: none; padding: 0; text-align: left; max-width: 600px; margin: 0 auto;">
+                {allPosts.map((post) => (
+                    <li style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 255, 255, 0.02); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <a href={`/blog/${post.slug}`} style="font-size: 1.5rem; font-style: normal; font-weight: 600;">
+                            {post.title}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+</BaseLayout>
