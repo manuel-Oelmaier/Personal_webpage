@@ -12,5 +12,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "astro": "^5.17.1"
+  }
 }

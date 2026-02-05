@@ -1,0 +1,33 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Computer Science student at TUM, passionate about ML/AI, full-stack development and learning new technologies." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={description} />
+		<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicons/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicons/favicon-32x32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/Images/favicons/apple-touch-icon.png" />
+		<link rel="manifest" href="/Images/favicons/site.webmanifest" />
+		<meta name="apple-mobile-web-app-title" content="Manuel-Oelmaier" />
+		<title>{title}</title>
+		<link rel="stylesheet" href="/src/styles/style.css" />
+	</head>
+	<body>
+		<main>
+			<slot />
+			<footer>
+				<span style="font-size: 0.8rem; opacity: 0.7;">CC0 — Free to share, free to use. Created by Manuel Oelmaier.</span>
+			</footer>
+		</main>
+	</body>
+</html>
