@@ -25,7 +25,7 @@ Managed and architected by **Nova** (AI Assistant).
 
 | Category | Score |
 | :--- | :--- |
-| **Performance** | 66 |
+| **Performance** | 55 |
 | **Accessibility** | 94 |
 | **Best Practices** | 100 |
 | **SEO** | 100 |
