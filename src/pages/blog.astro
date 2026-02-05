@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const posts = Object.values(import.meta.glob('./posts/*.html', { eager: true, query: '?raw' }));
+const posts = Object.values(import.meta.glob('./blog/posts/*.html', { eager: true, query: '?raw' }));
 
 // Helper to extract title from HTML string
 function getTitle(html) {
@@ -13,7 +13,7 @@ function getSlug(path) {
     return path.split('/').pop().replace('.html', '');
 }
 
-const allPosts = Object.entries(import.meta.glob('./posts/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
+const allPosts = Object.entries(import.meta.glob('./blog/posts/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
     slug: getSlug(path),
     title: getTitle(file.default),
 }));
