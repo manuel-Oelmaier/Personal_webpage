@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 
 // Import assets
-import transparentImg from '../assets/transparent.webp';
+import heroImg from '../assets/heroimage.webp';
 import manuImg from '../assets/manu.jpg';
 import placeholderChess from '../assets/Projects/Placeholder_Chess.png';
 import exampleQuery from '../assets/Projects/exampleQuery.png';
@@ -23,7 +23,7 @@ import linkedinIcon from '../assets/linkedin.png';
 
 <BaseLayout title="Manuel Oelmaier">
     <section class="hero">
-        <Image src={transparentImg} alt="Hero Image" class="hero-img" loading="eager" style="transform: rotate(0deg);" />
+        <Image src={heroImg} alt="Hero Image" class="hero-img" loading="eager" />
         <div class="hero-text">
             <h1 id="name">Manuel Oelmaier</h1>
             <h2 id="name-description">Software Engineer focused on AI</h2>
