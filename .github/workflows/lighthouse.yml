@@ -4,7 +4,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -33,3 +33,31 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 4. Update README with Lighthouse scores
+      - name: Update README with scores
+        run: |
+          # Extract scores from the first JSON result
+          REPORT_PATH=$(ls .lighthouseci/lhr-*.json | head -n 1)
+          PERF=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.performance.score * 100))")
+          ACC=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.accessibility.score * 100))")
+          BP=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories['best-practices'].score * 100))")
+          SEO=$(node -e "console.log(Math.round(require('./$REPORT_PATH').categories.seo.score * 100))")
+          
+          # Use sed to replace the scores in the README. Update the existing table or append.
+          # This assumes a specific pattern exists or we rewrite a section.
+          DATE=$(date +%Y-%m-%d)
+          
+          sed -i "/| \*\*Performance\*\* |/c\| **Performance** | $PERF |" README.md
+          sed -i "/| \*\*Accessibility\*\* |/c\| **Accessibility** | $ACC |" README.md
+          sed -i "/| \*\*Best Practices\*\* |/c\| **Best Practices** | $BP |" README.md
+          sed -i "/| \*\*SEO\*\* |/c\| **SEO** | $SEO |" README.md
+          sed -i "/\*Audit conducted on/c\*Last dynamic audit: $DATE via GitHub Actions.*" README.md
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "Nova-Architect"
+          git config --global user.email "nova@manueloelmaier.de"
+          git add README.md
+          git commit -m "docs: dynamic lighthouse score update [skip ci]" || echo "No changes to commit"
+          git push
