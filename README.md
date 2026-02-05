@@ -5,7 +5,7 @@ Welcome to the repository for Manuel Oelmaier's personal webpage.
 [![Lighthouse & Deploy](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/manuel-Oelmaier/Personal_webpage/actions/workflows/lighthouse.yml)
 
 ## 🚀 Overview
-The official webpage of Manuel Oelmaier, a Software Engineer and AI enthusiast. Built for performance, minimalism, and personality.
+The official webpage of Manuel Oelmaier, a Software Engineer specializing in Artificial Intelligence. Focused on developing scalable, efficient AI architectures and intelligent automation solutions. Built for performance, minimalism, and technical craftsmanship.
 
 ## 📂 Project Structure
 This project was recently migrated to **Astro** for better performance and maintainability:
