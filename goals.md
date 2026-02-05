@@ -11,7 +11,10 @@
 # TODO:
 
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
-- blog
+- mobile styling corrections
+- rss for blog!
+- playwright for usability tests 
+- axecore for further accsessability tests
 
 # future ideas:
 - finish ManuChess and add!
