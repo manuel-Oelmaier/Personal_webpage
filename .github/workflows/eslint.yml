@@ -26,12 +26,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd Personal_webpage
           pnpm add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-astro astro-eslint-parser
 
       - name: Run ESLint and Fix
         run: |
-          cd Personal_webpage
           # Initialize eslint config if it doesn't exist (using a basic one for Astro/TS)
           if [ ! -f .eslintrc.json ] && [ ! -f eslint.config.js ]; then
             echo '{
