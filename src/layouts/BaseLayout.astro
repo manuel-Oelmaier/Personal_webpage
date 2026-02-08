@@ -19,6 +19,12 @@ const { title, description = "Computer Science student at TUM, passionate about 
 		<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicons/favicon-32x32.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/Images/favicons/apple-touch-icon.png" />
 		<link rel="manifest" href="/Images/favicons/site.webmanifest" />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Manuel Oelmaier | Blog"
+			href={new URL("rss.xml", Astro.site)}
+		/>
 		<meta name="apple-mobile-web-app-title" content="Manuel-Oelmaier" />
 		<title>{title}</title>
 	</head>
