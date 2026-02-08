@@ -13,6 +13,7 @@
 - Make projects more interactable, aka play chess, query the bot or do the quiz !!!!
 - mobile styling corrections
 - rss for blog!
+- Eslint config
 - playwright for usability tests 
 - axecore for further accsessability tests
 

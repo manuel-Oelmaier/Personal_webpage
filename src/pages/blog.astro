@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const posts = Object.values(import.meta.glob('../content/*.html', { eager: true, query: '?raw' }));
 
 // Helper to extract title from HTML string or use filename
 function getTitle(html, path) {
@@ -34,11 +33,11 @@ const allPosts = Object.entries(import.meta.glob('../content/*.html', { query: '
 }));
 ---
 
-<BaseLayout title="Blog | Manuel Oelmaier">
+<BaseLayout title=" Manuel Oelmaier | Blog ">
     <section class="fade-in">
         <div class="hero-text" style="min-height: 20vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
             <h1 id="name">Blog</h1>
-            <p class="hero-tagline">Thoughts on AI, Software Engineering, and Life Architecture.</p>
+            <p class="hero-tagline">Thoughts on AI, Software Engineering, and Philosophy.</p>
         </div>
         
         <div class="about-me-content">

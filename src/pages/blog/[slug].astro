@@ -1,25 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export async function getStaticPaths() {
-  const posts = import.meta.glob('../../content/*.html', { query: '?raw', eager: true });
-  
-  return Object.entries(posts).map(([path, file]) => {
-    const slug = path.split('/').pop().replace('.html', '');
-    const htmlContent = typeof file.default === 'string' ? file.default : (file as any).default;
-    
-    const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    const content = bodyMatch ? bodyMatch[1] : htmlContent;
-    
-    // Improved Title Extraction
-    const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/i);
-    const rawTitle = titleMatch ? titleMatch[1].split('|')[0].trim() : 'Blog Post';
+interface HtmlModule {
+    default: string;
+}
 
-    return {
-      params: { slug },
-      props: { content, title: rawTitle },
-    };
-  });
+export async function getStaticPaths() {
+    const posts = import.meta.glob<HtmlModule>('../../content/*.html', { query: '?raw', eager: true });
+
+    return Object.entries(posts).map(([path, file]) => {
+        const slug = path.split('/').pop()?.replace('.html', '') || '';
+        const htmlContent = file.default;
+
+        const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+        const content = bodyMatch ? bodyMatch[1] : htmlContent;
+
+        const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/i);
+        const rawTitle = titleMatch ? titleMatch[1].split('|')[0].trim() : 'Blog Post';
+
+        return {
+            params: { slug },
+            props: { content, title: rawTitle },
+        };
+    });
 }
 
 const { content, title } = Astro.props;
