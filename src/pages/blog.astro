@@ -1,18 +1,21 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const allPosts = await getCollection('blog');
+
 // Helper to extract title from HTML string or use filename
-function getTitle(html, path) {
+function getTitle(html, id) {
     const match = html.match(/<title>(.*?)<\/title>/);
     if (match) return match[1].split('|')[0].trim();
     
-    // Fallback: Title case the filename
-    const filename = path.split('/').pop().replace('.html', '');
+    const filename = id.replace('.html', '');
     return filename.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
 // Helper to extract a short preview/description
 function getPreview(html) {
+    if (!html) return '';
     // Strip headers and meta
     let body = html.replace(/<head>[\s\S]*?<\/head>/i, '');
     body = body.replace(/<div class="post-meta">[\s\S]*?<\/div>/i, '');
@@ -21,28 +24,23 @@ function getPreview(html) {
     return body.substring(0, 160).trim() + '...';
 }
 
-// Helper to extract filename/slug
-function getSlug(path) {
-    return path.split('/').pop().replace('.html', '');
-}
-
-const allPosts = Object.entries(import.meta.glob('../content/*.html', { query: '?raw', eager: true })).map(([path, file]) => ({
-    slug: getSlug(path),
-    title: getTitle(file.default, path),
-    preview: getPreview(file.default),
+const processedPosts = allPosts.map((entry) => ({
+    slug: entry.id.replace('.md', ''),
+    title: getTitle(entry.body || '', entry.id),
+    preview: getPreview(entry.body || ''),
 }));
 ---
 
-<BaseLayout title=" Manuel Oelmaier | Blog ">
+<BaseLayout title="Blog | Manuel Oelmaier">
     <section class="fade-in">
         <div class="hero-text" style="min-height: 20vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
             <h1 id="name">Blog</h1>
-            <p class="hero-tagline">Thoughts on AI, Software Engineering, and Philosophy.</p>
+            <p class="hero-tagline">Thoughts on AI, Software Engineering, and Life Architecture.</p>
         </div>
         
         <div class="about-me-content">
             <div class="projects-grid" style="text-align: left; margin-top: 2rem;">
-                {allPosts.map((post) => (
+                {processedPosts.map((post) => (
                     <article class="card">
                         <h3 class="title">{post.title}</h3>
                         <p>{post.preview}</p>

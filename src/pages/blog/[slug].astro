@@ -1,31 +1,29 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-interface HtmlModule {
-    default: string;
-}
-
 export async function getStaticPaths() {
-    const posts = import.meta.glob<HtmlModule>('../../content/*.html', { query: '?raw', eager: true });
-
-    return Object.entries(posts).map(([path, file]) => {
-        const slug = path.split('/').pop()?.replace('.html', '') || '';
-        const htmlContent = file.default;
-
-        const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-        const content = bodyMatch ? bodyMatch[1] : htmlContent;
-
-        const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/i);
-        const rawTitle = titleMatch ? titleMatch[1].split('|')[0].trim() : 'Blog Post';
-
-        return {
-            params: { slug },
-            props: { content, title: rawTitle },
-        };
-    });
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.id.replace('.md', '') },
+    props: { entry },
+  }));
 }
 
-const { content, title } = Astro.props;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Helper to extract title from raw content if needed
+function getTitle(html, id) {
+    const match = html.match(/<title>(.*?)<\/title>/);
+    if (match) return match[1].split('|')[0].trim();
+    
+    const filename = id.replace('.html', '');
+    return filename.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// In Astro 5 with glob loader, the raw body is in entry.body
+const title = getTitle(entry.body || '', entry.id);
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
@@ -34,7 +32,7 @@ const { content, title } = Astro.props;
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0 3rem 0;" />
         
         <div class="post-content">
-            <Fragment set:html={content} />
+            <Content />
         </div>
         
         <div style="margin-top: 6rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">

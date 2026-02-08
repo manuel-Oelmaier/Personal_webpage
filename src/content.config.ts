@@ -9,8 +9,7 @@ import { z } from 'astro/zod';
 
 // 4. Define your collection(s)
 const blog = defineCollection({
-    loader: glob({ pattern: "**/*.html", base: "./src/content" }),
-    schema: /* ... */
+    loader: glob({ pattern: "**/*.md", base: "./src/content" }),
 });
 
 
