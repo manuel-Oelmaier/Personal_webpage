@@ -1,0 +1,51 @@
+name: RSS Validator
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-rss:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Astro Site
+        run: pnpm run build
+
+      - name: Validate RSS Feed
+        run: |
+          # Install an RSS validator CLI
+          npm install -g rss-parser
+          
+          # Run a simple validation check using a node script
+          node -e "
+          const RSSParser = require('rss-parser');
+          const fs = require('fs');
+          const parser = new RSSParser();
+          const xml = fs.readFileSync('./dist/rss.xml', 'utf8');
+          parser.parseString(xml)
+            .then(feed => {
+              console.log('RSS Feed is valid. Title:', feed.title);
+              process.exit(0);
+            })
+            .catch(err => {
+              console.error('RSS Validation Failed:', err.message);
+              process.exit(1);
+            });
+          "
