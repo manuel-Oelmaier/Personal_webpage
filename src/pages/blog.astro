@@ -15,6 +15,7 @@ const allPosts = (await getCollection('blog')).sort(
         </div>
         
         <div class="about-me-content">
+            <h2 class="visually-hidden">Posts</h2>
             <div class="projects-grid" style="text-align: left; margin-top: 2rem;">
                 {allPosts.map((entry) => (
                     <article class="card">

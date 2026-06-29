@@ -176,6 +176,8 @@ strong {
     font-style: italic;
     font-weight: 300;
     font-size: 3.4rem;
+    color: hsl(216, 40%, 90%);
+    font-family: 'Poppins', sans-serif;
 }
 
 .fade-in {
@@ -323,7 +325,7 @@ strong {
 }
 
 
-#Resume p {
+#resume p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -337,7 +339,7 @@ strong {
 }
 
 
-#Contact {
+#contact {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -390,6 +392,18 @@ footer {
     text-align: left;
     margin-top: auto;
     padding: 2rem;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 
@@ -453,7 +467,7 @@ footer {
         padding: 0 1rem;
     }
 
-    #Resume p {
+    #resume p {
         font-size: 1.3rem;
     }
 

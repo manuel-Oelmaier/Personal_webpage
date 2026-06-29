@@ -16,3 +16,7 @@ yarn-error.log*
 
 dist/
 .astro
+
+/playwright-report/
+/test-results/
+/blob-report/
