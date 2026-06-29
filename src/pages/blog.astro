@@ -1,21 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPreviewFromBody, getTitleFromBody } from '../lib/blog-utils';
 
-interface ProcessedPost {
-    slug: string;
-    title: string;
-    preview: string;
-}
-
-const allPosts = await getCollection('blog');
-
-const processedPosts: ProcessedPost[] = allPosts.map((entry) => ({
-    slug: entry.id.replace('.md', ''),
-    title: getTitleFromBody(entry.body ?? '', entry.id),
-    preview: getPreviewFromBody(entry.body ?? ''),
-}));
+const allPosts = (await getCollection('blog')).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
 ---
 
 <BaseLayout title="Blog | Manuel Oelmaier">
@@ -27,11 +16,11 @@ const processedPosts: ProcessedPost[] = allPosts.map((entry) => ({
         
         <div class="about-me-content">
             <div class="projects-grid" style="text-align: left; margin-top: 2rem;">
-                {processedPosts.map((post) => (
+                {allPosts.map((entry) => (
                     <article class="card">
-                        <h3 class="title">{post.title}</h3>
-                        <p>{post.preview}</p>
-                        <a href={`/blog/${post.slug}`} class="button-link blog-button" style="font-style: normal; width: fit-content; margin: 0; padding: 0.6rem 1.5rem;">
+                        <h3 class="title">{entry.data.title}</h3>
+                        <p>{entry.data.description}</p>
+                        <a href={`/blog/${entry.id.replace('.md', '')}`} class="button-link blog-button" style="font-style: normal; width: fit-content; margin: 0; padding: 0.6rem 1.5rem;">
                             Read More
                         </a>
                     </article>

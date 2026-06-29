@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getTitleFromBody } from '../../lib/blog-utils';
 
 type BlogEntry = CollectionEntry<'blog'>;
 
@@ -15,6 +14,14 @@ type StaticPath = {
     props: Props;
 };
 
+function formatPubDate(date: Date): string {
+    return date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+}
+
 export async function getStaticPaths(): Promise<StaticPath[]> {
     const blogEntries = await getCollection('blog');
     return blogEntries.map((entry) => ({
@@ -25,13 +32,16 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const title = getTitleFromBody(entry.body ?? '', entry.id);
+const { title, pubDate, tags } = entry.data;
+const formattedDate = formatPubDate(pubDate);
+const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
     <article class="fade-in about-me-content" style="text-align: left; padding: 4rem 2rem; flex-grow: 1; max-width: 900px;">
         <h1 style="font-size: 3.5rem; color: hsl(216, 40%, 90%); margin-bottom: 0.5rem; text-align: center;">{title}</h1>
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0 3rem 0;" />
+        <p class="post-meta">Published on {formattedDate}{tagLine}</p>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255, 0.1); margin: 2rem 0 3rem 0;" />
         
         <div class="post-content">
             <Content />
