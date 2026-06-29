@@ -1,29 +1,31 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTitleFromBody } from '../../lib/blog-utils';
 
-export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
-  return blogEntries.map(entry => ({
-    params: { slug: entry.id.replace('.md', '') },
-    props: { entry },
-  }));
+type BlogEntry = CollectionEntry<'blog'>;
+
+interface Props {
+    entry: BlogEntry;
+}
+
+type StaticPath = {
+    params: { slug: string };
+    props: Props;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+    const blogEntries = await getCollection('blog');
+    return blogEntries.map((entry) => ({
+        params: { slug: entry.id.replace('.md', '') },
+        props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-
-// Helper to extract title from raw content if needed
-function getTitle(html, id) {
-    const match = html.match(/<title>(.*?)<\/title>/);
-    if (match) return match[1].split('|')[0].trim();
-    
-    const filename = id.replace('.html', '');
-    return filename.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-}
-
-// In Astro 5 with glob loader, the raw body is in entry.body
-const title = getTitle(entry.body || '', entry.id);
+const title = getTitleFromBody(entry.body ?? '', entry.id);
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>

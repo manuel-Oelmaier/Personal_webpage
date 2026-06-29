@@ -9,6 +9,8 @@
     "start": "astro dev",
     "preview": "astro preview",
     "astro": "astro",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test:links": "linkinator ./dist --recurse --silent"
   },
   "devDependencies": {
@@ -16,14 +18,14 @@
     "astro-eslint-parser": "^1.2.2",
     "eslint": "^9.39.2",
     "eslint-plugin-astro": "^1.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "linkinator": "^7.5.3",
-    "nodemon": "^3.1.10",
     "rss-parser": "^3.13.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0"
   },
   "private": true,
+  "type": "module",
   "dependencies": {
     "@astrojs/rss": "^4.0.15",
     "astro": "^5.17.1",

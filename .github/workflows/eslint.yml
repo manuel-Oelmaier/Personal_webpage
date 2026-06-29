@@ -1,10 +1,10 @@
-name: Lint and Fix
+name: Lint
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -25,41 +25,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: |
-          pnpm add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-astro astro-eslint-parser
+        run: pnpm install
 
-      - name: Run ESLint and Fix
-        run: |
-          # Initialize eslint config if it doesn't exist (using a basic one for Astro/TS)
-          if [ ! -f .eslintrc.json ] && [ ! -f eslint.config.js ]; then
-            echo '{
-              "extends": [
-                "eslint:recommended",
-                "plugin:@typescript-eslint/recommended",
-                "plugin:astro/recommended"
-              ],
-              "parser": "@typescript-eslint/parser",
-              "plugins": ["@typescript-eslint"],
-              "overrides": [
-                {
-                  "files": ["*.astro"],
-                  "parser": "astro-eslint-parser",
-                  "parserOptions": {
-                    "parser": "@typescript-eslint/parser",
-                    "extraFileExtensions": [".astro"]
-                  }
-                }
-              ],
-              "env": {
-                "browser": true,
-                "node": true
-              }
-            }' > .eslintrc.json
-          fi
-          npx eslint . --fix || true
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "style: auto-fix linting issues via ESLint"
-          file_pattern: 'Personal_webpage/**'
+      - name: Run ESLint
+        run: pnpm lint
