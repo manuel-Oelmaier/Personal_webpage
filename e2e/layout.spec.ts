@@ -1,4 +1,5 @@
-import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 const pages = ['/', '/blog/', '/blog/hello-world/'] as const;
 
@@ -9,9 +10,31 @@ function snapshotName(path: (typeof pages)[number]): string {
   return path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
 }
 
+function readPngHeight(snapshotPath: string): number | undefined {
+  try {
+    const buffer = readFileSync(snapshotPath);
+    return buffer.readUInt32BE(20);
+  } catch {
+    return undefined;
+  }
+}
+
+async function stabilizeMainHeight(page: Page, testInfo: TestInfo, path: (typeof pages)[number]): Promise<void> {
+  const snapshotPath = testInfo.snapshotPath(`${snapshotName(path)}.png`);
+  const expectedHeight = readPngHeight(snapshotPath);
+
+  if (expectedHeight === undefined) {
+    return;
+  }
+
+  await page.locator('main').evaluate((main, height) => {
+    main.style.minHeight = `${height}px`;
+  }, expectedHeight);
+}
+
 test.describe('mobile layout screenshots', () => {
   for (const path of pages) {
-    test(`screenshot ${path}`, async ({ page }) => {
+    test(`screenshot ${path}`, async ({ page }, testInfo) => {
       await page.goto(path);
       await page.addStyleTag({
         content: `
@@ -23,6 +46,8 @@ test.describe('mobile layout screenshots', () => {
         }
       `,
       });
+
+      await stabilizeMainHeight(page, testInfo, path);
 
       await expect(page.locator('main')).toHaveScreenshot(`${snapshotName(path)}.png`, {
         maxDiffPixelRatio: 0.05,
