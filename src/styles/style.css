@@ -264,6 +264,14 @@ strong {
     line-height: 1.7;
 }
 
+.confidential-note {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    font-style: italic;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    padding-left: 1rem;
+}
+
 .card-image-container {
     border-radius: 1.5em;
     margin-bottom: 1rem; /* spacing from description */

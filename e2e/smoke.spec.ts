@@ -30,6 +30,21 @@ test.describe('core pages', () => {
     expect(response.ok()).toBeTruthy();
     expect(response.headers()['content-type']).toContain('xml');
   });
+
+  test('sitemap is reachable', async ({ request }) => {
+    const response = await request.get('/sitemap-index.xml');
+
+    expect(response.ok()).toBeTruthy();
+    expect(response.headers()['content-type']).toContain('xml');
+    expect(await response.text()).toContain('https://manueloelmaier.de/');
+  });
+
+  test('robots.txt references sitemap', async ({ request }) => {
+    const response = await request.get('/robots.txt');
+
+    expect(response.ok()).toBeTruthy();
+    expect(await response.text()).toContain('Sitemap: https://manueloelmaier.de/sitemap-index.xml');
+  });
 });
 
 test.describe('mobile layout', () => {
