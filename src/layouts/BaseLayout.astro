@@ -29,6 +29,15 @@ const { title, description = "Computer Science student at TUM, passionate about 
 		<title>{title}</title>
 	</head>
 	<body>
+		<header class="site-nav">
+			<a href="/" class="nav-name">Manuel Oelmaier</a>
+			<nav aria-label="Main navigation">
+				<a href="/#featured-work">Work</a>
+				<a href="/#about-me">About</a>
+				<a href="/blog">Blog</a>
+				<a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank">CV</a>
+			</nav>
+		</header>
 		<main>
 			<slot />
 			<footer>

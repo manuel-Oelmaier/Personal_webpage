@@ -27,6 +27,56 @@
 html, body {
     overflow-x: hidden;
     min-height: 100vh;
+    background-color: var(--backgroundImage-Color);
+}
+
+/* ── Nav ─────────────────────────────────────────── */
+
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem var(--gutter);
+    background: hsla(259, 12%, 11%, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: hsl(216, 40%, 90%);
+    font-style: normal;
+    letter-spacing: 0.01em;
+}
+
+.nav-name:hover {
+    color: white;
+}
+
+.site-nav nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.site-nav nav a {
+    font-size: 0.9rem;
+    font-style: normal;
+    font-weight: 500;
+    color: hsl(210, 15%, 65%);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
+.site-nav nav a:hover {
+    color: hsl(216, 40%, 90%);
 }
 
 main {
@@ -535,5 +585,17 @@ footer {
 
     #name-description {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .nav-name {
+        display: none;
+    }
+
+    .site-nav nav {
+        gap: 1.2rem;
+        width: 100%;
+        justify-content: center;
     }
 }
