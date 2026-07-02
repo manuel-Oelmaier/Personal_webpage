@@ -5,7 +5,7 @@ interface Props {
 }
 import '../styles/style.css';
 
-const { title, description = "Computer Science student at TUM, passionate about ML/AI, full-stack development and learning new technologies." } = Astro.props;
+const { title, description = "CS student at TU Munich (TUM). I build end-to-end AI systems and have shipped production infrastructure for high-stakes environments." } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -44,5 +44,17 @@ const { title, description = "Computer Science student at TUM, passionate about 
 				<span>CC0 — Free to share, free to use. Created by Manuel Oelmaier.</span>
 			</footer>
 		</main>
+	<script>
+		const observer = new IntersectionObserver(
+			(entries) => entries.forEach(e => {
+				if (e.isIntersecting) {
+					e.target.classList.add('visible');
+					observer.unobserve(e.target);
+				}
+			}),
+			{ threshold: 0.08 }
+		);
+		document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+	</script>
 	</body>
 </html>

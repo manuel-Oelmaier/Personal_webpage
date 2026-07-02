@@ -1,10 +1,6 @@
 /* Dark minimalistic — personality preserved, spacing and footer overhauled */
 /* Not styled below 300px screen width */
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
 
 * {
     margin: 0;
@@ -82,7 +78,7 @@ html, body {
 main {
     text-align: center;
     color: var(--normal-TextColor);
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background-color: var(--backgroundImage-Color);
     line-height: 1.4;
@@ -122,7 +118,7 @@ h3 {
 }
 
 a {
-    color: hsl(270, 60%, 60%);
+    color: var(--normal-TextColor);
     text-decoration: none;
     font-style: italic;
 }
@@ -173,7 +169,7 @@ strong {
     justify-content: center;
     min-height: 38vh;
     padding: 3.5rem 0 2.5rem;
-    background: radial-gradient(circle at center, rgba(185, 49, 50, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle at center, hsla(185, 49%, 50%, 0.06) 0%, transparent 70%);
 }
 
 .hero-text {
@@ -187,7 +183,7 @@ strong {
 #name-description {
     font-style: italic;
     font-weight: 300;
-    font-size: 3.4rem;
+    font-size: 1.5rem;
     color: hsl(216, 40%, 90%);
     font-family: 'Poppins', sans-serif;
 }
@@ -278,7 +274,7 @@ strong {
 }
 
 .principle:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.04);
     border-color: var(--normal-TextColor);
 }
@@ -335,9 +331,8 @@ strong {
 }
 
 .card:hover {
-    transform-origin: center;
-    transform: scale(1.03);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     border-color: var(--normal-TextColor);
 }
 
@@ -560,7 +555,14 @@ footer {
 /* ── Animations ──────────────────────────────────── */
 
 .fade-in {
-    animation: fadeIn 3s;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: none;
 }
 
 /* ── Utilities ───────────────────────────────────── */
@@ -593,7 +595,7 @@ footer {
     }
 
     #name-description {
-        font-size: 2.8rem;
+        font-size: 1.4rem;
     }
 
     .about-container {
@@ -617,7 +619,7 @@ footer {
     }
 
     main {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     h2 {
@@ -633,7 +635,7 @@ footer {
     }
 
     #name-description {
-        font-size: 2.5rem;
+        font-size: 1.3rem;
     }
 
     .principle, .about-me-content {
@@ -659,7 +661,7 @@ footer {
     }
 
     main {
-        font-size: 0.85rem;
+        font-size: 0.875rem;
     }
 
     h2 {
@@ -675,7 +677,7 @@ footer {
     }
 
     #name-description {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
     }
 }
 

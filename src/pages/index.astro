@@ -4,32 +4,21 @@ import { Image } from 'astro:assets';
 
 // Import assets
 import manuImg from '../assets/manu.jpg';
-import placeholderChess from '../assets/Projects/Placeholder_Chess.png';
 import exampleQuery from '../assets/Projects/exampleQuery.png';
-import theoQuiz from '../assets/Projects/Theo-quiz.png';
 
 // Icon imports
-import webstackIcon from '../assets/Tech-icons/webstack.png';
-import mongodbIcon from '../assets/Tech-icons/mongodb.svg';
 import pytorchIcon from '../assets/Tech-icons/pytorch.svg';
 import pythonIcon from '../assets/Tech-icons/python.svg';
 import typescriptIcon from '../assets/Tech-icons/typescript.svg';
-import html5Icon from '../assets/Tech-icons/html5.svg';
-import css3Icon from '../assets/Tech-icons/CSS3.svg';
+import dockerIcon from '../assets/Tech-icons/docker.svg';
+import ansibleIcon from '../assets/Tech-icons/ansible.svg';
+import traefikIcon from '../assets/Tech-icons/traefik.svg';
+import tailscaleIcon from '../assets/Tech-icons/tailscale.svg';
 import githubIcon from '../assets/github-mark-white.svg';
 import linkedinIcon from '../assets/linkedin.png';
 ---
 
 <BaseLayout title="Manuel Oelmaier">
-    <!--
-        POSITIONING INTENT:
-        The hero tagline must communicate in one sentence:
-        - End-to-end AI knowledge (not just prompting — model selection, tooling, infra)
-        - Ability to integrate AI properly into any system
-        - Engineering discipline: CI/CD tested, measurable metrics
-        The visitor should immediately understand: this is a software engineer
-        who can own the full AI integration stack, not a notebook-first researcher.
-    -->
     <section class="hero">
         <div class="hero-text">
             <h1 id="name">Manuel Oelmaier</h1>
@@ -46,18 +35,15 @@ import linkedinIcon from '../assets/linkedin.png';
             <div class="about-content">
                 <h2>About me</h2>
                 <p>
-                    I'm a <strong>Computer Science student at TUM</strong> specializing in Machine Learning and AI. 
-                    I bridge the gap between technical innovation and real-world impact by pre-training, finetuning, 
-                    and integrating LLMs into robust full-stack applications.
+                    I study CS at <strong>TU Munich (TUM)</strong>, one of Europe's top engineering programs, 
+                    and have already shipped production systems in high-stakes environments. I specialize in AI end-to-end: 
+                    from pretraining and model evaluation to production integration with proper tooling.
                 </p>
                 <ul class="about-list">
-                    <li><strong>Focus:</strong> Python, TypeScript, and modern AI-driven Webstacks.</li>
-                    <li><strong>Interests:</strong> Intelligent Automation, Efficient LLM Architectures, and advanced Prompt Engineering.</li>
-                    <li><strong>Off-duty:</strong> Competitive Chess player and gym enthusiast.</li>
+                    <li><strong>Stack:</strong> Python and TypeScript primarily, Java when the situation calls for it.</li>
+                    <li><strong>Interests:</strong> Digital sovereignty, intelligent automation, and what intelligence actually is at its core.</li>
+                    <li><strong>Off-duty:</strong> Competitive chess player and gym enthusiast.</li>
                 </ul>
-                <div class="about-me-links">
-                    <a href="/blog" class="button-link blog-button">Explore my Blog</a>
-                </div>
             </div>
         </div>
     </section>
@@ -67,43 +53,32 @@ import linkedinIcon from '../assets/linkedin.png';
         <div class="principles-grid">
             <div class="principle">
                 <h3>Pragmatism</h3>
-                <p>I approach software development with a balance of <strong>aiming high and being realistic</strong> .
-                    My priority is delivering real, tangible value within realistic timeframes. My focus is on pragmatic
-                    iteration:
-                    choosing simple solutions that just work, only adding complexity when it genuinely pays off. This
-                    means I prioritize <strong>new features and improving with user feedback, over chasing
-                        perfection.</strong></p>
+                <p>
+                    I prefer simple systems that solve the real problem. Ship, get feedback, and only add complexity
+                    when it clearly buys reliability, speed, or clarity.
+                </p>
             </div>
             <div class="principle">
                 <h3>Software Craftsmanship</h3>
                 <p>
-                    With a strong foundation in computer science, I’m passionate about building <strong>reliable,
-                    scalable, and thoughtful software.</strong>
-                    I enjoy working across the stack, whether it’s crafting clean backend architectures, designing
-                    intuitive interfaces, or integrating the latest ML/AI models.
-                    As I grow as a developer, I strive to write <strong>maintainable, human-friendly </strong> code that
-                    empowers others and leads to meaningful, high-quality products.
+                    I care about code that other people can run, read, and change. Good architecture means clear
+                    boundaries, boring tools where they fit, and fewer surprises in production.
                 </p>
             </div>
             <div class="principle">
                 <h3>Lifelong Learning</h3>
                 <p>
-                    Technology changes fast, and <strong>staying curious is my engine for growth</strong> . I
-                    continually explore new
-                    tools, frameworks, and ideas—whether through <strong> building side projects</strong> or <strong>studying
-                    academic concepts</strong> like linear attention for transformers. For me, learning isn't a goal
-                    but
-                    a <strong>hands-on habit</strong> , ensuring I'm constantly adapting and turning new knowledge into
-                    practical, high-impact skills.
+                    I learn by building. Side projects and research questions, from homelab automation to linear
+                    attention, are how I test ideas against reality.
                 </p>
             </div>
         </div>
     </section>
 
     <section id="resume" class="fade-in">
-        <h2>Résumé</h2>
-        <p>Download my résumé for a concise overview of my skills, experience, and projects</p>
-        <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="resume-button button-link">Grab A Copy</a>
+        <h2>CV</h2>
+        <p>A concise overview of my skills, experience, and projects.</p>
+        <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="resume-button button-link">Download CV</a>
     </section>
 
     <section id="featured-work" class="fade-in">
@@ -116,7 +91,7 @@ import linkedinIcon from '../assets/linkedin.png';
                     <strong>2026 FIDE Candidates Tournament</strong> — the event that decides the challenger for the
                     World Chess Championship. I owned deployment, secure remote access, an observability and control
                     dashboard, and cost-aware scaling, delivering <strong>zero unplanned downtime</strong> across months
-                    of preparation and the event. The team won with a recordbreaking 10/14.
+                    of preparation and the event. The team won with a record-breaking 10/14.
                 </p>
                 <p class="confidential-note">
                     Full technical details are confidential. Architecture and outcomes available under NDA / on request;
@@ -136,29 +111,38 @@ import linkedinIcon from '../assets/linkedin.png';
         <h2>Project Showcase</h2>
         <div class="projects-grid">
             <article class="card">
-                <h3 class="title">Prototype: ManuChess</h3>
-                <p>A small website which lets you play against a Mirror of Myself. I am currently working on training a
-                    small
-                    Neural Net with all my Chess games (tournament and online), which at the end will play like me.
-                    Coming soon!</p>
-                <Image class="card-Showcase" src={placeholderChess} alt="Placeholder for Manuchess." width={600} />
-                <a href="https://github.com/manuel-Oelmaier" target="_blank" class="project-link button-link">
-                    <Image src={githubIcon} alt="GitHub Logo" class="icon" />
-                    <span>View on GitHub</span>
+                <h3 class="title">Self-Hosted Homelab &amp; AI Agent Platform</h3>
+                <p>
+                    Designed and operate a Tailscale-only personal cloud on self-managed hardware, replacing SaaS
+                    for chat, notes, calendar, and messaging. Built as modular Docker Compose stacks behind Traefik
+                    with a private CA, pull-based GitOps deployment gated on CI, and encrypted Restic backups.
+                </p>
+                <p>
+                    The centerpiece is a <strong>LibreChat deployment with local GPU inference</strong> (Ollama) and
+                    five privacy-tiered AI agents connected via <strong>Model Context Protocol</strong> — including
+                    custom MCP servers for grocery APIs and health data. Security enforced as code: automated
+                    network-exposure audits, TLS validation, and agent privacy-policy tests run on a schedule from a
+                    dedicated monitoring node.
+                </p>
+                <a href="/blog/homelab-ai-platform" class="project-link button-link" style="margin-bottom: 0.5rem;">
+                    <span>Read the write-up</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><Image src={webstackIcon} alt="webstack logo" class="icon" /> Webstack</span>
-                    <span class="tag"><Image src={mongodbIcon} alt="MongoDB logo" class="icon" /> MongoDB</span>
-                    <span class="tag"><Image src={pytorchIcon} alt="pytorch logo" class="icon" /> Pytorch</span>
+                    <span class="tag"><Image src={dockerIcon} alt="Docker logo" class="icon" /> Docker</span>
+                    <span class="tag"><Image src={traefikIcon} alt="Traefik logo" class="icon" /> Traefik</span>
+                    <span class="tag"><Image src={tailscaleIcon} alt="Tailscale logo" class="icon" /> Tailscale</span>
+                    <span class="tag"><Image src={ansibleIcon} alt="Ansible logo" class="icon" /> Ansible</span>
+                    <span class="tag"><Image src={pythonIcon} alt="Python logo" class="icon" /> Python</span>
+                    <span class="tag">LLM / MCP</span>
                 </div>
             </article>
 
             <article class="card">
                 <h3 class="title">LocalPythonCodingLlm</h3>
-                <p>As Coursework, we fine-tuned and compared different small LLMs in their Ability to write Python Code.
-                    We made the best one publicly available via a <abbr title="Visual Studio Code">VSC</abbr> Extension,
-                    where the model can be queried locally.
-                    Since LLMs almost always need the unencrypted text,a local models solves a key privacy issue.</p>
+                <p>Fine-tuned and benchmarked multiple small LLMs for Python code generation, then shipped the best-performing model 
+                    as a <abbr title="Visual Studio Code">VS Code</abbr> extension with fully local inference. 
+                    Local execution was a deliberate architectural choice — LLMs require unencrypted input, 
+                    and running on-device eliminates the privacy trade-off entirely.</p>
                 <Image class="card-Showcase" src={exampleQuery} alt="Screenshot of a sample query" width={600} />
                 <a href="https://github.com/manuel-Oelmaier/LocalPythonCodingLlm" target="_blank"
                    class="project-link button-link">
@@ -167,26 +151,11 @@ import linkedinIcon from '../assets/linkedin.png';
                 </a>
                 <div class="tags">
                     <span class="tag"><Image src={pythonIcon} alt="python logo" class="icon" /> Python</span>
-                    <span class="tag"><Image src={pytorchIcon} alt="pytorch logo" class="icon" /> Pytorch</span>
-                    <span class="tag"><Image src={typescriptIcon} alt="typescript logo" class="icon" />  Typescript</span>
+                    <span class="tag"><Image src={pytorchIcon} alt="PyTorch logo" class="icon" /> PyTorch</span>
+                    <span class="tag"><Image src={typescriptIcon} alt="TypeScript logo" class="icon" /> TypeScript</span>
                 </div>
             </article>
 
-            <article class="card">
-                <h3 class="title">Quiz App: Theoretical Informatics</h3>
-                <p>A small website with the Collection of the Past Multiple Choice questions of public
-                    Exams, to help students prepare. Renders Formulas and Mathematical Expressions accurately.</p>
-                <Image class="card-Showcase" src={theoQuiz} alt="Screenshot of a sample question in the Quiz App." width={600} />
-                <a href="https://github.com/manuel-Oelmaier/Theo" target="_blank" class="project-link button-link">
-                    <Image src={githubIcon} alt="GitHub Logo" class="icon" />
-                    <span>View on GitHub</span>
-                </a>
-                <div class="tags">
-                    <span class="tag"><Image src={typescriptIcon} alt="typescript logo" class="icon" />  Typescript</span>
-                    <span class="tag"><Image src={html5Icon} alt="html logo" class="icon" />  HTML</span>
-                    <span class="tag"><Image src={css3Icon} alt="CSS logo" class="icon" />  CSS</span>
-                </div>
-            </article>
         </div>
     </section>
 
@@ -235,8 +204,8 @@ import linkedinIcon from '../assets/linkedin.png';
     <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <div class="contact-text">
-            <p>Curious about AI, coding, or just want to swap ideas? Drop me a message—I’d love to connect!</p>
-            <a href="mailto:manuel@oelmaier.eu" class="button-link contact-button" style="font-style:normal;">Send me a mail</a>
+            <p>Open to internships, working student roles, and engineering collaborations. If something I’ve built is relevant to what you’re working on — reach out.</p>
+            <a href="mailto:manuel@oelmaier.eu" class="button-link contact-button" style="font-style:normal;">Get in touch</a>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/manuel-oelmaier/" target="_blank" aria-label="LinkedIn">
                     <Image src={linkedinIcon} alt="" class="social-icon" />

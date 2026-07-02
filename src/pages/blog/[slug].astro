@@ -35,7 +35,7 @@ const { Content } = await render(entry);
 const { title, pubDate, tags, motivation } = entry.data;
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
-const readingTime = Math.ceil((entry.body ?? '').split(/\s+/).length / 200);
+const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
