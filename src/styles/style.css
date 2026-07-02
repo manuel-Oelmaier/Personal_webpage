@@ -39,7 +39,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.9rem var(--gutter);
+    padding: 1.2rem var(--gutter);
     background: hsla(259, 12%, 11%, 0.82);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -49,7 +49,7 @@ html, body {
 .nav-name {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: hsl(216, 40%, 90%);
     font-style: normal;
     letter-spacing: 0.01em;
@@ -61,12 +61,12 @@ html, body {
 
 .site-nav nav {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: center;
 }
 
 .site-nav nav a {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 500;
     color: hsl(210, 15%, 65%);
@@ -179,7 +179,7 @@ strong {
 }
 
 #name {
-    font-size: 4.5em;
+    font-size: 3.6em;
 }
 
 #name-description {
@@ -196,28 +196,6 @@ strong {
     opacity: 0.8;
     font-weight: 300;
     max-width: 65ch;
-}
-
-/* ── Hero pillars ────────────────────────────────── */
-
-.hero-pillars {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 2rem;
-}
-
-.pillar {
-    font-family: var(--mono-font);
-    font-size: 0.85rem;
-    font-style: normal;
-    color: var(--normal-TextColor);
-    border: 1px solid var(--normal-TextColor);
-    border-radius: 2rem;
-    padding: 0.4rem 1.1rem;
-    opacity: 0.8;
-    letter-spacing: 0.02em;
 }
 
 /* ── About ───────────────────────────────────────── */
@@ -612,11 +590,11 @@ footer {
     }
 
     #name {
-        font-size: 4.5em;
+        font-size: 3.6em;
     }
 
     #name-description {
-        font-size: 3rem;
+        font-size: 2.8rem;
     }
 
     .about-container {
