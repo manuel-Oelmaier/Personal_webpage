@@ -158,13 +158,14 @@ strong {
 
 /* ── Hero ────────────────────────────────────────── */
 
+/* Hero is intentionally compact — About Me should be visible on first load */
 .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 55vh;
-    padding: 5rem 0 3rem;
+    min-height: 38vh;
+    padding: 3.5rem 0 2.5rem;
     background: radial-gradient(circle at center, rgba(185, 49, 50, 0.05) 0%, transparent 70%);
     /* hero spans full width visually, override section max-width */
     max-width: none;
