@@ -4,6 +4,7 @@ description: Why this blog exists and what Life Architecture means.
 pubDate: 2026-02-04
 tags:
   - philosophy
+motivation: "Most technical blogs are either pure theory or pure tutorial. I wanted a space that documents the *why* behind the build — the thinking before the code."
 ---
 
 Welcome to my personal blog. If you've found your way here, you're likely interested in the intersection of **Software Engineering**, **Artificial Intelligence**, and the pursuit of building a more efficient, thoughtful life.

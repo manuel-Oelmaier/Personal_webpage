@@ -32,16 +32,24 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, pubDate, tags } = entry.data;
+const { title, pubDate, tags, motivation } = entry.data;
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
+const readingTime = Math.ceil((entry.body ?? '').split(/\s+/).length / 200);
 ---
 
 <BaseLayout title={`${title} | Manuel Oelmaier`}>
     <article class="fade-in about-me-content" style="text-align: left; padding: 4rem 2rem; flex-grow: 1; max-width: 900px;">
         <h1 style="font-size: 3.5rem; color: hsl(216, 40%, 90%); margin-bottom: 0.5rem; text-align: center;">{title}</h1>
-        <p class="post-meta">Published on {formattedDate}{tagLine}</p>
+        <p class="post-meta">Published on {formattedDate}{tagLine} · {readingTime} min read</p>
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255, 0.1); margin: 2rem 0 3rem 0;" />
+
+        {motivation && (
+            <aside class="post-motivation">
+                <span class="post-motivation-label">Why this?</span>
+                <p>{motivation}</p>
+            </aside>
+        )}
         
         <div class="post-content">
             <Content />
@@ -87,5 +95,29 @@ const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
         opacity: 0.7;
         font-size: 1rem;
         margin-bottom: 2rem;
+    }
+    .post-motivation {
+        border-left: 3px solid var(--normal-TextColor);
+        padding: 1.2rem 1.6rem;
+        margin: 0 0 3rem 0;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 0 0.8rem 0.8rem 0;
+    }
+    .post-motivation-label {
+        display: block;
+        font-family: var(--mono-font);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--normal-TextColor);
+        margin-bottom: 0.6rem;
+        opacity: 0.8;
+    }
+    .post-motivation p {
+        font-style: italic;
+        opacity: 0.85;
+        margin-bottom: 0;
+        font-size: 1.1rem;
+        line-height: 1.7;
     }
 </style>
