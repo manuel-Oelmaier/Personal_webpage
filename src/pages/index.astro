@@ -186,6 +186,48 @@ import linkedinIcon from '../assets/linkedin.png';
         </div>
     </section>
 
+    <section id="code" class="fade-in">
+        <h2>Code</h2>
+        <p class="section-subtitle">Recent commit activity across public repositories — last 30 days.</p>
+        <div class="gh-activity" id="gh-activity">
+            <p class="gh-loading">Loading…</p>
+        </div>
+        <script>
+            async function renderActivity() {
+                const container = document.getElementById('gh-activity');
+                if (!container) return;
+                try {
+                    const res = await fetch('/github-activity.json');
+                    const data = await res.json();
+                    if (!data.repos || data.repos.length === 0) {
+                        container.innerHTML = '<p class="gh-empty">No recent public activity.</p>';
+                        return;
+                    }
+                    const max = data.repos[0].commits;
+                    const rows = data.repos.map((r: {name: string; commits: number; lastPush: string}) => `
+                        <div class="gh-row">
+                            <span class="gh-repo">${r.name}</span>
+                            <div class="gh-bar-wrap">
+                                <div class="gh-bar" style="width:${Math.round((r.commits / max) * 100)}%"></div>
+                            </div>
+                            <span class="gh-count">${r.commits}</span>
+                        </div>
+                    `).join('');
+                    const updated = data.updated
+                        ? new Date(data.updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : null;
+                    container.innerHTML = `
+                        <div class="gh-rows">${rows}</div>
+                        ${updated ? `<p class="gh-updated">updated ${updated}</p>` : ''}
+                    `;
+                } catch {
+                    container.innerHTML = '<p class="gh-empty">Could not load activity.</p>';
+                }
+            }
+            renderActivity();
+        </script>
+    </section>
+
     <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <div class="contact-text">
