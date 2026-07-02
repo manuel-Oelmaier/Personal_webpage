@@ -366,9 +366,10 @@ strong {
 }
 
 .icon {
-    width: 1.2em;
-    height: 1.2em;
+    width: 1.5em;
+    height: 1.5em;
     vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .project-link {
@@ -399,9 +400,10 @@ strong {
 .tag {
     display: inline-flex;
     align-items: center;
+    gap: 0.4rem;
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 6px 14px;
+    padding: 7px 14px;
     margin: 0.4rem;
     border-radius: 20px;
     color: var(--normal-TextColor);
@@ -545,7 +547,7 @@ strong {
 
 footer {
     margin-top: auto;
-    padding: 2.5rem 0 2rem;
+    padding: 4rem 0 2rem;
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     color: hsl(210, 12%, 58%);
