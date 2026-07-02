@@ -399,9 +399,25 @@ strong {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.45rem 1rem;
     margin: 0.5rem auto 0 auto;
     width: fit-content;
+    /* ghost style — override .button-link defaults */
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--normal-TextColor) !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-radius: 0.6rem;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.project-link:hover {
+    border-color: var(--normal-TextColor);
+    background: rgba(255, 255, 255, 0.04) !important;
+    transform: translateY(-1px);
+    box-shadow: none;
 }
 
 .tag {
