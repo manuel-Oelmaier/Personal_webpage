@@ -1,12 +1,9 @@
-/* I want a dark colored minimalistic website, that still shows off some of my personality*/
-/* Also be aware that i didnt style for anything below 300px screen width */
+/* Dark minimalistic — personality preserved, spacing and footer overhauled */
+/* Not styled below 300px screen width */
+
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 * {
@@ -17,9 +14,14 @@
 
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
-    --normal-TextColor: hsl(185, 49%, 50%);
-    --buttonBackgroundBlue: hsl(216, 90%, 40%);
-    --mono-font: 'Fira Code', 'Courier New', monospace;
+    --normal-TextColor:      hsl(185, 49%, 50%);
+    --buttonBackgroundBlue:  hsl(216, 90%, 40%);
+    --mono-font:             'Fira Code', 'Courier New', monospace;
+
+    /* layout rhythm */
+    --gutter:                clamp(1.5rem, 6vw, 4rem);
+    --section-gap:           6rem;
+    --content-max:           1300px;
 }
 
 html, body {
@@ -37,18 +39,28 @@ main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding: 0 var(--gutter);
+}
+
+section {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section + section {
+    margin-top: var(--section-gap);
 }
 
 code, pre, .tag, .post-date, .post-meta, abbr {
     font-family: var(--mono-font);
 }
 
-
 :is(h1, h2, h3, h4, h5, h6) {
     font-family: 'Poppins', sans-serif;
     color: hsl(216, 40%, 90%);
 }
-
 
 h2 {
     font-size: 3.5em;
@@ -57,14 +69,6 @@ h2 {
 
 h3 {
     font-size: 1.9em;
-}
-
-button:hover {
-    transform: translateY(-3px);
-}
-
-section + section {
-    margin-top: 4rem; /* space between consecutive sections */
 }
 
 a {
@@ -76,6 +80,8 @@ a {
 strong {
     font-weight: 630;
 }
+
+/* ── Buttons ─────────────────────────────────────── */
 
 .button-link {
     display: inline-block;
@@ -96,19 +102,42 @@ strong {
 }
 
 .button-link:active {
-    transform: translateY(0) scale(0.98); /* push down slightly */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* smaller shadow */
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* ── Hero ────────────────────────────────────────── */
 
 .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 50vh;
-    padding: 2rem 1rem;
+    min-height: 55vh;
+    padding: 5rem 0 3rem;
     background: radial-gradient(circle at center, rgba(185, 49, 50, 0.05) 0%, transparent 70%);
+    /* hero spans full width visually, override section max-width */
+    max-width: none;
+    margin-left: calc(-1 * var(--gutter));
+    margin-right: calc(-1 * var(--gutter));
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+}
+
+.hero-text {
+    margin-top: 0;
+}
+
+#name {
+    font-size: 4.5em;
+}
+
+#name-description {
+    font-style: italic;
+    font-weight: 300;
+    font-size: 3.4rem;
+    color: hsl(216, 40%, 90%);
+    font-family: 'Poppins', sans-serif;
 }
 
 .hero-tagline {
@@ -116,14 +145,16 @@ strong {
     margin-top: 1rem;
     opacity: 0.8;
     font-weight: 300;
+    max-width: 65ch;
 }
+
+/* ── About ───────────────────────────────────────── */
 
 .about-container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4rem;
-    max-width: 1100px;
     margin: 0 auto;
     text-align: left;
 }
@@ -133,8 +164,9 @@ strong {
 }
 
 #manu-img {
-    border-radius: 2rem;
-    width: 20rem;
+    border-radius: 50%;
+    padding: 2rem;
+    width: 18rem;
     height: auto;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -164,31 +196,8 @@ strong {
     font-weight: bold;
 }
 
-.hero-text {
-    margin-top: 0;
-}
-
-#name {
-    font-size: 4.5em;
-}
-
-#name-description {
-    font-style: italic;
-    font-weight: 300;
-    font-size: 3.4rem;
-    color: hsl(216, 40%, 90%);
-    font-family: 'Poppins', sans-serif;
-}
-
-.fade-in {
-    animation: fadeIn 3s;
-}
-
-#manu-img {
-    border-radius: 50%;
-    padding: 2rem;
-    width: 18rem;
-    height: auto;
+.about-me-links {
+    margin-top: 1.5rem;
 }
 
 .about-me-content {
@@ -198,15 +207,12 @@ strong {
     line-height: 1.8;
 }
 
-.about-me-links {
-    margin-top: 1rem;
-}
+/* ── Principles ──────────────────────────────────── */
 
 .principles-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-    max-width: 1300px;
     margin: 0 auto;
 }
 
@@ -235,17 +241,33 @@ strong {
     line-height: 1.6;
 }
 
+/* ── Resume ──────────────────────────────────────── */
+
+#resume p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.resume-button {
+    padding: 1rem 2.5rem;
+    background-color: var(--buttonBackgroundBlue);
+    color: white;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+/* ── Projects / Cards ────────────────────────────── */
+
 .projects-grid {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
-    max-width: 1000px;
+    gap: 3rem;
     margin: 0 auto;
 }
 
 .card {
     border-radius: 2em;
-    padding: 3.5rem;
+    padding: 3rem;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
     display: flex;
     flex-direction: column;
@@ -260,8 +282,15 @@ strong {
 }
 
 .card p {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     line-height: 1.7;
+}
+
+.card:hover {
+    transform-origin: center;
+    transform: scale(1.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: var(--normal-TextColor);
 }
 
 .confidential-note {
@@ -274,7 +303,7 @@ strong {
 
 .card-image-container {
     border-radius: 1.5em;
-    margin-bottom: 1rem; /* spacing from description */
+    margin-bottom: 1rem;
 }
 
 .card-Showcase {
@@ -295,13 +324,12 @@ strong {
 }
 
 .project-link {
-    display: inline-flex; /* icon + text horizontally */
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem; /* internal padding */
-
-    margin: 1rem auto 0 auto; /* top margin + horizontal centering */
-    width: fit-content; /* shrink to content */
+    padding: 0.5rem 1rem;
+    margin: 0.5rem auto 0 auto;
+    width: fit-content;
 }
 
 .tag {
@@ -310,7 +338,7 @@ strong {
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 6px 14px;
-    margin: 0.5rem;
+    margin: 0.4rem;
     border-radius: 20px;
     color: var(--normal-TextColor);
     font-size: 0.9rem;
@@ -322,45 +350,25 @@ strong {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
-.card:hover {
-    transform-origin: center;
-    transform: scale(1.05);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    border-color: var(--normal-TextColor);
-}
-
-
-#resume p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.resume-button {
-    padding: 1rem 2.5rem;
-    background-color: var(--buttonBackgroundBlue);
-    color: white;
-    border-radius: 1rem;
-    font-weight: 600;
-}
-
+/* ── Contact ─────────────────────────────────────── */
 
 #contact {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 4rem;
 }
 
 .contact-text {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 1.5rem;
-    padding: 2.5rem;
+    padding: 3rem;
     max-width: 650px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -379,7 +387,7 @@ strong {
     display: flex;
     gap: 2.5rem;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .social-icon {
@@ -395,12 +403,26 @@ strong {
     filter: drop-shadow(0 0 8px var(--normal-TextColor));
 }
 
+/* ── Footer ──────────────────────────────────────── */
 
 footer {
-    text-align: left;
     margin-top: auto;
-    padding: 2rem;
+    padding: 2.5rem 0 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    color: hsl(210, 12%, 58%);
+    font-size: 0.8rem;
+    font-family: var(--mono-font);
+    letter-spacing: 0.03em;
 }
+
+/* ── Animations ──────────────────────────────────── */
+
+.fade-in {
+    animation: fadeIn 3s;
+}
+
+/* ── Utilities ───────────────────────────────────── */
 
 .visually-hidden {
     position: absolute;
@@ -414,15 +436,15 @@ footer {
     border: 0;
 }
 
+/* ── Responsive ──────────────────────────────────── */
 
 @media (max-width: 1250px) {
-
     .principles-grid {
-        grid-template-columns:  1fr;
+        grid-template-columns: 1fr;
     }
 
     .projects-grid {
-        grid-template-columns:  1fr;
+        grid-template-columns: 1fr;
     }
 
     #name {
@@ -442,17 +464,19 @@ footer {
     .about-list li {
         padding-left: 0;
     }
-    
+
     .about-list li::before {
         display: none;
     }
-
 }
 
 @media (max-width: 768px) {
+    :root {
+        --section-gap: 4rem;
+    }
 
     main {
-        font-size: 1.2rem
+        font-size: 1.2rem;
     }
 
     h2 {
@@ -472,7 +496,7 @@ footer {
     }
 
     .principle, .about-me-content {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
 
     #resume p {
@@ -480,13 +504,19 @@ footer {
     }
 
     .contact-text {
-        width: 90%;
+        padding: 2rem 1.5rem;
     }
 
-
+    .card {
+        padding: 2rem 1.5rem;
+    }
 }
 
 @media (max-width: 400px) {
+    :root {
+        --section-gap: 3rem;
+    }
+
     main {
         font-size: 0.85rem;
     }
