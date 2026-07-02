@@ -12,7 +12,10 @@ for (const path of pages) {
           animation-duration: 0s !important;
           animation-delay: 0s !important;
           transition-duration: 0s !important;
+        }
+        .fade-in {
           opacity: 1 !important;
+          transform: none !important;
         }
       `,
     });

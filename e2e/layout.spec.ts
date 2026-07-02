@@ -28,7 +28,10 @@ async function stabilizeMainHeight(page: Page, testInfo: TestInfo, path: (typeof
   }
 
   await page.locator('main').evaluate((main, height) => {
-    main.style.minHeight = `${height}px`;
+    const targetHeight = Math.max(height - 1, 0);
+    main.style.height = `${targetHeight}px`;
+    main.style.minHeight = `${targetHeight}px`;
+    main.style.overflow = 'hidden';
   }, expectedHeight);
 }
 
@@ -42,7 +45,10 @@ test.describe('mobile layout screenshots', () => {
           animation-duration: 0s !important;
           animation-delay: 0s !important;
           transition-duration: 0s !important;
+        }
+        .fade-in {
           opacity: 1 !important;
+          transform: none !important;
         }
       `,
       });

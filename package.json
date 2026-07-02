@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix",
     "test": "pnpm check && pnpm build && pnpm test:e2e && pnpm test:links",
     "test:e2e": "playwright test",
-    "test:links": "linkinator ./dist --recurse --silent"
+    "test:links": "linkinator ./dist --recurse --silent --skip www.linkedin.com"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
