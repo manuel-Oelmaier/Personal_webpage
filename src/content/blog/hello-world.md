@@ -1,39 +1,24 @@
 ---
 title: Hello World
-description: Why this blog exists and what Life Architecture means.
+description: What this blog is for and what to expect here.
 pubDate: 2026-02-04
 tags:
-  - philosophy
-motivation: "Most technical blogs are either pure theory or pure tutorial. I wanted a space that documents the *why* behind the build — the thinking before the code."
+  - meta
+problem: "Most technical write-ups show the finished result — not the real problem, the dead ends, or why the design landed where it did."
 ---
 
-Welcome to my personal blog. If you've found your way here, you're likely interested in the intersection of **Software Engineering**, **Artificial Intelligence**, and the pursuit of building a more efficient, thoughtful life.
+This is where I publish work I think is polished enough to share: projects I've built, systems I've run, and the reasoning behind them.
 
-## Why this space exists
+I'm a Software Engineer and CS student at TUM, working on AI/LLM systems and infrastructure. What I want to capture isn't just *what* I built, but *why* — the problem in my life or workflow it actually solved, what I tried first, and the trade-offs that shaped the final design.
 
-As a Computer Science student at TUM and a Software Engineer, I spend most of my day thinking in code and models.
-But building software is only half the story; the way more important part is the *Why*.
-On this blog I aim to share my *Why's* with you.
-I'm calling this **Life Architecture**.
+## What to expect here
 
-This blog is where I'll be documenting:
+Every post starts with **the problem** — a real annoyance, constraint, or gap — then walks through what I tried and what solution I arrived at in the end.
 
-- **The Build:** Real-time updates on projects I build and what I learned from them.
-- **The Theory:** My thoughts on ML/AI, full-stack craftsmanship, and technical strategy.
-- **The Life:** How I try to be a bit better every day and my thoughts on philosophical questions.
+Expect that my solutions might change radically, or that a problem is solved so thoroughly that I'll retire the post.
 
-## The "Open Inbox" Policy
+## Communication policy
 
-<div class="inbox-policy">
-    I didn't build this site to be a static resume. I want it to be a <strong>collaborative workspace</strong>.
-    I am always happy to hear a new perspective that I might have missed.
-</div>
-
-If you read something that sparks an idea, or if you think my latest ML theory is totally wrong—I want to hear it.
-After all, being wrong and changing means you are one step closer to being right!
-Whether it's a technical critique, a book recommendation, or a challenge to a chess match, feel free to reach out.
-I read every email and I promise I will always reply.
-
-Let's build something meaningful.
+I'm always glad to hear a new perspective on my approach, and even more so when someone corrects me or points me to a better solution. I'm also happy to answer questions the post didn't cover. I read and reply to every email.
 
 — Manuel

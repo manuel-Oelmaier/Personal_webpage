@@ -32,7 +32,7 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, pubDate, tags, motivation } = entry.data;
+const { title, pubDate, tags, problem } = entry.data;
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
 const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
@@ -44,10 +44,10 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
         <p class="post-meta">Published on {formattedDate}{tagLine} · {readingTime} min read</p>
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255, 0.1); margin: 2rem 0 3rem 0;" />
 
-        {motivation && (
-            <aside class="post-motivation">
-                <span class="post-motivation-label">Why this?</span>
-                <p>{motivation}</p>
+        {problem && (
+            <aside class="post-problem">
+                <span class="post-problem-label">The problem</span>
+                <p>{problem}</p>
             </aside>
         )}
         
@@ -55,7 +55,17 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
             <Content />
         </div>
         
-        <div style="margin-top: 6rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
+        <div class="post-footer">
+            <div class="post-contact">
+                <p>Spotted an error, know a better approach, or have a question this post didn't cover? I read and reply to every email.</p>
+                <a
+                    href={`mailto:manuel@oelmaier.eu?subject=${encodeURIComponent(`Re: ${title}`)}`}
+                    class="button-link contact-button"
+                    style="font-style: normal;"
+                >
+                    Get in touch
+                </a>
+            </div>
             <a href="/blog" class="button-link blog-button">Back to Blog Archive</a>
         </div>
     </article>
@@ -82,39 +92,55 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
         font-size: 1.2rem;
         margin-bottom: 0.7rem;
     }
-    .inbox-policy {
-        background: rgba(255, 255, 255, 0.03);
-        border-left: 4px solid var(--normal-TextColor);
-        padding: 1.8rem;
-        margin: 3rem 0;
-        font-style: italic;
-        border-radius: 0 1rem 1rem 0;
+    .post-footer {
+        margin-top: 6rem;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
+    .post-contact {
+        max-width: 560px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .post-contact p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: hsl(185, 49%, 56%);
+        text-align: center;
+        margin-bottom: 0;
     }
     .post-meta {
         text-align: center;
-        color: hsl(210, 15%, 72%);
+        color: hsl(210, 15%, 82%);
         font-size: 1rem;
         margin-bottom: 2rem;
     }
-    .post-motivation {
+    .post-problem {
         border-left: 3px solid var(--normal-TextColor);
         padding: 1.2rem 1.6rem;
         margin: 0 0 3rem 0;
         background: rgba(255, 255, 255, 0.02);
         border-radius: 0 0.8rem 0.8rem 0;
     }
-    .post-motivation-label {
+    .post-problem-label {
         display: block;
         font-family: var(--mono-font);
         font-size: 0.75rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: hsl(185, 49%, 56%);
+        color: hsl(185, 49%, 70%);
         margin-bottom: 0.6rem;
     }
-    .post-motivation p {
+    .post-problem p {
         font-style: italic;
-        color: hsl(185, 49%, 56%);
+        color: hsl(185, 49%, 70%);
         margin-bottom: 0;
         font-size: 1.1rem;
         line-height: 1.7;

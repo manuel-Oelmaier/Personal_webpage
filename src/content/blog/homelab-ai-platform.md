@@ -6,7 +6,7 @@ tags:
   - infrastructure
   - homelab
   - networking
-motivation: "Getting privacy and ad blocking working was not always as easy on phones as it is now"
+problem: "On iOS there was no clean way to block ads and time-sink sites network-wide — browser extensions don't reach apps."
 ---
 
 In my first internship at MSG in 10th grade, I was placed in the pen-testing team.
