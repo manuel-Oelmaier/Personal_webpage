@@ -12,6 +12,62 @@ Homepage hiring/trust reviews: see [`docs/homepage-review.md`](docs/homepage-rev
 
 ---
 
+## Homepage — recruiter-optimal flow
+
+The homepage mirrors a strong **2026 LinkedIn profile** rendered as one scroll. Recruiters get identity, proof, and a CV path in the first screen; hiring managers get depth as they scroll.
+
+### Ideal scroll order
+
+| # | Section | LinkedIn equivalent | Recruiter job |
+|---|---------|-------------------|---------------|
+| 1 | **Hero** (photo + role + proof + keywords + CV CTA) | Photo + Headline + top of About | Filter: role fit, TUM, stack, strongest win, download CV |
+| 2 | **Featured Work** | Featured (lead item) | Forwardable proof for the hiring manager |
+| 3 | **Project Showcase** | Experience / projects | Keyword breadth (Python, LLM, Docker, …) |
+| 4 | **Principles** | Voice / judgment | Tech-lead depth; recruiters may skip |
+| 5 | **Code** | Activity | Secondary; framed as public-only |
+| 6 | **Contact** | Open to work + message | Conversion |
+
+**Not on the page (by design):** standalone About block, standalone CV section — both folded into hero + nav to avoid duplicate CTAs.
+
+### Above-the-fold contract (hero)
+
+Must deliver in one screen:
+
+1. **Professional photo** — trust, matches LinkedIn
+2. **`<h1>` = target role** — `Software Engineer · AI / LLM` (searchable title, not display name)
+3. **One quantified proof line** — flagship Featured Work outcome (e.g. Candidates infra, zero downtime)
+4. **Keyword line** — name · TUM · Python · TypeScript (file + search terms)
+5. **Human line** — one line likability (chess, gym); optional, small
+6. **Two actions** — Download CV (primary), Featured work (secondary)
+
+Name lives in nav, meta, keyword line, and PDF — not as oversized hero typography.
+
+### SOTA alignment (2026 LinkedIn / recruiter practice)
+
+| Best practice | Homepage implementation |
+|---------------|-------------------------|
+| Headline = role + skills + value, not buzzwords | Hero `<h1>` + proof line |
+| First 80 characters carry search weight | Role + proof visible without scroll |
+| Featured section = proof shelf, strongest first | Featured Work immediately after hero |
+| Resume one click | Nav CV + hero Download CV (same PDF, two paths max) |
+| About front-loads strongest line | Proof sentence in hero, not a long About |
+| Photo present | Hero photo |
+| Open to work / clear next step | Contact section + hero CV CTA |
+| Skills as searchable signals | Stack in hero + tags on project cards |
+
+This flow matches current recruiter guidance (headline-weighted search, featured proof, frictionless CV). The site is **structurally SOTA** for a portfolio homepage.
+
+### Remaining gaps (not blockers for scroll order)
+
+Track separately — improve when prioritised:
+
+- **Open Graph / Twitter cards** — rich previews when the link is pasted in Slack or email (`og:title`, `og:description`, `og:image`)
+- **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
+- **JSON-LD `Person` schema** — optional SEO for name + role + sameAs links
+- **Interactive demos** on project cards — open product goal in homepage-review.md
+
+---
+
 # AI review guideline
 
 Use this document when reviewing blog-related changes (content, layout, routing, RSS, or homepage links into posts). Work through each component in order. For every component, read the **Goal**, then answer the **Review questions**. A change passes only when every applicable question can be answered affirmatively with evidence from the rendered page, source, or feed output.

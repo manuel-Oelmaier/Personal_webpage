@@ -2,11 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 
-// Import assets
 import manuImg from '../assets/manu.jpg';
 import exampleQuery from '../assets/Projects/exampleQuery.png';
 
-// Icon imports
 import pytorchIcon from '../assets/Tech-icons/pytorch.svg';
 import pythonIcon from '../assets/Tech-icons/python.svg';
 import typescriptIcon from '../assets/Tech-icons/typescript.svg';
@@ -22,44 +20,25 @@ const metaDescription =
 ---
 
 <BaseLayout title="Manuel Oelmaier" description={metaDescription}>
-    <section class="hero">
-        <div class="hero-text">
-            <h1 id="name">Manuel Oelmaier</h1>
-            <p id="name-description">Software Engineer · AI / LLM Engineer</p>
-            <p class="hero-tagline">I write clean code and architect solid systems, with a specialization in applying that discipline to AI integration.</p>
-            <p class="hero-hook">Candidates tournament infra · local LLM VS Code extension · homelab AI platform</p>
-            <div class="hero-actions">
-                <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">Download CV</a>
-                <a href="#featured-work" class="button-link">Featured work</a>
+    <section id="about-me" class="hero">
+        <div class="hero-inner">
+            <div class="hero-photo">
+                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel Oelmaier" width={240} height={240} />
             </div>
-        </div>
-    </section>
-
-    <section id="about-me" class="fade-in">
-        <div class="about-container">
-            <div class="about-image">
-                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel Oelmaier" width={320} height={320} />
-            </div>
-            <div class="about-content">
-                <h2>About me</h2>
-                <p>
-                    I ship production AI and infrastructure systems and am completing my CS degree at
-                    <strong>TU Munich (TUM)</strong>, one of Europe's top engineering programs.
-                    I specialize in AI end-to-end: from pretraining and model evaluation to production integration with proper tooling.
+            <div class="hero-text">
+                <h1>Software Engineer · AI / LLM</h1>
+                <p class="hero-proof">
+                    Designed and operated zero-downtime engine-analysis infrastructure for a top team at the
+                    <strong>2026 FIDE Candidates Tournament</strong>.
                 </p>
-                <ul class="about-list">
-                    <li><strong>Stack:</strong> Python and TypeScript primarily, Java when the situation calls for it.</li>
-                    <li><strong>Interests:</strong> Digital sovereignty, intelligent automation, and what intelligence actually is at its core.</li>
-                    <li><strong>Off-duty:</strong> Competitive chess player and gym enthusiast.</li>
-                </ul>
+                <p class="hero-meta">Manuel Oelmaier · TUM · Python · TypeScript</p>
+                <p class="hero-human">Competitive chess player · gym enthusiast</p>
+                <div class="hero-actions">
+                    <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">Download CV</a>
+                    <a href="#featured-work" class="button-link">Featured work</a>
+                </div>
             </div>
         </div>
-    </section>
-
-    <section id="resume" class="fade-in">
-        <h2>CV</h2>
-        <p>A concise overview of my skills, experience, and projects — ready to forward.</p>
-        <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="resume-button button-link">Download CV</a>
     </section>
 
     <section id="featured-work" class="fade-in">

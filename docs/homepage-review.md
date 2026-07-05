@@ -26,7 +26,7 @@ Review every change through the eyes of these visitors. A component can pass tec
 | Audience | What they need in ~30 seconds | What makes them reach out |
 |---|---|---|
 | **Hiring managers / tech leads** | Proof of ownership, reliability under pressure, relevant stack | Featured work with outcomes; clear AI + infra depth; sense of judgment |
-| **Recruiters (in-house & agency)** | Scannable headline, TUM, role fit, downloadable CV | Hero + About + CV button; keywords (AI, LLM, Python, production) |
+| **Recruiters (in-house & agency)** | Scannable headline, TUM, role fit, downloadable CV | Hero (role + proof + CV CTA); keywords in hero line and project tags |
 | **Founders / CTOs (freelance or contract)** | “Can I trust him with my stack and my deadline?” | Project cards with scope + security/ops maturity; contact CTA |
 | **Referrers (peers, mentors, professors)** | One line they can repeat about Manuel | Memorable hook (Candidates infra, local LLM extension, homelab) |
 | **Secondary: curious engineers** | Interesting builds | GitHub activity, blog links — nice to have, not the primary buyer |
@@ -41,14 +41,14 @@ Map homepage sections to what works on a strong LinkedIn profile:
 
 | LinkedIn element | Homepage equivalent |
 |---|---|
-| Headline | Hero — name, role line, tagline |
-| Photo + About | About me — portrait and bio |
+| Headline | Hero `<h1>` — target role (not display name) |
+| Photo + About hook | Hero — portrait + proof line + keyword line |
 | Featured | Featured Work — flagship credibility piece |
 | Experience / Projects | Project Showcase |
-| Skills | Tags on project cards, stack bullet in About |
+| Skills | Hero keyword line + tags on project cards |
 | Activity | Code — GitHub snapshot |
 | Open to work + Contact | Contact section |
-| Resume download | CV section |
+| Resume download | Nav CV + hero Download CV (no standalone CV section) |
 | Values / voice | Principles |
 
 Ask throughout: *“Would this block survive a recruiter comparing it side-by-side with strong candidates on LinkedIn?”*
@@ -58,7 +58,7 @@ Ask throughout: *“Would this block survive a recruiter comparing it side-by-si
 ## How to review
 
 1. **Pick a persona** from the table above (default: hiring manager at a tech company).
-2. **Scroll mentally top to bottom** as on first visit — hero → about → CV → featured → projects → principles → code → contact. (Recruiter-optimized: CV and proof before philosophy; principles stay for tech-lead depth.)
+2. **Scroll mentally top to bottom** as on first visit — hero → featured → projects → principles → code → contact. See `goals.md` § Homepage — recruiter-optimal flow.
 3. For each component: read the **Goal**, answer **Human questions** (trust, desire to hire, money), then **Review questions** (observable checks).
 4. Separate **bugs** from **positioning misses** (e.g. link works but copy undersells impact).
 5. Report failures as: `Component → question → observation → suggested fix`.
@@ -80,7 +80,7 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 
 **Review questions:**
 
-- Are anchors `#featured-work`, `#about-me`, Blog, and CV visible and working from `/`?
+- Are anchors `#featured-work`, `#about-me` (hero), `#contact`, Blog, and CV visible and working from `/`?
 - Is the site name a clear link home?
 - Is navigation usable on mobile without hiding critical hiring paths?
 
@@ -113,42 +113,29 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 
 ## Hero
 
-**Goal:** In one screen, answer *“Who is this and why should I care?”* — equivalent to a LinkedIn headline that earns the scroll.
+**Goal:** In one screen, answer *“What does this person do, what did they ship, and can I download their CV?”* — LinkedIn photo + headline + featured hook + next step.
 
 **Human questions:**
 
-- Within 5 seconds, do I know his name, seniority band, and specialty?
-- Does he sound like someone who **architects** systems, not only codes tickets?
-- Would a founder pay a premium for “AI integration with engineering discipline”?
+- Within 5 seconds, do I know their role, strongest proof, and school/stack?
+- Does the proof line make me want to scroll or forward the CV?
+- Can I download the CV without hunting?
 
 **Review questions:**
 
-- Is `<h1>` his full name?
-- Does the role line name a credible title (Software Engineer · AI / LLM Engineer)?
-- Does the tagline promise **outcomes** (clean code, solid systems, AI integration) without buzzword soup?
-- Is the hero compact enough that About Me is visible or nearly visible on first load (desktop)?
-- Readable on mobile — no clipped name or illegible type?
+- Is `<h1>` the target role (e.g. Software Engineer · AI / LLM), not oversized display name?
+- Is the name present in nav, keyword line, and page title?
+- Is there a professional portrait with appropriate alt text?
+- Does one proof sentence state a concrete outcome (Featured Work distillation)?
+- Does a keyword line include TUM and stack (Python, TypeScript)?
+- Are Download CV and Featured work actions visible above the fold on desktop?
+- Readable on mobile — photo and text stack cleanly?
 
 ---
 
-## About me
+## About me *(N/A — merged into hero)*
 
-**Goal:** Humanize Manuel — face, context, credibility — so he is remembered as a person, not a repo list. This is the LinkedIn “About” that builds trust.
-
-**Human questions:**
-
-- Do I trust this person more after seeing the photo and bio?
-- Does TUM + “shipped production systems in high-stakes environments” justify serious compensation?
-- Is there enough personality (chess, gym, interests) to be likable without sounding unprofessional?
-- Would I feel comfortable putting him in front of a client or my team?
-
-**Review questions:**
-
-- Is there a professional portrait with appropriate alt text?
-- Does the opening paragraph establish **education + production experience + AI end-to-end**?
-- Is the stack line concrete (Python, TypeScript, Java when needed)?
-- Do interests signal depth (sovereignty, automation) rather than random hobbies only?
-- Layout: photo and text balanced on desktop and stacked cleanly on mobile?
+Portrait, stack, TUM, and likability live in the hero block. Do not re-add a standalone About section unless it adds information not already in the hero.
 
 ---
 
@@ -171,20 +158,15 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 
 ---
 
-## CV
+## CV *(N/A — merged into hero + nav)*
 
-**Goal:** Frictionless handoff for recruiters and HR — the formal artifact that accompanies the pitch.
-
-**Human questions:**
-
-- Can I forward a PDF to my manager in one click?
-- Does the section feel intentional, not buried?
+CV download must be one click from nav and hero. No standalone `#resume` section unless it adds content beyond a duplicate button.
 
 **Review questions:**
 
-- Visible heading and short explanatory line?
-- “Download CV” opens `/cv_manuel_Oelmaier_EN.pdf` in a new tab?
-- PDF actually exists and is current (spot-check when content changes)?
+- Does nav “CV” open `/cv_manuel_Oelmaier_EN.pdf` in a new tab?
+- Does hero include a primary Download CV action?
+- PDF exists and matches homepage claims?
 
 ---
 

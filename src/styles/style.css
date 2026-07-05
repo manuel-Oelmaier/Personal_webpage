@@ -161,55 +161,71 @@ strong {
 
 /* ── Hero ────────────────────────────────────────── */
 
-/* Hero is intentionally compact — About Me should be visible on first load */
+/* Hero — photo + headline + proof + CV path (LinkedIn above-the-fold parity) */
 .hero {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 38vh;
-    padding: 3.5rem 0 2.5rem;
+    padding: 2.5rem 0 3rem;
     background: radial-gradient(circle at center, hsla(185, 49%, 50%, 0.06) 0%, transparent 70%);
 }
 
+.hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    max-width: 960px;
+    width: 100%;
+    text-align: left;
+}
+
+.hero-photo {
+    flex-shrink: 0;
+}
+
+#manu-img {
+    border-radius: 50%;
+    width: 12rem;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
 .hero-text {
-    margin-top: 0;
+    flex: 1;
+    min-width: 0;
 }
 
-#name {
-    font-size: 3.6em;
+.hero h1 {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
 }
 
-#name-description {
-    font-style: italic;
-    font-weight: 300;
-    font-size: 1.5rem;
-    color: hsl(216, 40%, 90%);
-    font-family: 'Poppins', sans-serif;
+.hero-proof {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+    max-width: 52ch;
 }
 
-.hero-tagline {
-    font-size: 1.4rem;
-    margin-top: 1rem;
-    opacity: 0.8;
-    font-weight: 300;
-    max-width: 65ch;
+.hero-meta {
+    font-size: 1rem;
+    color: hsl(216, 40%, 78%);
+    margin: 0 0 0.5rem;
 }
 
-.hero-hook {
+.hero-human {
     font-size: 0.95rem;
-    margin-top: 1.25rem;
     opacity: 0.65;
-    font-weight: 400;
-    letter-spacing: 0.01em;
+    margin: 0;
 }
 
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    justify-content: center;
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
 }
 
 .hero-cta-primary {
@@ -498,7 +514,7 @@ strong {
 .gh-updated {
     margin-top: 1.2rem;
     font-size: 0.75rem;
-    opacity: 0.35;
+    color: hsl(210, 15%, 55%);
     text-align: right;
     max-width: 680px;
     margin-left: auto;
@@ -609,26 +625,18 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    #name {
-        font-size: 3.6em;
-    }
-
-    #name-description {
-        font-size: 1.4rem;
-    }
-
-    .about-container {
+    .hero-inner {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
     }
 
-    .about-list li {
-        padding-left: 0;
+    .hero-proof {
+        max-width: none;
     }
 
-    .about-list li::before {
-        display: none;
+    .hero-actions {
+        justify-content: center;
     }
 }
 
@@ -649,20 +657,16 @@ footer {
         font-size: 1.3rem;
     }
 
-    #name {
-        font-size: 3rem;
+    .hero h1 {
+        font-size: 2rem;
     }
 
-    #name-description {
-        font-size: 1.3rem;
+    .hero-proof {
+        font-size: 1.1rem;
     }
 
     .principle, .about-me-content {
         padding: 0 0.5rem;
-    }
-
-    #resume p {
-        font-size: 1.3rem;
     }
 
     .contact-text {
@@ -691,12 +695,8 @@ footer {
         font-size: 1.2rem;
     }
 
-    #name {
-        font-size: 2.5rem;
-    }
-
-    #name-description {
-        font-size: 1.1rem;
+    .hero h1 {
+        font-size: 1.75rem;
     }
 }
 
