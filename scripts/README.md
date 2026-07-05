@@ -64,6 +64,16 @@ php scripts/fetch-github.php
 
 The Netcup deploy workflow runs this before building so each deploy ships fresh data; cron keeps it updated between deploys.
 
+## Open Graph preview image
+
+Social link previews (Facebook, LinkedIn, X, WhatsApp, Discord, etc.) use `public/og/home.jpg` (1200×630). Regenerate after updating the hero photo:
+
+```bash
+pnpm generate:og
+```
+
+See [`goals.md`](../goals.md) § Link previews for manual verification after deploy.
+
 ## Requires
 
 PHP CLI only (`php`). No `curl`, `jq`, or `python3` needed.

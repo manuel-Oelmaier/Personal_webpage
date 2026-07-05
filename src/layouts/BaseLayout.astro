@@ -2,10 +2,25 @@
 interface Props {
 	title: string;
 	description?: string;
+	ogTitle?: string;
+	ogImage?: string;
+	ogType?: 'website' | 'article';
 }
+
 import '../styles/style.css';
 
-const { title, description = "Software Engineer · AI / LLM · TUM. Production Python and TypeScript systems, distributed infrastructure." } = Astro.props;
+const {
+	title,
+	description = 'Software Engineer · AI / LLM · TUM. Production Python and TypeScript systems, distributed infrastructure.',
+	ogTitle,
+	ogImage = '/og/home.jpg',
+	ogType = 'website',
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://manueloelmaier.de');
+const canonicalURL = new URL(Astro.url.pathname, site);
+const ogImageURL = new URL(ogImage, site);
+const shareTitle = ogTitle ?? title;
 ---
 
 <!DOCTYPE html>
@@ -14,6 +29,17 @@ const { title, description = "Software Engineer · AI / LLM · TUM. Production P
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+		<meta property="og:title" content={shareTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content="Manuel Oelmaier" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={shareTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
 		<link rel="icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicons/favicon-16x16.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicons/favicon-32x32.png" />

@@ -33,14 +33,14 @@ The homepage mirrors a strong **2026 LinkedIn profile** rendered as one scroll. 
 
 Must deliver in one screen:
 
-1. **Professional photo** — trust, matches LinkedIn
+1. **Professional photo** — trust, matches LinkedIn *(see Remaining gaps — retake with Hemd; regenerate `public/og/home.jpg`)*
 2. **`<h1>` = target role** — `Software Engineer · AI / LLM` (searchable title, not display name)
 3. **One quantified proof line** — flagship Featured Work outcome (e.g. Candidates infra, zero downtime)
-4. **Keyword line** — name · TUM · Python · TypeScript (file + search terms)
+4. **Keyword line** — TUM · Python · TypeScript (search terms; name is in nav and page title)
 5. **Human line** — one line likability (chess, gym); optional, small
-6. **Two actions** — Download CV (primary), Featured work (secondary)
+6. **Primary action** — Download CV
 
-Name lives in nav, meta, keyword line, and PDF — not as oversized hero typography.
+Name lives in nav, page title, and PDF — not as oversized hero typography.
 
 ### SOTA alignment (2026 LinkedIn / recruiter practice)
 
@@ -57,11 +57,36 @@ Name lives in nav, meta, keyword line, and PDF — not as oversized hero typogra
 
 This flow matches current recruiter guidance (headline-weighted search, featured proof, frictionless CV). The site is **structurally SOTA** for a portfolio homepage.
 
-### Remaining gaps (not blockers for scroll order)
+### Link previews (Open Graph)
+
+Rich unfurls when the URL is pasted in **Facebook, LinkedIn, X, WhatsApp, Discord, Slack, Telegram, iMessage** — all read Open Graph; X also uses Twitter Card tags (same image URL).
+
+**Implemented in** [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro):
+
+- `og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:site_name`
+- `twitter:card=summary_large_image` + matching title, description, image
+- Absolute HTTPS URLs built from [`astro.config.mjs`](astro.config.mjs) `site`
+
+**Image spec:** [`public/og/home.jpg`](public/og/home.jpg) — **1200×630**, JPEG. Regenerate after hero photo change:
+
+```bash
+node scripts/generate-og-image.mjs
+```
+
+**Automated checks:** [`e2e/og.spec.ts`](e2e/og.spec.ts) — required tags on `/`, `/blog/`, and one post; local fetch of `og:image`; min dimensions via `sharp`.
+
+**Manual checks after deploy** (platforms cache previews — re-scrape when the image changes):
+
+1. [opengraph.xyz](https://www.opengraph.xyz/) — paste `https://manueloelmaier.de/`
+2. [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+3. [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
+4. Paste link in WhatsApp or Discord DM — confirm thumbnail + title
+
+### Remaining gaps
 
 Track separately — improve when prioritised:
 
-- **Open Graph / Twitter cards** — rich previews when the link is pasted in Slack or email (`og:title`, `og:description`, `og:image`)
+- **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `node scripts/generate-og-image.mjs`. Mirror the same photo on LinkedIn.
 - **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
 - **JSON-LD `Person` schema** — optional SEO for name + role + sameAs links
 - **Interactive demos** on project cards — open product goal in homepage-review.md

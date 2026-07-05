@@ -5,7 +5,7 @@ test.describe('core pages', () => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Manuel Oelmaier/);
-    await expect(page.getByRole('heading', { name: 'Manuel Oelmaier', level: 1 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Software Engineer · AI / LLM', level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Blog' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Download CV' })).toBeVisible();
   });

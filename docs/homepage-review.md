@@ -96,6 +96,7 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 
 - Is the title the person’s name (not generic “Portfolio”)?
 - Does the meta description mention TUM, AI, and production experience?
+- Are Open Graph + Twitter Card tags present (`og:image` absolute HTTPS, 1200×630)? See `goals.md` § Link previews.
 
 ### Site footer
 

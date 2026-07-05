@@ -32,14 +32,19 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, pubDate, tags, problem } = entry.data;
+const { title, description, pubDate, tags, problem } = entry.data;
 const isMeta = tags.includes('meta');
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
 const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
 ---
 
-<BaseLayout title={`${title} | Manuel Oelmaier`}>
+<BaseLayout
+    title={`${title} | Manuel Oelmaier`}
+    description={description}
+    ogTitle={`${title} | Manuel Oelmaier`}
+    ogType="article"
+>
     <article class="fade-in about-me-content" style="text-align: left; padding: 4rem 2rem; flex-grow: 1; max-width: 900px;">
         <h1 style="font-size: 3.5rem; color: hsl(216, 40%, 90%); margin-bottom: 0.5rem; text-align: center;">{title}</h1>
         <p class="post-meta">Published on {formattedDate}{tagLine} · {readingTime} min read</p>
