@@ -22,6 +22,12 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Fetch GitHub activity
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y php-cli
+          php scripts/fetch-github.php
+
       - name: Build Astro Site
         run: pnpm run build
 
@@ -32,5 +38,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /httpdocs/ # Adjust this if you need to deploy to a specific subdirectory
+          server-dir: /manueloelmaier.de/httpdocs/
           dangerous-clean-slate: true

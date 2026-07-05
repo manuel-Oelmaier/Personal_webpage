@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
-const pages = ['/', '/blog/', '/blog/hello-world/'] as const;
+const pages = ['/', '/blog/', '/blog/homelab-ai-platform/'] as const;
 
 function snapshotName(path: (typeof pages)[number]): string {
   if (path === '/') {

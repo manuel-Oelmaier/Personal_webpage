@@ -16,28 +16,36 @@ import traefikIcon from '../assets/Tech-icons/traefik.svg';
 import tailscaleIcon from '../assets/Tech-icons/tailscale.svg';
 import githubIcon from '../assets/github-mark-white.svg';
 import linkedinIcon from '../assets/linkedin.png';
+
+const metaDescription =
+    'Software Engineer · AI / LLM · TUM. Production Python and TypeScript systems, distributed infrastructure. Open to internships and working student roles.';
 ---
 
-<BaseLayout title="Manuel Oelmaier">
+<BaseLayout title="Manuel Oelmaier" description={metaDescription}>
     <section class="hero">
         <div class="hero-text">
             <h1 id="name">Manuel Oelmaier</h1>
             <p id="name-description">Software Engineer · AI / LLM Engineer</p>
             <p class="hero-tagline">I write clean code and architect solid systems, with a specialization in applying that discipline to AI integration.</p>
+            <p class="hero-hook">Candidates tournament infra · local LLM VS Code extension · homelab AI platform</p>
+            <div class="hero-actions">
+                <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">Download CV</a>
+                <a href="#featured-work" class="button-link">Featured work</a>
+            </div>
         </div>
     </section>
 
     <section id="about-me" class="fade-in">
         <div class="about-container">
             <div class="about-image">
-                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel" width={320} height={320} />
+                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel Oelmaier" width={320} height={320} />
             </div>
             <div class="about-content">
                 <h2>About me</h2>
                 <p>
-                    I study CS at <strong>TU Munich (TUM)</strong>, one of Europe's top engineering programs, 
-                    and have already shipped production systems in high-stakes environments. I specialize in AI end-to-end: 
-                    from pretraining and model evaluation to production integration with proper tooling.
+                    I ship production AI and infrastructure systems and am completing my CS degree at
+                    <strong>TU Munich (TUM)</strong>, one of Europe's top engineering programs.
+                    I specialize in AI end-to-end: from pretraining and model evaluation to production integration with proper tooling.
                 </p>
                 <ul class="about-list">
                     <li><strong>Stack:</strong> Python and TypeScript primarily, Java when the situation calls for it.</li>
@@ -48,36 +56,9 @@ import linkedinIcon from '../assets/linkedin.png';
         </div>
     </section>
 
-    <section class="fade-in">
-        <h2>Principles</h2>
-        <div class="principles-grid">
-            <div class="principle">
-                <h3>Pragmatism</h3>
-                <p>
-                    I prefer simple systems that solve the real problem. Ship, get feedback, and only add complexity
-                    when it clearly buys reliability, speed, or clarity.
-                </p>
-            </div>
-            <div class="principle">
-                <h3>Software Craftsmanship</h3>
-                <p>
-                    I care about code that other people can run, read, and change. Good architecture means clear
-                    boundaries, boring tools where they fit, and fewer surprises in production.
-                </p>
-            </div>
-            <div class="principle">
-                <h3>Lifelong Learning</h3>
-                <p>
-                    I learn by building. Side projects and research questions, from homelab automation to linear
-                    attention, are how I test ideas against reality.
-                </p>
-            </div>
-        </div>
-    </section>
-
     <section id="resume" class="fade-in">
         <h2>CV</h2>
-        <p>A concise overview of my skills, experience, and projects.</p>
+        <p>A concise overview of my skills, experience, and projects — ready to forward.</p>
         <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="resume-button button-link">Download CV</a>
     </section>
 
@@ -88,7 +69,7 @@ import linkedinIcon from '../assets/linkedin.png';
                 <h3 class="title">Distributed Analysis Infrastructure — Elite Chess</h3>
                 <p>
                     I designed, secured, and operated the engine-analysis infrastructure for a top team at the
-                    <strong>2026 FIDE Candidates Tournament</strong> — the event that decides the challenger for the
+                    <strong>2026 FIDE Candidates Tournament</strong> — the event that decided the challenger for the
                     World Chess Championship. I owned deployment, secure remote access, an observability and control
                     dashboard, and cost-aware scaling, delivering <strong>zero unplanned downtime</strong> across months
                     of preparation and the event. The team won with a record-breaking 10/14.
@@ -143,7 +124,7 @@ import linkedinIcon from '../assets/linkedin.png';
                     as a <abbr title="Visual Studio Code">VS Code</abbr> extension with fully local inference. 
                     Local execution was a deliberate architectural choice — LLMs require unencrypted input, 
                     and running on-device eliminates the privacy trade-off entirely.</p>
-                <Image class="card-Showcase" src={exampleQuery} alt="Screenshot of a sample query" width={600} />
+                <Image class="card-Showcase" src={exampleQuery} alt="VS Code extension running a local Python coding LLM with an inline code suggestion" width={600} />
                 <a href="https://github.com/manuel-Oelmaier/LocalPythonCodingLlm" target="_blank"
                    class="project-link button-link">
                     <Image src={githubIcon} alt="GitHub Logo" class="icon" />
@@ -159,9 +140,36 @@ import linkedinIcon from '../assets/linkedin.png';
         </div>
     </section>
 
+    <section id="principles" class="fade-in">
+        <h2>Principles</h2>
+        <div class="principles-grid">
+            <div class="principle">
+                <h3>Pragmatism</h3>
+                <p>
+                    I prefer simple systems that solve the real problem. Ship, get feedback, and only add complexity
+                    when it clearly buys reliability, speed, or clarity.
+                </p>
+            </div>
+            <div class="principle">
+                <h3>Software Craftsmanship</h3>
+                <p>
+                    I care about code that other people can run, read, and change. Good architecture means clear
+                    boundaries, boring tools where they fit, and fewer surprises in production.
+                </p>
+            </div>
+            <div class="principle">
+                <h3>Lifelong Learning</h3>
+                <p>
+                    I learn by building. Side projects and research questions, from homelab automation to linear
+                    attention, are how I test ideas against reality.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <section id="code" class="fade-in">
         <h2>Code</h2>
-        <p class="section-subtitle">Recent commit activity across public repositories — last 30 days.</p>
+        <p class="section-subtitle">Public repos only — most production work is private. Last 30 days.</p>
         <div class="gh-activity" id="gh-activity">
             <p class="gh-loading">Loading…</p>
         </div>
@@ -204,7 +212,7 @@ import linkedinIcon from '../assets/linkedin.png';
     <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <div class="contact-text">
-            <p>Open to internships, working student roles, and engineering collaborations. If something I’ve built is relevant to what you’re working on — reach out.</p>
+            <p>Open to internships, working student roles, and engineering collaborations. If something I've built is relevant to what you're working on — reach out.</p>
             <a href="mailto:manuel@oelmaier.eu" class="button-link contact-button" style="font-style:normal;">Get in touch</a>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/manuel-oelmaier/" target="_blank" aria-label="LinkedIn">

@@ -1,0 +1,4 @@
+# Netcup cron — GitHub activity widget
+# Install: crontab -e (paste the line below)
+# Document root (Plesk): /manueloelmaier.de/httpdocs
+15 3 * * * GITHUB_ACTIVITY_OUT=$HOME/manueloelmaier.de/httpdocs/github-activity.json php $HOME/scripts/fetch-github.php >> $HOME/logs/github-activity.log 2>&1

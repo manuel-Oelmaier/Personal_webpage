@@ -33,6 +33,7 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { title, pubDate, tags, problem } = entry.data;
+const isMeta = tags.includes('meta');
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
 const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
@@ -56,16 +57,18 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
         </div>
         
         <div class="post-footer">
-            <div class="post-contact">
-                <p>Spotted an error, know a better approach, or have a question this post didn't cover? I read and reply to every email.</p>
-                <a
-                    href={`mailto:manuel@oelmaier.eu?subject=${encodeURIComponent(`Re: ${title}`)}`}
-                    class="button-link contact-button"
-                    style="font-style: normal;"
-                >
-                    Get in touch
-                </a>
-            </div>
+            {!isMeta && (
+                <div class="post-contact">
+                    <p>Spotted an error, know a better approach, or have a question this post didn't cover? I read and reply to every email.</p>
+                    <a
+                        href={`mailto:manuel@oelmaier.eu?subject=${encodeURIComponent(`Re: ${title}`)}`}
+                        class="button-link contact-button"
+                        style="font-style: normal;"
+                    >
+                        Get in touch
+                    </a>
+                </div>
+            )}
             <a href="/blog" class="button-link blog-button">Back to Blog Archive</a>
         </div>
     </article>

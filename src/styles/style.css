@@ -10,7 +10,7 @@
 
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
-    --normal-TextColor:      hsl(185, 49%, 50%);
+    --normal-TextColor:      hsl(185, 49%, 62%);
     --buttonBackgroundBlue:  hsl(216, 90%, 40%);
     --mono-font:             'Fira Code', 'Courier New', monospace;
 
@@ -194,6 +194,27 @@ strong {
     opacity: 0.8;
     font-weight: 300;
     max-width: 65ch;
+}
+
+.hero-hook {
+    font-size: 0.95rem;
+    margin-top: 1.25rem;
+    opacity: 0.65;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.75rem;
+}
+
+.hero-cta-primary {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 /* ── About ───────────────────────────────────────── */
@@ -555,13 +576,11 @@ footer {
 /* ── Animations ──────────────────────────────────── */
 
 .fade-in {
-    opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition: transform 0.7s ease;
 }
 
 .fade-in.visible {
-    opacity: 1;
     transform: none;
 }
 

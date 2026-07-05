@@ -13,7 +13,7 @@ export async function GET(context: APIContext): Promise<Response> {
 
   return rss({
     customData: '<language>en-us</language>',
-    description: 'Polished project write-ups — the problems they solved and why I built them this way.',
+    description: 'Problem-first write-ups on infrastructure, AI, and engineering.',
     items: blogEntries.map((entry) => ({
       content: entry.body,
       description: entry.data.description,
