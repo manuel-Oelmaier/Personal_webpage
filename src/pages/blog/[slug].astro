@@ -37,13 +37,44 @@ const isMeta = tags.includes('meta');
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
 const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
+
+const slug = entry.id.replace('.md', '');
+const site = Astro.site ?? new URL('https://manueloelmaier.de');
+const postUrl = new URL(`/blog/${slug}/`, site);
+const ogImage = `/og/blog/${slug}.jpg`;
+const publishedIso = pubDate.toISOString();
+
+const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    datePublished: publishedIso,
+    author: {
+        '@type': 'Person',
+        name: 'Manuel Oelmaier',
+        url: site.href,
+    },
+    image: new URL(ogImage, site).href,
+    mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': postUrl.href,
+    },
+    publisher: {
+        '@type': 'Person',
+        name: 'Manuel Oelmaier',
+    },
+};
 ---
 
 <BaseLayout
     title={`${title} | Manuel Oelmaier`}
     description={description}
     ogTitle={`${title} | Manuel Oelmaier`}
+    ogImage={ogImage}
     ogType="article"
+    articlePublishedTime={publishedIso}
+    jsonLd={articleSchema}
 >
     <article class="fade-in about-me-content" style="text-align: left; padding: 4rem 2rem; flex-grow: 1; max-width: 900px;">
         <h1 style="font-size: 3.5rem; color: hsl(216, 40%, 90%); margin-bottom: 0.5rem; text-align: center;">{title}</h1>

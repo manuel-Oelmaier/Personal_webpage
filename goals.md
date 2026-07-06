@@ -76,13 +76,13 @@ Rich unfurls when the URL is pasted in **Facebook, LinkedIn, X, WhatsApp, Discor
 - Absolute HTTPS URLs built from [`astro.config.mjs`](astro.config.mjs) `site`
 - `application/ld+json` `Person` schema: name, role, email, `sameAs` (LinkedIn, GitHub), TUM `alumniOf`
 
-**Image spec:** [`public/og/home.jpg`](public/og/home.jpg) — **1200×630**, JPEG. Regenerate after hero photo change:
+**Image spec:** [`public/og/home.jpg`](public/og/home.jpg) — **1200×630**, JPEG. Per-post images live at `public/og/blog/{slug}.jpg` (same dimensions). Regenerate after hero photo or post title/description changes:
 
 ```bash
-node scripts/generate-og-image.mjs
+pnpm generate:og
 ```
 
-**Automated checks:** [`e2e/og.spec.ts`](e2e/og.spec.ts) — required tags on `/`, `/blog/`, and one post; local fetch of `og:image`; min dimensions via `sharp`.
+**Automated checks:** [`e2e/og.spec.ts`](e2e/og.spec.ts) — required tags on `/`, `/blog/`, and blog posts; per-post `og:image`; `Article` JSON-LD on posts; local fetch of `og:image`; min dimensions via `sharp`.
 
 **Manual checks after deploy** (platforms cache previews — re-scrape when the image changes):
 
@@ -95,9 +95,11 @@ node scripts/generate-og-image.mjs
 
 Track separately — improve when prioritised:
 
-- **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `node scripts/generate-og-image.mjs`. Mirror the same photo on LinkedIn.
+- **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `pnpm generate:og`. Mirror the same photo on LinkedIn.
 - **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
 - **Interactive demos** on project cards — open product goal in homepage-review.md
+- **LocalPythonCodingLlm + Theo project polish** — VS Code Marketplace link, install/benchmark metrics on homepage card; refresh both repos so GitHub activity reflects product work, not stale stubs
+- **`/now` page (auto-generated)** — single “what I’m focused on this month” page derived from a source file or build step so it stays current without manual edits
 
 ---
 

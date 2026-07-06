@@ -5,6 +5,7 @@ interface Props {
 	ogTitle?: string;
 	ogImage?: string;
 	ogType?: 'website' | 'article';
+	articlePublishedTime?: string;
 	jsonLd?: Record<string, unknown>;
 }
 
@@ -16,6 +17,7 @@ const {
 	ogTitle,
 	ogImage = '/og/home.jpg',
 	ogType = 'website',
+	articlePublishedTime,
 	jsonLd,
 } = Astro.props;
 
@@ -38,6 +40,9 @@ const shareTitle = ogTitle ?? title;
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content="Manuel Oelmaier" />
+		{articlePublishedTime && (
+			<meta property="article:published_time" content={articlePublishedTime} />
+		)}
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={shareTitle} />
 		<meta name="twitter:description" content={description} />
