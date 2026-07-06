@@ -1,14 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
-
-const pages = ['/', '/blog/', '/blog/homelab-ai-platform/', '/blog/homelab-dns-filtering/'] as const;
-
-function snapshotName(path: (typeof pages)[number]): string {
-  if (path === '/') {
-    return 'home';
-  }
-  return path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
-}
+import { pageSnapshotName, publicPages, type PublicPage } from './pages';
 
 function readPngHeight(snapshotPath: string): number | undefined {
   try {
@@ -19,8 +11,8 @@ function readPngHeight(snapshotPath: string): number | undefined {
   }
 }
 
-async function stabilizeMainHeight(page: Page, testInfo: TestInfo, path: (typeof pages)[number]): Promise<void> {
-  const snapshotPath = testInfo.snapshotPath(`${snapshotName(path)}.png`);
+async function stabilizeMainHeight(page: Page, testInfo: TestInfo, path: PublicPage): Promise<void> {
+  const snapshotPath = testInfo.snapshotPath(`${pageSnapshotName(path)}.png`);
   const expectedHeight = readPngHeight(snapshotPath);
 
   if (expectedHeight === undefined) {
@@ -36,7 +28,7 @@ async function stabilizeMainHeight(page: Page, testInfo: TestInfo, path: (typeof
 }
 
 test.describe('mobile layout screenshots', () => {
-  for (const path of pages) {
+  for (const path of publicPages) {
     test(`screenshot ${path}`, async ({ page }, testInfo) => {
       await page.goto(path);
       await page.addStyleTag({
@@ -55,7 +47,7 @@ test.describe('mobile layout screenshots', () => {
 
       await stabilizeMainHeight(page, testInfo, path);
 
-      await expect(page.locator('main')).toHaveScreenshot(`${snapshotName(path)}.png`, {
+      await expect(page.locator('main')).toHaveScreenshot(`${pageSnapshotName(path)}.png`, {
         maxDiffPixelRatio: 0.05,
       });
     });

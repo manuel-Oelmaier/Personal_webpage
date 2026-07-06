@@ -46,7 +46,7 @@ Map homepage sections to what works on a strong LinkedIn profile:
 | Featured | Featured Work — flagship credibility piece |
 | Experience / Projects | Project Showcase |
 | Skills | Hero keyword line + tags on project cards |
-| Activity | Code — GitHub snapshot |
+| Activity | *(removed — see Remaining gaps in goals.md)* |
 | Open to work + Contact | Contact section |
 | Resume download | Nav CV + hero Download CV (no standalone CV section) |
 | Values / voice | Principles |
@@ -58,7 +58,7 @@ Ask throughout: *“Would this block survive a recruiter comparing it side-by-si
 ## How to review
 
 1. **Pick a persona** from the table above (default: hiring manager at a tech company).
-2. **Scroll mentally top to bottom** as on first visit — hero → featured → projects → principles → code → contact. See `goals.md` § Homepage — recruiter-optimal flow.
+2. **Scroll mentally top to bottom** as on first visit — hero → featured → projects → principles → contact. See `goals.md` § Homepage — recruiter-optimal flow.
 3. For each component: read the **Goal**, answer **Human questions** (trust, desire to hire, money), then **Review questions** (observable checks).
 4. Separate **bugs** from **positioning misses** (e.g. link works but copy undersells impact).
 5. Report failures as: `Component → question → observation → suggested fix`.
@@ -242,21 +242,9 @@ CV download must be one click from nav and hero. No standalone `#resume` section
 
 ---
 
-## Code — GitHub activity
+## Code — GitHub activity *(removed — N/A)*
 
-**Goal:** Show **ongoing momentum** — he builds in public and stays active. Secondary trust signal for technical buyers; not a substitute for Featured Work.
-
-**Human questions:**
-
-- Does he look alive and working, or dormant?
-- If activity is low, does the section embarrass or honestly reflect focus on private/production work?
-
-**Review questions:**
-
-- Section subtitle sets expectation (“last 30 days”, “for fun”)?
-- `/github-activity.json` loads or fails gracefully (no permanent “Loading…”)?
-- Empty/error states are dignified, not broken?
-- Updated date shown when data exists?
+Section removed from homepage until public GitHub activity reflects product repos, not portfolio commits alone. Widget tooling (`fetch-github.php`, `/github-activity.json`) remains for a future re-add. See `goals.md` § Remaining gaps.
 
 ---
 

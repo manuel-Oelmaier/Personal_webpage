@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { publicPages } from './pages';
 
 test.describe('core pages', () => {
   test('homepage shows profile and navigation', async ({ page }) => {
@@ -14,7 +15,7 @@ test.describe('core pages', () => {
     await page.goto('/blog/');
 
     await expect(page.getByRole('heading', { name: 'Blog', level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Read More' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(3);
   });
 
   test('blog post opens from archive', async ({ page }) => {
@@ -23,6 +24,13 @@ test.describe('core pages', () => {
 
     await expect(page.getByRole('link', { name: 'Back to Blog Archive' })).toBeVisible();
   });
+
+  for (const path of publicPages) {
+    test(`${path} loads successfully`, async ({ page }) => {
+      const response = await page.goto(path);
+      expect(response?.ok()).toBeTruthy();
+    });
+  }
 
   test('rss feed is reachable', async ({ request }) => {
     const response = await request.get('/rss.xml');

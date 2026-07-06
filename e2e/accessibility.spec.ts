@@ -1,9 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { publicPages } from './pages';
 
-const pages = ['/', '/blog/', '/blog/homelab-ai-platform/', '/blog/homelab-dns-filtering/'] as const;
-
-for (const path of pages) {
+for (const path of publicPages) {
   test(`no axe violations on ${path}`, async ({ page }) => {
     await page.goto(path);
     await page.addStyleTag({

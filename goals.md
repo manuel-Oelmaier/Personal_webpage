@@ -32,8 +32,7 @@ The homepage mirrors a strong **2026 LinkedIn profile** rendered as one scroll. 
 | 2 | **Featured Work** | Featured (lead item) | Forwardable proof for the hiring manager |
 | 3 | **Project Showcase** | Experience / projects | Keyword breadth (Python, LLM, Docker, …) |
 | 4 | **Principles** | Voice / judgment | Tech-lead depth; recruiters may skip |
-| 5 | **Code** | Activity | Secondary; framed as public-only |
-| 6 | **Contact** | Open to work + message | Conversion |
+| 5 | **Contact** | Open to work + message | Conversion |
 
 **Not on the page (by design):** standalone About block, standalone CV section — both folded into hero + nav to avoid duplicate CTAs.
 
@@ -98,8 +97,8 @@ Track separately — improve when prioritised:
 - **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `pnpm generate:og`. Mirror the same photo on LinkedIn.
 - **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
 - **Interactive demos** on project cards — open product goal in homepage-review.md
-- **LocalPythonCodingLlm + Theo project polish** — VS Code Marketplace link, install/benchmark metrics on homepage card; refresh both repos so GitHub activity reflects product work, not stale stubs
-- **`/now` page (auto-generated)** — single “what I’m focused on this month” page derived from a source file or build step so it stays current without manual edits
+- **LocalPythonCodingLlm + Theo project polish** — VS Code Marketplace link, install/benchmark metrics on homepage card; refresh both repos so public GitHub activity reflects product work, not stale stubs
+- **Code section (GitHub activity widget)** — removed for now; re-add once public repos show meaningful activity (stars/commits beyond this site), or replace with a richer GitHub profile link
 
 ---
 
