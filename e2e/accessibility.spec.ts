@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const pages = ['/', '/blog/', '/blog/homelab-ai-platform/'] as const;
+const pages = ['/', '/blog/', '/blog/homelab-ai-platform/', '/blog/homelab-dns-filtering/'] as const;
 
 for (const path of pages) {
   test(`no axe violations on ${path}`, async ({ page }) => {

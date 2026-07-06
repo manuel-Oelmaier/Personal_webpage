@@ -16,13 +16,39 @@ import githubIcon from '../assets/github-mark-white.svg';
 import linkedinIcon from '../assets/linkedin.png';
 
 const metaDescription =
-    'Software Engineer · AI / LLM · TUM. Production Python and TypeScript systems, distributed infrastructure. Open to internships and working student roles.';
+    'Software Engineer · AI / LLM · Munich · TUM. End-to-end LLM systems — research, finetuning, and production deployment. Open to engineering roles and contract work.';
+
+const site = Astro.site ?? new URL('https://manueloelmaier.de');
+const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Manuel Oelmaier',
+    url: site.href,
+    jobTitle: 'Software Engineer · AI / LLM',
+    description: metaDescription,
+    email: 'manuel@oelmaier.eu',
+    sameAs: [
+        'https://www.linkedin.com/in/manuel-oelmaier/',
+        'https://github.com/manuel-Oelmaier',
+    ],
+    address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Munich',
+        addressCountry: 'DE',
+    },
+    alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Technical University of Munich',
+    },
+    knowsAbout: ['Python', 'TypeScript', 'LLM', 'Machine Learning', 'Distributed Systems'],
+};
 ---
 
 <BaseLayout
     title="Manuel Oelmaier"
     description={metaDescription}
     ogTitle="Software Engineer · AI / LLM | Manuel Oelmaier"
+    jsonLd={personSchema}
 >
     <section id="about-me" class="hero">
         <div class="hero-inner">
@@ -31,14 +57,22 @@ const metaDescription =
             </div>
             <div class="hero-text">
                 <h1>Software Engineer · AI / LLM</h1>
+                <p class="hero-hook">
+                    I build LLM systems end to end — research, finetuning, and production deployment.
+                </p>
                 <p class="hero-proof">
-                    Designed and operated zero-downtime engine-analysis infrastructure for a top team at the
+                    Ongoing bachelor thesis at TUM on efficient LLM inference
+                    (<strong>Hidden State Informed Token Eviction</strong>), a shipped VS Code extension with local models,
+                    and production infra — including zero-downtime engine analysis at the
                     <strong>2026 FIDE Candidates Tournament</strong>.
                 </p>
-                <p class="hero-meta">TUM · Python · TypeScript</p>
-                <p class="hero-human">Competitive chess player · gym enthusiast</p>
+                <p class="hero-meta">
+                    Munich · TUM · Python · TypeScript<br />
+                    BSc completing September 2026 · MSc at TUM to follow
+                </p>
                 <div class="hero-actions">
                     <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">Download CV</a>
+                    <a href="mailto:manuel@oelmaier.eu" class="button-link hero-cta-secondary">manuel@oelmaier.eu</a>
                 </div>
             </div>
         </div>
@@ -57,9 +91,16 @@ const metaDescription =
                     of preparation and the event. The team won with a record-breaking 10/14.
                 </p>
                 <p class="confidential-note">
-                    Full technical details are confidential. Architecture and outcomes available under NDA / on request;
-                    recommendation letter from the team's Chief Trainer available.
+                    Full technical details are confidential. Architecture and outcomes available under NDA / on request.
+                    A recommendation letter from the team's Chief Trainer is available on request.
                 </p>
+                <a
+                    href="mailto:manuel@oelmaier.eu?subject=Recommendation%20letter%20request%20%E2%80%94%20FIDE%20Candidates%20infrastructure"
+                    class="project-link button-link hero-cta-secondary"
+                    style="margin-bottom: 0.5rem;"
+                >
+                    Request recommendation letter
+                </a>
                 <div class="tags">
                     <span class="tag">Linux / HPC</span>
                     <span class="tag">Distributed Systems</span>
@@ -74,29 +115,21 @@ const metaDescription =
         <h2>Project Showcase</h2>
         <div class="projects-grid">
             <article class="card">
-                <h3 class="title">Self-Hosted Homelab &amp; AI Agent Platform</h3>
+                <h3 class="title">Bachelor Thesis (ongoing) — Hidden State Informed Token Eviction</h3>
                 <p>
-                    Designed and operate a Tailscale-only personal cloud on self-managed hardware, replacing SaaS
-                    for chat, notes, calendar, and messaging. Built as modular Docker Compose stacks behind Traefik
-                    with a private CA, pull-based GitOps deployment gated on CI, and encrypted Restic backups.
+                    <strong>Ongoing</strong> research at TUM on <strong>efficient LLM inference</strong>: not every token needs exact
+                    memory — designing different <strong>levels of importance</strong> for what a model keeps verbatim versus in
+                    summary. Pluggable framework on Hugging Face Transformers; cross-backbone evaluation still in progress.
                 </p>
-                <p>
-                    The centerpiece is a <strong>LibreChat deployment with local GPU inference</strong> (Ollama) and
-                    five privacy-tiered AI agents connected via <strong>Model Context Protocol</strong> — including
-                    custom MCP servers for grocery APIs and health data. Security enforced as code: automated
-                    network-exposure audits, TLS validation, and agent privacy-policy tests run on a schedule from a
-                    dedicated monitoring node.
-                </p>
-                <a href="/blog/homelab-ai-platform" class="project-link button-link" style="margin-bottom: 0.5rem;">
-                    <span>Read the write-up</span>
+                <a href="/blog/efficient-llm-inference-thesis" class="project-link button-link" style="margin-bottom: 0.5rem;">
+                    <span>Read the research sketch</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><Image src={dockerIcon} alt="Docker logo" class="icon" /> Docker</span>
-                    <span class="tag"><Image src={traefikIcon} alt="Traefik logo" class="icon" /> Traefik</span>
-                    <span class="tag"><Image src={tailscaleIcon} alt="Tailscale logo" class="icon" /> Tailscale</span>
-                    <span class="tag"><Image src={ansibleIcon} alt="Ansible logo" class="icon" /> Ansible</span>
+                    <span class="tag"><Image src={pytorchIcon} alt="PyTorch logo" class="icon" /> PyTorch</span>
                     <span class="tag"><Image src={pythonIcon} alt="Python logo" class="icon" /> Python</span>
-                    <span class="tag">LLM / MCP</span>
+                    <span class="tag">LLM Inference</span>
+                    <span class="tag">Token Eviction</span>
+                    <span class="tag">Memory Design</span>
                 </div>
             </article>
 
@@ -116,6 +149,33 @@ const metaDescription =
                     <span class="tag"><Image src={pythonIcon} alt="python logo" class="icon" /> Python</span>
                     <span class="tag"><Image src={pytorchIcon} alt="PyTorch logo" class="icon" /> PyTorch</span>
                     <span class="tag"><Image src={typescriptIcon} alt="TypeScript logo" class="icon" /> TypeScript</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <h3 class="title">Production AI Platform — Homelab</h3>
+                <p>
+                    Designed and operate a Tailscale-only personal cloud on self-managed hardware, replacing SaaS
+                    for chat, notes, calendar, and messaging. Built as modular Docker Compose stacks behind Traefik
+                    with a private CA, pull-based GitOps deployment gated on CI, and encrypted Restic backups.
+                </p>
+                <p>
+                    The centerpiece is a <strong>LibreChat deployment with local GPU inference</strong> (Ollama) and
+                    three privacy-tiered AI agents connected via <strong>Model Context Protocol</strong> — including
+                    custom MCP servers for grocery APIs and health data. Security enforced as code: automated
+                    network-exposure audits, TLS validation, and agent privacy-policy tests run on a schedule from a
+                    dedicated monitoring node.
+                </p>
+                <a href="/blog/homelab-ai-platform" class="project-link button-link" style="margin-bottom: 0.5rem;">
+                    <span>Read the write-up</span>
+                </a>
+                <div class="tags">
+                    <span class="tag"><Image src={dockerIcon} alt="Docker logo" class="icon" /> Docker</span>
+                    <span class="tag"><Image src={traefikIcon} alt="Traefik logo" class="icon" /> Traefik</span>
+                    <span class="tag"><Image src={tailscaleIcon} alt="Tailscale logo" class="icon" /> Tailscale</span>
+                    <span class="tag"><Image src={ansibleIcon} alt="Ansible logo" class="icon" /> Ansible</span>
+                    <span class="tag"><Image src={pythonIcon} alt="Python logo" class="icon" /> Python</span>
+                    <span class="tag">LLM / MCP</span>
                 </div>
             </article>
 
@@ -143,7 +203,8 @@ const metaDescription =
                 <h3>Lifelong Learning</h3>
                 <p>
                     I learn by building. Side projects and research questions, from homelab automation to linear
-                    attention, are how I test ideas against reality.
+                    attention, are how I test ideas against reality. The same applies to tournament chess — including
+                    coaching juniors at SC Eching.
                 </p>
             </div>
         </div>
@@ -194,7 +255,7 @@ const metaDescription =
     <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <div class="contact-text">
-            <p>Open to internships, working student roles, and engineering collaborations. If something I've built is relevant to what you're working on — reach out.</p>
+            <p>Open to software engineering roles, contract work, and technical collaborations. Also open to working-student roles when the work is real engineering I can grow from. If something I've built is relevant to what you're working on — reach out.</p>
             <a href="mailto:manuel@oelmaier.eu" class="button-link contact-button" style="font-style:normal;">Get in touch</a>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/manuel-oelmaier/" target="_blank" aria-label="LinkedIn">

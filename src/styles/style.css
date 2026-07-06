@@ -199,14 +199,25 @@ strong {
 .hero h1 {
     font-size: 2.4rem;
     line-height: 1.15;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-hook {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: hsl(185, 49%, 72%);
+    margin: 0 0 0.75rem;
+    max-width: 52ch;
 }
 
 .hero-proof {
-    font-size: 1.25rem;
-    line-height: 1.5;
+    font-size: 1.15rem;
+    line-height: 1.55;
     margin: 0 0 1rem;
     max-width: 52ch;
+    color: hsl(210, 15%, 75%);
 }
 
 .hero-meta {
@@ -231,6 +242,12 @@ strong {
 .hero-cta-primary {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-cta-secondary {
+    background-color: transparent;
+    border: 1px solid var(--normal-TextColor);
+    color: var(--normal-TextColor);
 }
 
 /* ── About ───────────────────────────────────────── */
@@ -631,6 +648,7 @@ footer {
         gap: 2rem;
     }
 
+    .hero-hook,
     .hero-proof {
         max-width: none;
     }
@@ -659,6 +677,10 @@ footer {
 
     .hero h1 {
         font-size: 2rem;
+    }
+
+    .hero-hook {
+        font-size: 1.4rem;
     }
 
     .hero-proof {
@@ -695,8 +717,34 @@ footer {
         font-size: 1.2rem;
     }
 
+    .hero {
+        padding: 1.5rem 0 2rem;
+    }
+
+    #manu-img {
+        width: 9rem;
+    }
+
     .hero h1 {
         font-size: 1.75rem;
+    }
+
+    .hero-hook {
+        font-size: 1.25rem;
+    }
+
+    .hero-proof {
+        font-size: 1rem;
+        line-height: 1.45;
+        margin-bottom: 0.75rem;
+    }
+
+    .hero-meta {
+        font-size: 0.9rem;
+    }
+
+    .hero-actions {
+        margin-top: 1rem;
     }
 }
 

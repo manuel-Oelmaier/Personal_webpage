@@ -1,5 +1,13 @@
 # Site goals
 
+**Purpose:** Forwardable proof page — one link passed internally so a hiring manager gets identity, shipped work, and a reason to interview, without digging through LinkedIn.
+
+**Site vs LinkedIn:** This site is source of truth (owned URL, pitch, CV, depth). LinkedIn is a search mirror only — headline, photo, same proof line; duplicate the minimum. When they diverge, the site wins. Not dependent on a third-party platform for the pitch.
+
+**Positioning:** Software engineer with production delivery experience — ownership, measurable outcomes, fast learner. BSc/MSc at TUM is upside, not the brand. Proof over tenure claims.
+
+**No employment timeline yet:** The homepage substitutes project cards + Featured Work for a traditional Experience section. Do not invent employers. Contact copy leads with engineering and contract roles; working-student is a secondary qualifier only.
+
 This site exists to:
 
 1. **Introduce** Manuel as a software / AI engineer worth talking to
@@ -20,7 +28,7 @@ The homepage mirrors a strong **2026 LinkedIn profile** rendered as one scroll. 
 
 | # | Section | LinkedIn equivalent | Recruiter job |
 |---|---------|-------------------|---------------|
-| 1 | **Hero** (photo + role + proof + keywords + CV CTA) | Photo + Headline + top of About | Filter: role fit, TUM, stack, strongest win, download CV |
+| 1 | **Hero** (photo + role + e2e AI arc + keywords + CV CTA) | Photo + Headline + top of About | Filter: role fit, TUM, stack, download CV |
 | 2 | **Featured Work** | Featured (lead item) | Forwardable proof for the hiring manager |
 | 3 | **Project Showcase** | Experience / projects | Keyword breadth (Python, LLM, Docker, …) |
 | 4 | **Principles** | Voice / judgment | Tech-lead depth; recruiters may skip |
@@ -35,10 +43,10 @@ Must deliver in one screen:
 
 1. **Professional photo** — trust, matches LinkedIn *(see Remaining gaps — retake with Hemd; regenerate `public/og/home.jpg`)*
 2. **`<h1>` = target role** — `Software Engineer · AI / LLM` (searchable title, not display name)
-3. **One quantified proof line** — flagship Featured Work outcome (e.g. Candidates infra, zero downtime)
+3. **E2e AI arc** — hook states research → finetuning → production; proof names shipped work; episodic infra proof (e.g. Candidates) may appear as one clause, not the lead
 4. **Keyword line** — TUM · Python · TypeScript (search terms; name is in nav and page title)
 5. **Human line** — one line likability (chess, gym); optional, small
-6. **Primary action** — Download CV
+6. **Primary action** — Download CV (nav **Work** → `#featured-work` is the path to Featured Work; no duplicate hero button on desktop)
 
 Name lives in nav, page title, and PDF — not as oversized hero typography.
 
@@ -46,11 +54,11 @@ Name lives in nav, page title, and PDF — not as oversized hero typography.
 
 | Best practice | Homepage implementation |
 |---------------|-------------------------|
-| Headline = role + skills + value, not buzzwords | Hero `<h1>` + proof line |
-| First 80 characters carry search weight | Role + proof visible without scroll |
+| Headline = role + skills + value, not buzzwords | Hero `<h1>` + e2e AI hook |
+| First 80 characters carry search weight | Role + arc visible without scroll |
 | Featured section = proof shelf, strongest first | Featured Work immediately after hero |
 | Resume one click | Nav CV + hero Download CV (same PDF, two paths max) |
-| About front-loads strongest line | Proof sentence in hero, not a long About |
+| About front-loads strongest line | E2e AI arc in hero; Featured Work holds episodic flagship proof |
 | Photo present | Hero photo |
 | Open to work / clear next step | Contact section + hero CV CTA |
 | Skills as searchable signals | Stack in hero + tags on project cards |
@@ -61,11 +69,12 @@ This flow matches current recruiter guidance (headline-weighted search, featured
 
 Rich unfurls when the URL is pasted in **Facebook, LinkedIn, X, WhatsApp, Discord, Slack, Telegram, iMessage** — all read Open Graph; X also uses Twitter Card tags (same image URL).
 
-**Implemented in** [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro):
+**Implemented in** [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro) (meta tags) and [`src/pages/index.astro`](src/pages/index.astro) (JSON-LD `Person` on `/` only):
 
 - `og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:site_name`
 - `twitter:card=summary_large_image` + matching title, description, image
 - Absolute HTTPS URLs built from [`astro.config.mjs`](astro.config.mjs) `site`
+- `application/ld+json` `Person` schema: name, role, email, `sameAs` (LinkedIn, GitHub), TUM `alumniOf`
 
 **Image spec:** [`public/og/home.jpg`](public/og/home.jpg) — **1200×630**, JPEG. Regenerate after hero photo change:
 
@@ -88,7 +97,6 @@ Track separately — improve when prioritised:
 
 - **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `node scripts/generate-og-image.mjs`. Mirror the same photo on LinkedIn.
 - **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
-- **JSON-LD `Person` schema** — optional SEO for name + role + sameAs links
 - **Interactive demos** on project cards — open product goal in homepage-review.md
 
 ---
@@ -275,7 +283,6 @@ Use this document when reviewing blog-related changes (content, layout, routing,
 - Is technical depth at architecture/reasoning level unless a non-obvious walkthrough is justified?
 - Are external concepts linked instead of duplicated when good docs exist?
 - Is jargon explained when it matters for a general tech audience?
-- If the post belongs to a homepage project, is there a brief tie-in back to that project?
 - Are code blocks, lists, and headings structured for scanability (no wall of text)?
 - Do all in-body links resolve (no broken URLs)?
 

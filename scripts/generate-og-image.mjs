@@ -36,7 +36,7 @@ const textSvg = `
     .meta { fill: #8a939e; font: 400 22px sans-serif; }
   </style>
   <text x="590" y="220" class="role">Software Engineer · AI / LLM</text>
-  <text x="590" y="280" class="proof">Zero-downtime infra — 2026 FIDE Candidates</text>
+  <text x="590" y="280" class="proof">LLM systems — research to production</text>
   <text x="590" y="340" class="proof">TUM · Python · TypeScript</text>
   <text x="590" y="400" class="meta">manueloelmaier.de</text>
 </svg>`;

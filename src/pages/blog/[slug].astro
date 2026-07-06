@@ -100,6 +100,27 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
         font-size: 1.2rem;
         margin-bottom: 0.7rem;
     }
+    .post-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    .post-content th,
+    .post-content td {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        vertical-align: top;
+    }
+    .post-content th {
+        color: hsl(185, 65%, 72%);
+        font-family: var(--mono-font);
+        font-size: 0.85rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
     .post-footer {
         margin-top: 6rem;
         text-align: center;
@@ -152,5 +173,57 @@ const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
         margin-bottom: 0;
         font-size: 1.1rem;
         line-height: 1.7;
+    }
+    .post-content a.cite {
+        color: hsl(185, 65%, 72%);
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0 0.1em;
+        border-bottom: 1px solid hsl(185, 49%, 45%);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .post-content a.cite:hover {
+        color: hsl(185, 80%, 85%);
+        border-bottom-color: hsl(185, 65%, 72%);
+    }
+    .post-content .references-list {
+        list-style: none;
+        padding: 1.5rem 1.75rem;
+        margin: 2rem 0 0;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 0.8rem;
+        background: rgba(255, 255, 255, 0.03);
+        counter-reset: reference;
+    }
+    .post-content .references-list li {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1.1rem;
+        padding-left: 0.25rem;
+    }
+    .post-content .references-list li:last-child {
+        margin-bottom: 0;
+    }
+    .post-content .references-list li::before {
+        content: '[' counter(reference) ']';
+        counter-increment: reference;
+        display: inline-block;
+        min-width: 2rem;
+        color: hsl(185, 65%, 72%);
+        font-weight: 600;
+        font-family: var(--mono-font);
+    }
+    .post-content a.reference-link {
+        color: hsl(185, 75%, 80%);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
+        transition: color 0.2s ease;
+    }
+    .post-content a.reference-link:hover {
+        color: hsl(185, 90%, 92%);
+    }
+    .post-content .reference-meta {
+        color: hsl(210, 15%, 78%);
     }
 </style>

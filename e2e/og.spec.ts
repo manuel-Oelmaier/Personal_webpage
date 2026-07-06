@@ -5,6 +5,7 @@ const pages = [
   { path: '/', ogType: 'website' as const },
   { path: '/blog/', ogType: 'website' as const },
   { path: '/blog/homelab-ai-platform/', ogType: 'article' as const },
+  { path: '/blog/homelab-dns-filtering/', ogType: 'article' as const },
 ];
 
 const SITE = 'https://manueloelmaier.de';
@@ -49,3 +50,18 @@ for (const { path, ogType } of pages) {
     expect(height, 'og:image height').toBeGreaterThanOrEqual(630);
   });
 }
+
+test('JSON-LD Person schema on homepage', async ({ page }) => {
+  await page.goto('/');
+
+  const jsonLd = page.locator('script[type="application/ld+json"]');
+  await expect(jsonLd).toHaveCount(1);
+
+  const data = JSON.parse(await jsonLd.textContent() ?? '{}');
+  expect(data['@type']).toBe('Person');
+  expect(data.name).toBe('Manuel Oelmaier');
+  expect(data.jobTitle).toContain('AI');
+  expect(data.email).toBe('manuel@oelmaier.eu');
+  expect(data.sameAs).toContain('https://www.linkedin.com/in/manuel-oelmaier/');
+  expect(data.sameAs).toContain('https://github.com/manuel-Oelmaier');
+});

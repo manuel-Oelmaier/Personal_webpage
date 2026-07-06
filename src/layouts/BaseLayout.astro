@@ -5,6 +5,7 @@ interface Props {
 	ogTitle?: string;
 	ogImage?: string;
 	ogType?: 'website' | 'article';
+	jsonLd?: Record<string, unknown>;
 }
 
 import '../styles/style.css';
@@ -15,6 +16,7 @@ const {
 	ogTitle,
 	ogImage = '/og/home.jpg',
 	ogType = 'website',
+	jsonLd,
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://manueloelmaier.de');
@@ -52,6 +54,7 @@ const shareTitle = ogTitle ?? title;
 			href="/rss.xml"
 		/>
 		<meta name="apple-mobile-web-app-title" content="Manuel-Oelmaier" />
+		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 		<title>{title}</title>
 	</head>
 	<body>

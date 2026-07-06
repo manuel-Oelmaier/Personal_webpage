@@ -6,7 +6,7 @@ This document reviews the **main page** (`/`) — not the blog. Treat it like a 
 
 ## Commercial purpose
 
-The homepage exists to **sell Manuel as someone worth hiring** — as an employee, working student, or freelancer on well-paid engineering work.
+The homepage exists to **sell Manuel as someone worth hiring** — as an engineer, contractor, or collaborator on well-paid engineering work.
 
 Success looks like:
 
@@ -97,6 +97,7 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 - Is the title the person’s name (not generic “Portfolio”)?
 - Does the meta description mention TUM, AI, and production experience?
 - Are Open Graph + Twitter Card tags present (`og:image` absolute HTTPS, 1200×630)? See `goals.md` § Link previews.
+- On `/`, is JSON-LD `Person` schema present with name, jobTitle, email, and sameAs links?
 
 ### Site footer
 
@@ -114,11 +115,11 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 
 ## Hero
 
-**Goal:** In one screen, answer *“What does this person do, what did they ship, and can I download their CV?”* — LinkedIn photo + headline + featured hook + next step.
+**Goal:** In one screen, answer *“What does this person do, what did they ship, and can I download their CV?”* — LinkedIn photo + headline + e2e AI arc + next step.
 
 **Human questions:**
 
-- Within 5 seconds, do I know their role, strongest proof, and school/stack?
+- Within 5 seconds, do I know their role, career arc (research → production), and school/stack?
 - Does the proof line make me want to scroll or forward the CV?
 - Can I download the CV without hunting?
 
@@ -127,9 +128,10 @@ Cross-check blog positioning only where the homepage links into it (`Read the wr
 - Is `<h1>` the target role (e.g. Software Engineer · AI / LLM), not oversized display name?
 - Is the name present in nav, keyword line, and page title?
 - Is there a professional portrait with appropriate alt text?
-- Does one proof sentence state a concrete outcome (Featured Work distillation)?
+- Does the hook lead with the **e2e AI arc** (research, finetuning, production)?
+- Does the proof sentence name concrete shipped work, with episodic infra proof (e.g. Candidates) as a clause — not the headline?
 - Does a keyword line include TUM and stack (Python, TypeScript)?
-- Are Download CV and Featured work actions visible above the fold on desktop?
+- Is Download CV visible above the fold? Featured Work is immediately below on desktop — nav **Work** covers tiny screens; no duplicate hero CTA required.
 - Readable on mobile — photo and text stack cleanly?
 
 ---
@@ -264,13 +266,13 @@ CV download must be one click from nav and hero. No standalone `#resume` section
 
 **Human questions:**
 
-- Do I know exactly what to offer him (internship, working student, collaboration)?
+- Do I know exactly what to offer him (engineering role, contract, collaboration)?
 - Is reaching out easy and professional?
 - Does LinkedIn/GitHub presence reinforce the same person as the page?
 
 **Review questions:**
 
-- Copy states openness to internships, working student roles, and collaborations?
+- Copy states openness to engineering roles, contract work, and collaborations — working-student only as a secondary, substantive qualifier?
 - Invites relevance-based outreach (“if something I’ve built is relevant”)?
 - Mailto `manuel@oelmaier.eu` works?
 - LinkedIn and GitHub links correct, open in new tab, accessible labels?

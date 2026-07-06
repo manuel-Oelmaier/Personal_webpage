@@ -24,9 +24,14 @@ Suggested body outline:
 
 1. **What I tried first** — alternatives considered, why they fell short
 2. **Approach** — high-level technical explanation (architecture, how it works)
-3. **Trade-offs** — honest comparison of options
-4. **Links** — curated resources to replicate; link instead of rewriting existing docs
-5. **Homepage tie-in** (if part of a series) — one line linking back to the main project
+3. **Trade-offs** — honest comparison of options (optional)
+4. **References** — numbered, clickable sources; cite claims in the text
+
+## Finished work only
+
+- **Hard rule:** only show work that is built and running today
+- Do not promise future features — no "planned", "in progress", or "coming soon"
+- If it is not done, it does not appear in the post
 
 ## Depth
 
