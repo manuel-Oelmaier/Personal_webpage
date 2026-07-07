@@ -15,7 +15,7 @@
     "test": "pnpm check && pnpm build && pnpm test:e2e && pnpm test:links",
     "test:e2e": "playwright test",
     "generate:og": "node scripts/generate-og-image.mjs",
-    "test:links": "linkinator ./dist --recurse --silent --skip www.linkedin.com"
+    "test:links": "bash scripts/check-links.sh"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
