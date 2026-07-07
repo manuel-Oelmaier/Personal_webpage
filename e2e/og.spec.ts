@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const pages = [
   { path: '/', ogType: 'website' as const, ogImagePath: '/og/home.jpg' },
@@ -19,15 +19,16 @@ const pages = [
     ogType: 'article' as const,
     ogImagePath: '/og/blog/efficient-llm-inference-thesis.jpg',
   },
-];
+] as const;
 
 const SITE = 'https://manueloelmaier.de';
 
-async function metaContent(
-  page: import('@playwright/test').Page,
-  selector: string,
-): Promise<string | null> {
+async function metaContent(page: Page, selector: string): Promise<string | null> {
   return page.locator(selector).getAttribute('content');
+}
+
+function parseJsonLd(raw: string | null): unknown {
+  return JSON.parse(raw ?? '{}') as unknown;
 }
 
 for (const { path, ogType, ogImagePath } of pages) {
@@ -50,7 +51,11 @@ for (const { path, ogType, ogImagePath } of pages) {
     expect(twitterCard).toBe('summary_large_image');
     expect(twitterImage).toBe(ogImage);
 
-    const imagePath = new URL(ogImage!).pathname;
+    if (!ogImage) {
+      throw new Error('og:image missing after assertion');
+    }
+
+    const imagePath = new URL(ogImage).pathname;
     const imageResponse = await request.get(imagePath);
     expect(imageResponse.ok(), `og:image fetch ${imagePath}`).toBeTruthy();
     expect(imageResponse.headers()['content-type']).toMatch(/image\//);
@@ -68,13 +73,16 @@ test('JSON-LD Person schema on homepage', async ({ page }) => {
   const jsonLd = page.locator('script[type="application/ld+json"]');
   await expect(jsonLd).toHaveCount(1);
 
-  const data = JSON.parse(await jsonLd.textContent() ?? '{}');
-  expect(data['@type']).toBe('Person');
-  expect(data.name).toBe('Manuel Oelmaier');
-  expect(data.jobTitle).toContain('AI');
-  expect(data.email).toBe('manuel@oelmaier.eu');
-  expect(data.sameAs).toContain('https://www.linkedin.com/in/manuel-oelmaier/');
-  expect(data.sameAs).toContain('https://github.com/manuel-Oelmaier');
+  expect(parseJsonLd(await jsonLd.textContent())).toMatchObject({
+    '@type': 'Person',
+    name: 'Manuel Oelmaier',
+    jobTitle: expect.stringContaining('AI'),
+    email: 'manuel@oelmaier.eu',
+    sameAs: expect.arrayContaining([
+      'https://www.linkedin.com/in/manuel-oelmaier/',
+      'https://github.com/manuel-Oelmaier',
+    ]),
+  });
 });
 
 test('JSON-LD Article schema on blog posts', async ({ page }) => {
@@ -83,15 +91,20 @@ test('JSON-LD Article schema on blog posts', async ({ page }) => {
   const jsonLd = page.locator('script[type="application/ld+json"]');
   await expect(jsonLd).toHaveCount(1);
 
-  const data = JSON.parse(await jsonLd.textContent() ?? '{}');
-  expect(data['@type']).toBe('Article');
-  expect(data.headline).toBe('A production AI homelab — tiered context and exposure');
-  expect(data.description).toBeTruthy();
-  expect(data.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}T/);
-  expect(data.author?.['@type']).toBe('Person');
-  expect(data.author?.name).toBe('Manuel Oelmaier');
-  expect(data.image).toBe(`${SITE}/og/blog/homelab-ai-platform.jpg`);
-  expect(data.mainEntityOfPage?.['@id']).toBe(`${SITE}/blog/homelab-ai-platform/`);
+  expect(parseJsonLd(await jsonLd.textContent())).toMatchObject({
+    '@type': 'Article',
+    headline: 'A production AI homelab — tiered context and exposure',
+    description: expect.any(String),
+    datePublished: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
+    author: {
+      '@type': 'Person',
+      name: 'Manuel Oelmaier',
+    },
+    image: `${SITE}/og/blog/homelab-ai-platform.jpg`,
+    mainEntityOfPage: {
+      '@id': `${SITE}/blog/homelab-ai-platform/`,
+    },
+  });
 });
 
 test('article:published_time on blog posts', async ({ page }) => {

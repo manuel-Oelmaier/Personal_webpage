@@ -9,7 +9,7 @@ const tsconfigRootDir = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'node_modules/**', '.astro/**'],
+    ignores: ['dist/**', 'node_modules/**', '.astro/**', 'scripts/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
