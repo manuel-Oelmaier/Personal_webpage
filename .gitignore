@@ -20,3 +20,6 @@ dist/
 /playwright-report/
 /test-results/
 /blob-report/
+
+# Local-only hero photo experiments (not for deploy)
+/local/hero-photo-trials/

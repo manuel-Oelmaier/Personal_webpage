@@ -40,7 +40,7 @@ The homepage mirrors a strong **2026 LinkedIn profile** rendered as one scroll. 
 
 Must deliver in one screen:
 
-1. **Professional photo** — trust, matches LinkedIn *(see Remaining gaps — retake with Hemd; regenerate `public/og/home.jpg`)*
+1. **Professional photo** — trust, matches LinkedIn
 2. **`<h1>` = target role** — `Software Engineer · AI / LLM` (searchable title, not display name)
 3. **E2e AI arc** — hook states research → finetuning → production; proof names shipped work; episodic infra proof (e.g. Candidates) may appear as one clause, not the lead
 4. **Keyword line** — TUM · Python · TypeScript (search terms; name is in nav and page title)
@@ -94,7 +94,6 @@ pnpm generate:og
 
 Track separately — improve when prioritised:
 
-- **Professional hero photo** — retake with Hemd (button-down), plain background, head-and-shoulders crop; replace [`src/assets/manu.jpg`](src/assets/manu.jpg), then run `pnpm generate:og`. Mirror the same photo on LinkedIn.
 - **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
 - **Interactive demos** on project cards — open product goal in homepage-review.md
 - **LocalPythonCodingLlm + Theo project polish** — VS Code Marketplace link, install/benchmark metrics on homepage card; refresh both repos so public GitHub activity reflects product work, not stale stubs

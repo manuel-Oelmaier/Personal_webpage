@@ -184,10 +184,12 @@ strong {
 }
 
 .hero-photo #manu-img {
+    display: block;
     border-radius: 50%;
     padding: 2rem;
     width: 18rem;
     height: auto;
+    object-fit: cover;
     box-sizing: border-box;
     background: hsl(259, 12%, 11%);
     border: 1px solid rgba(255, 255, 255, 0.1);

@@ -37,4 +37,5 @@ pnpm exec linkinator "http://127.0.0.1:${PORT}" --recurse --silent \
   --url-rewrite-search 'https://manueloelmaier.de' \
   --url-rewrite-replace "http://127.0.0.1:${PORT}" \
   --skip www.linkedin.com \
-  --skip www.reddit.com
+  --skip www.reddit.com \
+  --skip apps.apple.com

@@ -1,16 +1,16 @@
 import { expect, test } from '@playwright/test';
 import { pageSnapshotName, publicPages } from './pages';
 
-/** Normalize rendering between local dev and Linux CI (system font stacks differ). */
+/** Pin fonts so Arch dev machines and Ubuntu CI render the same metrics. */
 const STABILIZE_STYLES = `
   *, *::before, *::after {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
     transition-duration: 0s !important;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+    font-family: 'Noto Sans', 'Liberation Sans', sans-serif !important;
   }
   code, pre, .tag, .post-date, .post-meta, abbr {
-    font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace !important;
+    font-family: 'Liberation Mono', 'Courier New', monospace !important;
   }
   .fade-in {
     opacity: 1 !important;
