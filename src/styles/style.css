@@ -11,7 +11,6 @@
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
     --normal-TextColor:      hsl(185, 49%, 62%);
-    --buttonBackgroundBlue:  hsl(216, 90%, 40%);
     --mono-font:             'Fira Code', 'Courier New', monospace;
 
     /* layout rhythm */
@@ -231,12 +230,6 @@ strong {
     margin: 0 0 0.5rem;
 }
 
-.hero-human {
-    font-size: 0.95rem;
-    opacity: 0.65;
-    margin: 0;
-}
-
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -255,48 +248,7 @@ strong {
     color: var(--normal-TextColor);
 }
 
-/* ── About ───────────────────────────────────────── */
-
-.about-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4rem;
-    margin: 0 auto;
-    text-align: left;
-}
-
-.about-image {
-    flex-shrink: 0;
-}
-
-.about-content {
-    flex-grow: 1;
-}
-
-.about-list {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0;
-}
-
-.about-list li {
-    margin-bottom: 0.8rem;
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.about-list li::before {
-    content: "›";
-    position: absolute;
-    left: 0;
-    color: var(--normal-TextColor);
-    font-weight: bold;
-}
-
-.about-me-links {
-    margin-top: 1.5rem;
-}
+/* ── About (blog) ────────────────────────────────── */
 
 .about-me-content {
     text-align: center;
@@ -337,17 +289,6 @@ strong {
 .principle p {
     font-size: 1.1rem;
     line-height: 1.6;
-}
-
-/* ── Resume ──────────────────────────────────────── */
-
-#resume p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.resume-button {
-    padding: 0.7rem 1.8rem;
 }
 
 /* ── Projects / Cards ────────────────────────────── */
