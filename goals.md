@@ -94,7 +94,7 @@ pnpm generate:og
 
 Track separately — improve when prioritised:
 
-- **LinkedIn profile parity** — headline, featured items, and CV on LinkedIn should echo the same proof line and PDF (manual, off-site)
+- ~~**LinkedIn profile parity**~~ — done (headline, About, Featured, CV, Projects, skills, Open to Work on web; PDF export is not a full profile dump)
 - **Interactive demos** on project cards — open product goal in homepage-review.md
 - **LocalPythonCodingLlm + Theo project polish** — VS Code Marketplace link, install/benchmark metrics on homepage card; refresh both repos so public GitHub activity reflects product work, not stale stubs
 - **Code section (GitHub activity widget)** — removed for now; re-add once public repos show meaningful activity (stars/commits beyond this site), or replace with a richer GitHub profile link
