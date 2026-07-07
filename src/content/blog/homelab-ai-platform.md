@@ -98,4 +98,4 @@ I did not write a separate guide for that — better ones already exist:
 
 - [r/homelab wiki](https://www.reddit.com/r/homelab/wiki/index) — getting started, hardware notes, and community-maintained ops patterns
 - [Restic backup documentation](https://restic.readthedocs.io/en/stable/040_backup.html) — encrypted, deduplicated backups with a clear restore path (what I use for stack data and secrets)
-- [3-2-1 backup rule](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) — the baseline retention model worth designing around before you trust the box with journal exports
+- [3-2-1 backup rule](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) — the baseline retention model worth designing around before you trust the box your data
