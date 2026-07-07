@@ -13,10 +13,18 @@
     --normal-TextColor:      hsl(185, 49%, 62%);
     --mono-font:             'Fira Code', 'Courier New', monospace;
 
+    /* typography */
+    --text-muted:            hsl(210, 15%, 72%);
+    --text-accent:           hsl(185, 49%, 56%);
+    --text-prose:            1.2rem;
+    --line-height-prose:     1.8;
+
     /* layout rhythm */
     --gutter:                clamp(1.5rem, 6vw, 4rem);
     --section-gap:           6rem;
     --content-max:           1300px;
+    --content-narrow:        900px;
+    --content-intro:         640px;
 }
 
 html, body {
@@ -119,6 +127,11 @@ h3 {
 a {
     color: var(--normal-TextColor);
     text-decoration: none;
+}
+
+.card p a,
+.blog-intro a,
+.post-content p a {
     font-style: italic;
 }
 
@@ -144,6 +157,18 @@ strong {
 
 .blog-button {
     padding: 0.6rem 1.4rem;
+}
+
+.button-outline,
+.hero-cta-secondary {
+    background-color: transparent;
+    border: 1px solid var(--normal-TextColor);
+    color: var(--normal-TextColor);
+}
+
+.card-action {
+    width: fit-content;
+    margin: 0;
 }
 
 .button-link:hover {
@@ -185,7 +210,7 @@ strong {
 .hero-photo #manu-img {
     display: block;
     border-radius: 50%;
-    padding: 0.35rem;
+    padding: 2rem;
     width: 18rem;
     height: auto;
     object-fit: cover;
@@ -242,13 +267,255 @@ strong {
     border-color: rgba(255, 255, 255, 0.35);
 }
 
-.hero-cta-secondary {
-    background-color: transparent;
-    border: 1px solid var(--normal-TextColor);
-    color: var(--normal-TextColor);
+/* ── Page header (blog archive, etc.) ────────────── */
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 20vh;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-/* ── About (blog) ────────────────────────────────── */
+.page-header h1 {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Blog ────────────────────────────────────────── */
+
+.blog-body {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: var(--line-height-prose);
+}
+
+.blog-intro {
+    max-width: var(--content-intro);
+    margin: 0 auto 2.5rem;
+    text-align: center;
+    color: var(--text-accent);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.blog-posts {
+    text-align: left;
+    margin-top: 2rem;
+}
+
+.blog-card-date {
+    display: block;
+    font-size: 0.9rem;
+    color: hsl(210, 15%, 65%);
+    margin-bottom: 0.75rem;
+}
+
+.blog-archive-footer {
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+    text-align: center;
+}
+
+.blog-post {
+    text-align: left;
+    padding: 4rem 2rem;
+    flex-grow: 1;
+    max-width: var(--content-narrow);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.post-title {
+    font-size: 3.5rem;
+    color: hsl(216, 40%, 90%);
+    margin-bottom: 0.5rem;
+    text-align: center;
+    line-height: 1.15;
+}
+
+.post-meta {
+    text-align: center;
+    color: hsl(210, 15%, 82%);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.post-divider {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2rem 0 3rem 0;
+}
+
+.post-problem {
+    border-left: 3px solid var(--normal-TextColor);
+    padding: 1.2rem 1.6rem;
+    margin: 0 0 3rem 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0 0.8rem 0.8rem 0;
+}
+
+.post-problem-label {
+    display: block;
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(185, 49%, 70%);
+    margin-bottom: 0.6rem;
+}
+
+.post-problem p {
+    font-style: italic;
+    color: hsl(185, 49%, 70%);
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.post-content h2 {
+    font-size: 2.2rem;
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.post-content p {
+    font-size: var(--text-prose);
+    line-height: var(--line-height-prose);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.post-content ul {
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.post-content li {
+    font-size: var(--text-prose);
+    margin-bottom: 0.7rem;
+}
+
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.post-content th,
+.post-content td {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.post-content th {
+    color: hsl(185, 65%, 72%);
+    font-family: var(--mono-font);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.post-content a.cite {
+    font-style: normal;
+    color: hsl(185, 65%, 72%);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0 0.1em;
+    border-bottom: 1px solid hsl(185, 49%, 45%);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.post-content a.cite:hover {
+    color: hsl(185, 80%, 85%);
+    border-bottom-color: hsl(185, 65%, 72%);
+}
+
+.post-content .references-list {
+    list-style: none;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    counter-reset: reference;
+}
+
+.post-content .references-list li {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.1rem;
+    padding-left: 0.25rem;
+}
+
+.post-content .references-list li:last-child {
+    margin-bottom: 0;
+}
+
+.post-content .references-list li::before {
+    content: '[' counter(reference) ']';
+    counter-increment: reference;
+    display: inline-block;
+    min-width: 2rem;
+    color: hsl(185, 65%, 72%);
+    font-weight: 600;
+    font-family: var(--mono-font);
+}
+
+.post-content a.reference-link {
+    font-style: normal;
+    color: hsl(185, 75%, 80%);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    transition: color 0.2s ease;
+}
+
+.post-content a.reference-link:hover {
+    color: hsl(185, 90%, 92%);
+}
+
+.post-content .reference-meta {
+    color: hsl(210, 15%, 78%);
+}
+
+.post-footer {
+    margin-top: 6rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.post-contact {
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.post-contact p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-accent);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+/* ── About (legacy alias) ────────────────────────── */
 
 .about-me-content {
     text-align: center;
@@ -337,7 +604,7 @@ strong {
     font-size: 0.9rem;
     opacity: 0.75;
     font-style: italic;
-    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    border-left: 3px solid rgba(255, 255, 255, 0.2);
     padding-left: 1rem;
 }
 
@@ -406,7 +673,7 @@ strong {
 
 .tags {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     margin-top: 1.5rem;
 }
@@ -415,7 +682,7 @@ strong {
 
 .section-subtitle {
     font-size: 1rem;
-    color: hsl(210, 15%, 72%);
+    color: var(--text-muted);
     font-family: var(--mono-font);
     margin-bottom: 2rem;
     margin-top: -0.5rem;
@@ -440,7 +707,7 @@ strong {
 }
 
 .contact-text p {
-    color: hsl(185, 49%, 56%);
+    color: var(--text-accent);
     font-size: 1.1rem;
     line-height: 1.7;
 }
@@ -499,6 +766,13 @@ footer {
 
 .fade-in.visible {
     transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-in {
+        transform: none;
+        transition: none;
+    }
 }
 
 /* ── Utilities ───────────────────────────────────── */
@@ -571,8 +845,16 @@ footer {
         font-size: 1.1rem;
     }
 
-    .principle, .about-me-content {
+    .principle, .about-me-content, .blog-body {
         padding: 0 0.5rem;
+    }
+
+    .post-title {
+        font-size: 2rem;
+    }
+
+    .blog-post {
+        padding: 2rem 1rem;
     }
 
     .contact-text {
@@ -607,7 +889,7 @@ footer {
 
     .hero-photo #manu-img {
         width: 9rem;
-        padding: 0.25rem;
+        padding: 1.25rem;
     }
 
     .hero h1 {

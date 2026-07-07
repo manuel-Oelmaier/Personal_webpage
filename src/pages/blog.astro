@@ -20,20 +20,20 @@ const allPosts = (await getCollection('blog')).sort(
     description="Problem-first engineering notes on infrastructure, homelab, and AI — from Manuel Oelmaier."
     ogTitle="Blog | Manuel Oelmaier"
 >
-    <section class="fade-in">
-        <div class="hero-text" style="min-height: 20vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <h1 id="name">Blog</h1>
-            <p class="hero-tagline">Problem-first write-ups on infrastructure, AI, and engineering.</p>
-        </div>
+    <section class="fade-in blog-archive">
+        <header class="page-header">
+            <h1>Blog</h1>
+            <p class="section-subtitle">Problem-first write-ups on infrastructure, AI, and engineering.</p>
+        </header>
 
-        <div class="about-me-content">
+        <div class="blog-body">
             <p class="blog-intro">
                 Each post covers one problem — what I tried, how I solved it, and links to go further.
                 Full project showcases live on the <a href="/">homepage</a>.
                 Spotted an error or have a better idea? Email me from any post.
             </p>
             <h2 class="visually-hidden">Posts</h2>
-            <div class="projects-grid" style="text-align: left; margin-top: 2rem;">
+            <div class="projects-grid blog-posts">
                 {allPosts.map((entry) => (
                     <article class="card">
                         <time class="post-date blog-card-date" datetime={entry.data.pubDate.toISOString()}>
@@ -41,33 +41,16 @@ const allPosts = (await getCollection('blog')).sort(
                         </time>
                         <h3 class="title">{entry.data.title}</h3>
                         <p>{entry.data.description}</p>
-                        <a href={`/blog/${entry.id.replace('.md', '')}`} class="button-link blog-button" style="font-style: normal; width: fit-content; margin: 0; padding: 0.6rem 1.5rem;">
+                        <a href={`/blog/${entry.id.replace('.md', '')}`} class="button-link blog-button card-action">
                             Read More
                         </a>
                     </article>
                 ))}
             </div>
-            
-            <div style="margin-top: 4rem; margin-bottom: 6rem; text-align: center;">
-                <a href="/" class="button-link blog-button" style="background-color: transparent; border: 1px solid var(--normal-TextColor); color: var(--normal-TextColor);">Back to Home</a>
+
+            <div class="blog-archive-footer">
+                <a href="/" class="button-link blog-button button-outline">Back to Home</a>
             </div>
         </div>
     </section>
 </BaseLayout>
-
-<style>
-    .blog-card-date {
-        display: block;
-        font-size: 0.9rem;
-        color: hsl(210, 15%, 65%);
-        margin-bottom: 0.75rem;
-    }
-    .blog-intro {
-        max-width: 640px;
-        margin: 0 auto 2.5rem;
-        text-align: center;
-        color: hsl(185, 49%, 56%);
-        font-size: 1.05rem;
-        line-height: 1.7;
-    }
-</style>

@@ -9,6 +9,12 @@ interface Props {
 	jsonLd?: Record<string, unknown>;
 }
 
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/fira-code/400.css';
+import '@fontsource/fira-code/600.css';
 import '../styles/style.css';
 
 const {
@@ -47,12 +53,6 @@ const shareTitle = ogTitle ?? title;
 		<meta name="twitter:title" content={shareTitle} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageURL} />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&family=Poppins:wght@600&display=swap"
-			rel="stylesheet"
-		/>
 		<link rel="icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicons/favicon-16x16.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicons/favicon-32x32.png" />
