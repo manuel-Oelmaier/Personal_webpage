@@ -38,4 +38,5 @@ pnpm exec linkinator "http://127.0.0.1:${PORT}" --recurse --silent \
   --url-rewrite-replace "http://127.0.0.1:${PORT}" \
   --skip www.linkedin.com \
   --skip www.reddit.com \
-  --skip apps.apple.com
+  --skip apps.apple.com \
+  --skip docs.vllm.ai
