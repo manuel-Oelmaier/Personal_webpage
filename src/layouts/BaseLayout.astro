@@ -7,14 +7,16 @@ interface Props {
 	ogType?: 'website' | 'article';
 	articlePublishedTime?: string;
 	jsonLd?: Record<string, unknown>;
+	preloadImages?: string[];
 }
 
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/600.css';
-import '@fontsource/poppins/600.css';
-import '@fontsource/fira-code/400.css';
-import '@fontsource/fira-code/600.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/fira-code/latin-400.css';
+import interLatin400 from '@fontsource/inter/files/inter-latin-400-normal.woff2';
+import poppinsLatin600 from '@fontsource/poppins/files/poppins-latin-600-normal.woff2';
 import '../styles/style.css';
 
 const {
@@ -25,6 +27,7 @@ const {
 	ogType = 'website',
 	articlePublishedTime,
 	jsonLd,
+	preloadImages = [],
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://manueloelmaier.de');
@@ -65,6 +68,11 @@ const shareTitle = ogTitle ?? title;
 			href="/rss.xml"
 		/>
 		<meta name="apple-mobile-web-app-title" content="Manuel-Oelmaier" />
+		<link rel="preload" href={interLatin400} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={poppinsLatin600} as="font" type="font/woff2" crossorigin />
+		{preloadImages.map((src) => (
+			<link rel="preload" as="image" href={src} fetchpriority="high" />
+		))}
 		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 		<title>{title}</title>
 	</head>

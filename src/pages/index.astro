@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
+import Tag from '../components/Tag.astro';
+import { getImage, Image } from 'astro:assets';
 
 import manuImg from '../assets/manu.jpg';
 import exampleQuery from '../assets/Projects/exampleQuery.png';
@@ -42,6 +43,8 @@ const personSchema = {
     },
     knowsAbout: ['Python', 'TypeScript', 'LLM', 'Machine Learning', 'Distributed Systems'],
 };
+
+const heroImage = await getImage({ src: manuImg, width: 480, height: 480, format: 'webp' });
 ---
 
 <BaseLayout
@@ -49,11 +52,20 @@ const personSchema = {
     description={metaDescription}
     ogTitle="Software Engineer · AI / LLM | Manuel Oelmaier"
     jsonLd={personSchema}
+    preloadImages={[heroImage.src]}
 >
     <section id="about-me" class="hero">
         <div class="hero-inner">
             <div class="hero-photo">
-                <Image id="manu-img" src={manuImg} alt="Profile picture of Manuel Oelmaier" width={480} height={480} />
+                <Image
+                    id="manu-img"
+                    src={manuImg}
+                    alt="Profile picture of Manuel Oelmaier"
+                    width={480}
+                    height={480}
+                    loading="eager"
+                    fetchpriority="high"
+                />
             </div>
             <div class="hero-text">
                 <h1>Software Engineer · AI / LLM</h1>
@@ -71,7 +83,12 @@ const personSchema = {
                     BSc completing September 2026 · MSc at TUM to follow
                 </p>
                 <div class="hero-actions">
-                    <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">Download CV</a>
+                    <a href="/cv_manuel_Oelmaier_EN.pdf" target="_blank" class="button-link hero-cta-primary">
+                        <svg class="hero-cta-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2 5 5h-5V4zM8 12h8v2H8v-2zm0 4h8v2H8v-2z"/>
+                        </svg>
+                        Download CV
+                    </a>
                     <a href="mailto:manuel@oelmaier.eu" class="button-link hero-cta-secondary">manuel@oelmaier.eu</a>
                 </div>
             </div>
@@ -97,16 +114,16 @@ const personSchema = {
                 </p>
                 <a
                     href="mailto:manuel@oelmaier.eu?subject=Recommendation%20letter%20request%20%E2%80%94%20FIDE%20Candidates%20infrastructure"
-                    class="project-link button-link hero-cta-secondary"
+                    class="project-link button-link"
                     style="margin-bottom: 0.5rem;"
                 >
                     Request recommendation letter
                 </a>
                 <div class="tags">
-                    <span class="tag">Linux / HPC</span>
-                    <span class="tag">Distributed Systems</span>
-                    <span class="tag">Security</span>
-                    <span class="tag">Observability</span>
+                    <Tag label="Linux / HPC" />
+                    <Tag label="Distributed Systems" />
+                    <Tag label="Security" />
+                    <Tag label="Observability" />
                 </div>
             </article>
         </div>
@@ -123,15 +140,16 @@ const personSchema = {
                     memory — designing different <strong>levels of importance</strong> for what a model keeps verbatim versus in
                     summary. Pluggable framework on Hugging Face Transformers; cross-backbone evaluation still in progress.
                 </p>
-                <a href="/blog/efficient-llm-inference-thesis" class="project-link button-link" style="margin-bottom: 0.5rem;">
+                <a href="/blog/efficient-llm-inference-thesis" class="project-link project-link-sketch button-link" style="margin-bottom: 0.5rem;">
+                    <svg class="project-link-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2 5 5h-5V4zM8 12h8v2H8v-2zm0 4h5v2H8v-2z"/>
+                    </svg>
                     <span>Read the research sketch</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><Image src={pytorchIcon} alt="PyTorch logo" class="icon" /> PyTorch</span>
-                    <span class="tag"><Image src={pythonIcon} alt="Python logo" class="icon" /> Python</span>
-                    <span class="tag">LLM Inference</span>
-                    <span class="tag">Token Eviction</span>
-                    <span class="tag">Memory Design</span>
+                    <Tag label="PyTorch" brandIcon={pytorchIcon} />
+                    <Tag label="Python" brandIcon={pythonIcon} />
+                    <Tag label="LLM" />
                 </div>
             </article>
 
@@ -143,14 +161,14 @@ const personSchema = {
                     and running on-device eliminates the privacy trade-off entirely.</p>
                 <Image class="card-Showcase" src={exampleQuery} alt="VS Code extension running a local Python coding LLM with an inline code suggestion" width={600} />
                 <a href="https://github.com/manuel-Oelmaier/LocalPythonCodingLlm" target="_blank"
-                   class="project-link button-link">
+                   class="project-link project-link-github button-link">
                     <Image src={githubIcon} alt="GitHub Logo" class="icon" />
                     <span>View on GitHub</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><Image src={pythonIcon} alt="python logo" class="icon" /> Python</span>
-                    <span class="tag"><Image src={pytorchIcon} alt="PyTorch logo" class="icon" /> PyTorch</span>
-                    <span class="tag"><Image src={typescriptIcon} alt="TypeScript logo" class="icon" /> TypeScript</span>
+                    <Tag label="Python" brandIcon={pythonIcon} />
+                    <Tag label="PyTorch" brandIcon={pytorchIcon} />
+                    <Tag label="TypeScript" brandIcon={typescriptIcon} />
                 </div>
             </article>
 
@@ -168,16 +186,19 @@ const personSchema = {
                     network-exposure audits, TLS validation, and agent privacy-policy tests run on a schedule from a
                     dedicated monitoring node.
                 </p>
-                <a href="/blog/homelab-ai-platform" class="project-link button-link" style="margin-bottom: 0.5rem;">
+                <a href="/blog/homelab-ai-platform" class="project-link project-link-sketch button-link" style="margin-bottom: 0.5rem;">
+                    <svg class="project-link-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2 5 5h-5V4zM8 12h8v2H8v-2zm0 4h5v2H8v-2z"/>
+                    </svg>
                     <span>Read the write-up</span>
                 </a>
                 <div class="tags">
-                    <span class="tag"><Image src={dockerIcon} alt="Docker logo" class="icon" /> Docker</span>
-                    <span class="tag"><Image src={traefikIcon} alt="Traefik logo" class="icon" /> Traefik</span>
-                    <span class="tag"><Image src={tailscaleIcon} alt="Tailscale logo" class="icon" /> Tailscale</span>
-                    <span class="tag"><Image src={ansibleIcon} alt="Ansible logo" class="icon" /> Ansible</span>
-                    <span class="tag"><Image src={pythonIcon} alt="Python logo" class="icon" /> Python</span>
-                    <span class="tag">LLM / MCP</span>
+                    <Tag label="Docker" brandIcon={dockerIcon} />
+                    <Tag label="Traefik" brandIcon={traefikIcon} />
+                    <Tag label="Tailscale" brandIcon={tailscaleIcon} />
+                    <Tag label="Ansible" brandIcon={ansibleIcon} />
+                    <Tag label="Python" brandIcon={pythonIcon} />
+                    <Tag label="MCP" />
                 </div>
             </article>
 

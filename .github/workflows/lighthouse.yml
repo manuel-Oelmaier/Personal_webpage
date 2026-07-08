@@ -38,7 +38,6 @@ jobs:
           configPath: './lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
-          staticDistDir: './dist'
           runs: 5
 
       - name: Upload Pages Artifact

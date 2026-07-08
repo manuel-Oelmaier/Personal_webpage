@@ -263,8 +263,29 @@ strong {
 }
 
 .hero-cta-primary {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: hsla(185, 49%, 50%, 0.22);
+    border-color: hsla(185, 49%, 62%, 0.75);
+    color: hsl(185, 55%, 90%);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.65rem;
+    box-shadow: 0 0 0 1px hsla(185, 49%, 50%, 0.15), 0 4px 18px hsla(185, 49%, 40%, 0.18);
+}
+
+.hero-cta-primary:hover {
+    background: hsla(185, 49%, 50%, 0.34);
+    border-color: var(--normal-TextColor);
+    color: white;
+    box-shadow: 0 0 0 1px hsla(185, 49%, 62%, 0.35), 0 6px 22px hsla(185, 49%, 40%, 0.28);
+}
+
+.hero-cta-icon {
+    width: 1.1em;
+    height: 1.1em;
+    flex-shrink: 0;
 }
 
 /* ── Page header (blog archive, etc.) ────────────── */
@@ -631,6 +652,11 @@ strong {
     flex-shrink: 0;
 }
 
+.tag .icon {
+    width: 1.35em;
+    height: 1.35em;
+}
+
 .project-link {
     display: inline-flex;
     align-items: center;
@@ -638,22 +664,66 @@ strong {
     padding: 0.45rem 1rem;
     margin: 0.5rem auto 0 auto;
     width: fit-content;
-    /* ghost style — override .button-link defaults */
+    /* neutral ghost — keeps teal for tags, links, and primary CTAs */
     background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--normal-TextColor) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: hsl(216, 40%, 82%) !important;
     font-style: normal;
     font-weight: 500;
     font-size: 0.9rem;
     border-radius: 0.6rem;
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .project-link:hover {
-    border-color: var(--normal-TextColor);
+    border-color: rgba(255, 255, 255, 0.55);
+    color: hsl(216, 40%, 95%) !important;
     background: rgba(255, 255, 255, 0.04) !important;
     transform: translateY(-1px);
     box-shadow: none;
+}
+
+.project-link-sketch {
+    background: hsla(185, 49%, 50%, 0.1) !important;
+    border: 1px solid hsla(185, 49%, 62%, 0.42);
+    border-left: 3px solid var(--normal-TextColor);
+    color: hsl(185, 42%, 84%) !important;
+    font-weight: 550;
+    padding: 0.52rem 1.15rem;
+}
+
+.project-link-sketch:hover {
+    background: hsla(185, 49%, 50%, 0.18) !important;
+    border-color: hsla(185, 49%, 62%, 0.65);
+    border-left-color: hsl(185, 55%, 72%);
+    color: hsl(185, 50%, 94%) !important;
+}
+
+.project-link-github {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    color: hsl(216, 40%, 90%) !important;
+    font-weight: 550;
+    padding: 0.55rem 1.2rem;
+}
+
+.project-link-github .icon {
+    width: 1.35em;
+    height: 1.35em;
+    opacity: 1;
+}
+
+.project-link-github:hover {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.58);
+    color: white !important;
+}
+
+.project-link-icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    opacity: 0.9;
 }
 
 .tag {
