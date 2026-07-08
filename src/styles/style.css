@@ -13,6 +13,21 @@
     --normal-TextColor:      hsl(185, 49%, 62%);
     --mono-font:             'Fira Code', 'Courier New', monospace;
 
+    /* palette */
+    --text-heading:          hsl(216, 40%, 90%);
+    --text-nav:              hsl(210, 15%, 65%);
+    --text-secondary:        hsl(210, 15%, 75%);
+    --text-footer:           hsl(210, 12%, 58%);
+    --bg-surface:            hsl(259, 12%, 11%);
+    --bg-nav:                hsla(259, 12%, 11%, 0.82);
+    --border-faint:          rgba(255, 255, 255, 0.06);
+    --border-subtle:         rgba(255, 255, 255, 0.1);
+    --border-card:           rgba(255, 255, 255, 0.05);
+    --btn-text:              hsl(216, 40%, 82%);
+    --btn-text-hover:        hsl(216, 40%, 95%);
+    --accent-teal-bright:    hsl(185, 49%, 72%);
+    --accent-teal-muted:     hsl(185, 49%, 70%);
+
     /* typography */
     --text-muted:            hsl(210, 15%, 72%);
     --text-accent:           hsl(185, 49%, 56%);
@@ -25,6 +40,9 @@
     --content-max:           1300px;
     --content-narrow:        900px;
     --content-intro:         640px;
+
+    /* hero portrait ring */
+    --hero-ring:             0.75rem;
 }
 
 html, body {
@@ -43,17 +61,17 @@ html, body {
     align-items: center;
     justify-content: space-between;
     padding: 1.2rem var(--gutter);
-    background: hsla(259, 12%, 11%, 0.82);
+    background: var(--bg-nav);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border-faint);
 }
 
 .nav-name {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 1.1rem;
-    color: hsl(216, 40%, 90%);
+    color: var(--text-heading);
     font-style: normal;
     letter-spacing: 0.01em;
 }
@@ -72,14 +90,14 @@ html, body {
     font-size: 1rem;
     font-style: normal;
     font-weight: 500;
-    color: hsl(210, 15%, 65%);
+    color: var(--text-nav);
     letter-spacing: 0.04em;
     text-transform: uppercase;
     transition: color 0.2s ease;
 }
 
 .site-nav nav a:hover {
-    color: hsl(216, 40%, 90%);
+    color: var(--text-heading);
 }
 
 main {
@@ -112,7 +130,7 @@ code, pre, .tag, .post-date, .post-meta, abbr {
 
 :is(h1, h2, h3, h4, h5, h6) {
     font-family: 'Poppins', sans-serif;
-    color: hsl(216, 40%, 90%);
+    color: var(--text-heading);
 }
 
 h2 {
@@ -150,7 +168,7 @@ strong {
     border-radius: 0.5rem;
     padding: 0.6rem 1.4rem;
     background: transparent;
-    color: hsl(216, 40%, 82%);
+    color: var(--btn-text);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
@@ -173,7 +191,7 @@ strong {
 
 .button-link:hover {
     border-color: rgba(255, 255, 255, 0.55);
-    color: hsl(216, 40%, 95%);
+    color: var(--btn-text-hover);
     background: rgba(255, 255, 255, 0.04);
     transform: translateY(-1px);
 }
@@ -210,13 +228,13 @@ strong {
 .hero-photo #manu-img {
     display: block;
     border-radius: 50%;
-    padding: 2rem;
+    padding: var(--hero-ring);
     width: 18rem;
     height: auto;
     object-fit: cover;
     box-sizing: border-box;
-    background: hsl(259, 12%, 11%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -236,7 +254,7 @@ strong {
     font-size: 1.65rem;
     font-weight: 600;
     line-height: 1.35;
-    color: hsl(185, 49%, 72%);
+    color: var(--accent-teal-bright);
     margin: 0 0 0.75rem;
     max-width: 52ch;
 }
@@ -246,7 +264,7 @@ strong {
     line-height: 1.55;
     margin: 0 0 1rem;
     max-width: 52ch;
-    color: hsl(210, 15%, 75%);
+    color: var(--text-secondary);
 }
 
 .hero-meta {
@@ -332,7 +350,7 @@ strong {
 .blog-card-date {
     display: block;
     font-size: 0.9rem;
-    color: hsl(210, 15%, 65%);
+    color: var(--text-nav);
     margin-bottom: 0.75rem;
 }
 
@@ -353,7 +371,7 @@ strong {
 
 .post-title {
     font-size: 3.5rem;
-    color: hsl(216, 40%, 90%);
+    color: var(--text-heading);
     margin-bottom: 0.5rem;
     text-align: center;
     line-height: 1.15;
@@ -386,13 +404,13 @@ strong {
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: hsl(185, 49%, 70%);
+    color: var(--accent-teal-muted);
     margin-bottom: 0.6rem;
 }
 
 .post-problem p {
     font-style: italic;
-    color: hsl(185, 49%, 70%);
+    color: var(--accent-teal-muted);
     margin-bottom: 0;
     font-size: 1.1rem;
     line-height: 1.7;
@@ -655,68 +673,72 @@ strong {
 .tag .icon {
     width: 1.35em;
     height: 1.35em;
+    display: block;
+    object-fit: contain;
+    object-position: center;
 }
 
-.project-link {
+.button-link.project-link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.45rem 1rem;
-    margin: 0.5rem auto 0 auto;
+    margin: 0.5rem auto;
     width: fit-content;
-    /* neutral ghost — keeps teal for tags, links, and primary CTAs */
-    background: transparent !important;
+    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.22);
-    color: hsl(216, 40%, 82%) !important;
+    color: var(--btn-text);
     font-style: normal;
     font-weight: 500;
     font-size: 0.9rem;
     border-radius: 0.6rem;
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.project-link:hover {
+.card .button-link.project-link {
+    margin: 0.5rem auto 0.5rem;
+}
+
+.button-link.project-link:hover {
     border-color: rgba(255, 255, 255, 0.55);
-    color: hsl(216, 40%, 95%) !important;
-    background: rgba(255, 255, 255, 0.04) !important;
-    transform: translateY(-1px);
+    color: var(--btn-text-hover);
+    background: rgba(255, 255, 255, 0.04);
     box-shadow: none;
 }
 
-.project-link-sketch {
-    background: hsla(185, 49%, 50%, 0.1) !important;
+.button-link.project-link-sketch {
+    background: hsla(185, 49%, 50%, 0.1);
     border: 1px solid hsla(185, 49%, 62%, 0.42);
     border-left: 3px solid var(--normal-TextColor);
-    color: hsl(185, 42%, 84%) !important;
+    color: hsl(185, 42%, 84%);
     font-weight: 550;
     padding: 0.52rem 1.15rem;
 }
 
-.project-link-sketch:hover {
-    background: hsla(185, 49%, 50%, 0.18) !important;
+.button-link.project-link-sketch:hover {
+    background: hsla(185, 49%, 50%, 0.18);
     border-color: hsla(185, 49%, 62%, 0.65);
     border-left-color: hsl(185, 55%, 72%);
-    color: hsl(185, 50%, 94%) !important;
+    color: hsl(185, 50%, 94%);
 }
 
-.project-link-github {
-    background: rgba(255, 255, 255, 0.08) !important;
+.button-link.project-link-github {
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.34);
-    color: hsl(216, 40%, 90%) !important;
+    color: var(--text-heading);
     font-weight: 550;
     padding: 0.55rem 1.2rem;
 }
 
-.project-link-github .icon {
+.button-link.project-link-github .icon {
     width: 1.35em;
     height: 1.35em;
     opacity: 1;
 }
 
-.project-link-github:hover {
-    background: rgba(255, 255, 255, 0.14) !important;
+.button-link.project-link-github:hover {
+    background: rgba(255, 255, 255, 0.14);
     border-color: rgba(255, 255, 255, 0.58);
-    color: white !important;
+    color: white;
 }
 
 .project-link-icon {
@@ -814,7 +836,7 @@ footer {
     padding: 4rem 0 2rem;
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    color: hsl(210, 12%, 58%);
+    color: var(--text-footer);
     font-size: 0.8rem;
     font-family: var(--mono-font);
     letter-spacing: 0.03em;
@@ -863,10 +885,6 @@ footer {
 
 @media (max-width: 1250px) {
     .principles-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .projects-grid {
         grid-template-columns: 1fr;
     }
 
@@ -939,6 +957,7 @@ footer {
 @media (max-width: 400px) {
     :root {
         --section-gap: 3rem;
+        --hero-ring: 0.5rem;
     }
 
     main {
@@ -959,7 +978,6 @@ footer {
 
     .hero-photo #manu-img {
         width: 9rem;
-        padding: 1.25rem;
     }
 
     .hero h1 {
@@ -986,13 +1004,27 @@ footer {
 }
 
 @media (max-width: 520px) {
+    .site-nav {
+        padding: 1rem var(--gutter);
+        gap: 0.5rem;
+    }
+
     .nav-name {
-        display: none;
+        font-size: 0.9rem;
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .site-nav nav {
-        gap: 1.2rem;
-        width: 100%;
-        justify-content: center;
+        gap: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .site-nav nav a {
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
     }
 }
