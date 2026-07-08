@@ -10,8 +10,21 @@
 
 :root {
     --backgroundImage-Color: hsl(259, 12%, 15%);
-    --normal-TextColor:      hsl(185, 49%, 62%);
     --mono-font:             'Fira Code', 'Courier New', monospace;
+
+    /* teal role ladder — same hue, different jobs */
+    --teal-display:          hsl(185, 49%, 72%);
+    --teal-prose:            hsl(185, 49%, 62%);
+    --teal-muted:            hsl(185, 49%, 56%);
+    --teal-ui:               hsl(185, 55%, 68%);
+    --teal-border:           hsla(185, 49%, 62%, 0.75);
+    --teal-surface:          hsla(185, 49%, 50%, 0.08);
+
+    /* legacy aliases */
+    --normal-TextColor:      var(--teal-prose);
+    --accent-teal-bright:    var(--teal-display);
+    --accent-teal-muted:     hsl(185, 49%, 60%);
+    --text-accent:           var(--teal-muted);
 
     /* palette */
     --text-heading:          hsl(216, 40%, 90%);
@@ -25,13 +38,10 @@
     --border-card:           rgba(255, 255, 255, 0.05);
     --btn-text:              hsl(216, 40%, 82%);
     --btn-text-hover:        hsl(216, 40%, 95%);
-    --accent-teal-bright:    hsl(185, 49%, 72%);
-    --accent-teal-muted:     hsl(185, 49%, 70%);
 
     /* typography */
     --text-muted:            hsl(210, 15%, 72%);
-    --text-accent:           hsl(185, 49%, 56%);
-    --text-prose:            1.2rem;
+    --text-prose-size:       1.2rem;
     --line-height-prose:     1.8;
 
     /* layout rhythm */
@@ -105,7 +115,7 @@ html, body {
 
 main {
     text-align: center;
-    color: var(--normal-TextColor);
+    color: var(--text-secondary);
     font-size: 1.125rem;
     font-family: 'Inter', 'Segoe UI', sans-serif;
     background-color: var(--backgroundImage-Color);
@@ -146,14 +156,17 @@ h3 {
 }
 
 a {
-    color: var(--normal-TextColor);
+    color: var(--teal-ui);
     text-decoration: none;
 }
 
 .card p a,
 .blog-intro a,
-.post-content p a {
+.post-content :is(p, li) a:not(.cite):not(.reference-link) {
     font-style: italic;
+    color: var(--teal-display);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
 }
 
 strong {
@@ -180,11 +193,31 @@ strong {
     padding: 0.6rem 1.4rem;
 }
 
+.blog-posts .button-link.blog-button.card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.2rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    color: var(--text-heading);
+    font-weight: 550;
+    font-size: 0.92rem;
+    border-radius: 0.6rem;
+}
+
+.blog-posts .button-link.blog-button.card-action:hover {
+    border-color: rgba(255, 255, 255, 0.58);
+    color: white;
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+}
+
 .button-outline,
 .hero-cta-secondary {
     background-color: transparent;
-    border: 1px solid var(--normal-TextColor);
-    color: var(--normal-TextColor);
+    border: 1px solid var(--teal-ui);
+    color: var(--teal-ui);
 }
 
 .card-action {
@@ -212,7 +245,7 @@ strong {
     align-items: center;
     justify-content: center;
     padding: 2.5rem 0 3rem;
-    background: radial-gradient(circle at center, hsla(185, 49%, 50%, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle at center, var(--teal-surface) 0%, transparent 70%);
 }
 
 .hero-inner {
@@ -257,7 +290,7 @@ strong {
     font-size: 1.65rem;
     font-weight: 600;
     line-height: 1.35;
-    color: var(--accent-teal-bright);
+    color: var(--teal-display);
     margin: 0 0 0.75rem;
     max-width: 52ch;
 }
@@ -298,7 +331,7 @@ strong {
 
 .hero-cta-primary:hover {
     background: hsla(185, 49%, 50%, 0.34);
-    border-color: var(--normal-TextColor);
+    border-color: var(--teal-border);
     color: white;
     box-shadow: 0 0 0 1px hsla(185, 49%, 62%, 0.35), 0 6px 22px hsla(185, 49%, 40%, 0.28);
 }
@@ -340,7 +373,7 @@ strong {
     max-width: var(--content-intro);
     margin: 0 auto 2.5rem;
     text-align: center;
-    color: var(--text-accent);
+    color: var(--teal-prose);
     font-size: 1.05rem;
     line-height: 1.7;
 }
@@ -394,7 +427,7 @@ strong {
 }
 
 .post-problem {
-    border-left: 3px solid var(--normal-TextColor);
+    border-left: 3px solid var(--teal-ui);
     padding: 1.2rem 1.6rem;
     margin: 0 0 3rem 0;
     background: rgba(255, 255, 255, 0.02);
@@ -407,16 +440,20 @@ strong {
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent-teal-muted);
+    color: var(--teal-muted);
     margin-bottom: 0.6rem;
 }
 
 .post-problem p {
     font-style: italic;
-    color: var(--accent-teal-muted);
+    color: var(--teal-muted);
     margin-bottom: 0;
     font-size: 1.1rem;
     line-height: 1.7;
+}
+
+.post-content {
+    color: var(--teal-prose);
 }
 
 .post-content h2 {
@@ -427,7 +464,7 @@ strong {
 }
 
 .post-content p {
-    font-size: var(--text-prose);
+    font-size: var(--text-prose-size);
     line-height: var(--line-height-prose);
     margin-bottom: 1.5rem;
     text-align: left;
@@ -439,7 +476,7 @@ strong {
 }
 
 .post-content li {
-    font-size: var(--text-prose);
+    font-size: var(--text-prose-size);
     margin-bottom: 0.7rem;
 }
 
@@ -460,7 +497,7 @@ strong {
 }
 
 .post-content th {
-    color: hsl(185, 65%, 72%);
+    color: var(--teal-ui);
     font-family: var(--mono-font);
     font-size: 0.85rem;
     letter-spacing: 0.04em;
@@ -469,17 +506,17 @@ strong {
 
 .post-content a.cite {
     font-style: normal;
-    color: hsl(185, 65%, 72%);
+    color: var(--teal-ui);
     font-weight: 600;
     text-decoration: none;
     padding: 0 0.1em;
-    border-bottom: 1px solid hsl(185, 49%, 45%);
+    border-bottom: 1px solid hsla(185, 49%, 45%, 0.8);
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .post-content a.cite:hover {
     color: hsl(185, 80%, 85%);
-    border-bottom-color: hsl(185, 65%, 72%);
+    border-bottom-color: var(--teal-ui);
 }
 
 .post-content .references-list {
@@ -508,14 +545,14 @@ strong {
     counter-increment: reference;
     display: inline-block;
     min-width: 2rem;
-    color: hsl(185, 65%, 72%);
+    color: var(--teal-ui);
     font-weight: 600;
     font-family: var(--mono-font);
 }
 
 .post-content a.reference-link {
     font-style: normal;
-    color: hsl(185, 75%, 80%);
+    color: var(--teal-ui);
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 0.18em;
@@ -552,7 +589,7 @@ strong {
 .post-contact p {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: var(--text-accent);
+    color: var(--teal-prose);
     text-align: center;
     margin-bottom: 0;
 }
@@ -587,7 +624,7 @@ strong {
 .principle:hover {
     transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.04);
-    border-color: var(--normal-TextColor);
+    border-color: var(--teal-ui);
 }
 
 .principle h3 {
@@ -598,6 +635,8 @@ strong {
 .principle p {
     font-size: 1.1rem;
     line-height: 1.6;
+    color: var(--teal-prose);
+    text-align: left;
 }
 
 /* ── Projects / Cards ────────────────────────────── */
@@ -622,9 +661,9 @@ strong {
 }
 
 .card-featured {
-    background: linear-gradient(135deg, hsla(185, 49%, 50%, 0.08), rgba(255, 255, 255, 0.02));
+    background: linear-gradient(135deg, var(--teal-surface), rgba(255, 255, 255, 0.02));
     border-color: hsla(185, 49%, 50%, 0.22);
-    border-left: 3px solid var(--normal-TextColor);
+    border-left: 3px solid var(--teal-ui);
 }
 
 .card h3 {
@@ -634,17 +673,18 @@ strong {
 .card p {
     margin-bottom: 1.5rem;
     line-height: 1.7;
+    color: var(--teal-prose);
 }
 
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--normal-TextColor);
+    border-color: var(--teal-ui);
 }
 
 .confidential-note {
     font-size: 0.9rem;
-    opacity: 0.75;
+    color: var(--text-muted);
     font-style: italic;
     border-left: 3px solid rgba(255, 255, 255, 0.2);
     padding-left: 1rem;
@@ -713,7 +753,7 @@ strong {
 .button-link.project-link-sketch {
     background: hsla(185, 49%, 50%, 0.1);
     border: 1px solid hsla(185, 49%, 62%, 0.42);
-    border-left: 3px solid var(--normal-TextColor);
+    border-left: 3px solid var(--teal-ui);
     color: hsl(185, 42%, 84%);
     font-weight: 550;
     padding: 0.52rem 1.15rem;
@@ -762,7 +802,7 @@ strong {
     padding: 7px 14px;
     margin: 0.4rem;
     border-radius: 20px;
-    color: var(--normal-TextColor);
+    color: var(--teal-ui);
     font-size: 0.9rem;
     font-weight: 600;
     transition: background 0.3s ease, border-color 0.3s ease;
@@ -804,7 +844,7 @@ strong {
 }
 
 .contact-text p {
-    color: var(--text-accent);
+    color: var(--teal-prose);
     font-size: 1.1rem;
     line-height: 1.7;
 }
@@ -812,7 +852,7 @@ strong {
 .contact-button {
     padding: 0.75rem 2rem;
     background: hsla(185, 49%, 50%, 0.18);
-    border-color: hsla(185, 49%, 62%, 0.65);
+    border-color: var(--teal-border);
     color: hsl(185, 50%, 90%);
     font-weight: 600;
     font-size: 0.95rem;
@@ -820,7 +860,7 @@ strong {
 
 .contact-button:hover {
     background: hsla(185, 49%, 50%, 0.3);
-    border-color: var(--normal-TextColor);
+    border-color: var(--teal-ui);
     color: white;
 }
 
@@ -835,14 +875,14 @@ strong {
 .social-icon {
     width: 2.5rem;
     height: 2.5rem;
-    opacity: 0.6;
+    opacity: 0.85;
     transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
 }
 
 .social-icon:hover {
     opacity: 1;
     transform: translateY(-3px);
-    filter: drop-shadow(0 0 8px var(--normal-TextColor));
+    filter: drop-shadow(0 0 8px var(--teal-ui));
 }
 
 /* ── Footer ──────────────────────────────────────── */
@@ -861,7 +901,7 @@ footer {
 /* ── Focus ───────────────────────────────────────── */
 
 :is(a, button, .button-link):focus-visible {
-    outline: 2px solid var(--normal-TextColor);
+    outline: 2px solid var(--teal-ui);
     outline-offset: 3px;
 }
 
