@@ -40,6 +40,7 @@
     --content-max:           1300px;
     --content-narrow:        900px;
     --content-intro:         640px;
+    --hero-max:              1100px;
 
     /* hero portrait ring */
     --hero-ring:             0.75rem;
@@ -49,6 +50,7 @@ html, body {
     overflow-x: hidden;
     min-height: 100vh;
     background-color: var(--backgroundImage-Color);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* ── Nav ─────────────────────────────────────────── */
@@ -87,11 +89,12 @@ html, body {
 }
 
 .site-nav nav a {
-    font-size: 1rem;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
     font-style: normal;
     font-weight: 500;
     color: var(--text-nav);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     transition: color 0.2s ease;
 }
@@ -216,7 +219,7 @@ strong {
     display: flex;
     align-items: center;
     gap: 3rem;
-    max-width: 960px;
+    max-width: var(--hero-max);
     width: 100%;
     text-align: left;
 }
@@ -657,8 +660,10 @@ strong {
     max-width: 600px;
     height: 350px;
     object-fit: contain;
-    background: rgba(0, 0, 0, 0.2);
+    background: hsl(220, 14%, 18%);
+    border: 1px solid var(--border-subtle);
     border-radius: 1rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
     margin: 0 auto 2rem auto;
     display: block;
 }
@@ -682,15 +687,15 @@ strong {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.45rem 1rem;
+    padding: 0.55rem 1.2rem;
     margin: 0.5rem auto;
     width: fit-content;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: var(--btn-text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    color: var(--text-heading);
     font-style: normal;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-weight: 550;
+    font-size: 0.92rem;
     border-radius: 0.6rem;
 }
 
@@ -699,9 +704,9 @@ strong {
 }
 
 .button-link.project-link:hover {
-    border-color: rgba(255, 255, 255, 0.55);
-    color: var(--btn-text-hover);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.58);
+    color: white;
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: none;
 }
 
@@ -805,7 +810,18 @@ strong {
 }
 
 .contact-button {
-    padding: 0.7rem 1.8rem;
+    padding: 0.75rem 2rem;
+    background: hsla(185, 49%, 50%, 0.18);
+    border-color: hsla(185, 49%, 62%, 0.65);
+    color: hsl(185, 50%, 90%);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.contact-button:hover {
+    background: hsla(185, 49%, 50%, 0.3);
+    border-color: var(--normal-TextColor);
+    color: white;
 }
 
 .social-links {
