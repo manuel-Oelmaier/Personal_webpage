@@ -2,11 +2,29 @@
   "schemaVersion": 1,
   "title": "LLM context leaderboard",
   "updated": "2026-08-06",
-  "caveat": "Protocols differ across papers and system cards. The human mini-eval uses a seeded 20-item HellaSwag draw scored on answered items only — not comparable to full-benchmark rows without that framing.",
+  "caveat": "Protocols differ across papers and system cards. A human subset is not a full-benchmark run — it is a probe into what a published percentage leaves out.",
   "columns": {
     "hellaswag": "HellaSwag",
     "knowledge": "Knowledge / reasoning"
   },
+  "benchmarks": [
+    {
+      "id": "hellaswag",
+      "column": "hellaswag",
+      "label": "HellaSwag",
+      "takeHref": "/evals/hellaswag/",
+      "aboutHref": "/evals/hellaswag/about/",
+      "takeLabel": "Take a subset"
+    },
+    {
+      "id": "knowledge",
+      "column": "knowledge",
+      "label": "Knowledge / reasoning",
+      "takeHref": null,
+      "aboutHref": null,
+      "takeLabel": "Human subset coming later"
+    }
+  ],
   "rows": [
     {
       "id": "human-hellaswag",

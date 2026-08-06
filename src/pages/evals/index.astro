@@ -1,34 +1,54 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import leaderboard from '../../data/llm-leaderboard.json';
 ---
 
 <BaseLayout
-	title="Evals | Manuel Oelmaier"
-	description="Human mini-evals and a citeable LLM context leaderboard — start with HellaSwag."
-	ogTitle="Evals | Manuel Oelmaier"
+	title="Evals · LLM leaderboard | Manuel Oelmaier"
+	description="Citeable LLM scores with sources — and human subsets of the same benchmarks, so a percentage stops being an abstract compress of nuance."
+	ogTitle="Evals · LLM leaderboard"
 >
-	<section class="fade-in eval-page">
+	<section class="fade-in eval-page eval-page-wide">
 		<header class="page-header">
 			<p class="eval-kicker">Evals</p>
-			<h1>Test yourself like a model</h1>
+			<h1>LLM leaderboard</h1>
 			<p class="section-subtitle">
-				Serious mini-evals with published protocol caveats — not a game leaderboard.
+				Published model numbers with sources — plus a way to feel what those numbers leave out.
+			</p>
+			<p class="eval-updated">
+				Table updated <time datetime={leaderboard.updated}>{leaderboard.updated}</time>
+				· curated from papers and system cards
 			</p>
 		</header>
 
-		<div class="eval-hub">
-			<article class="eval-hub-item">
-				<h2><a href="/evals/hellaswag/">HellaSwag mini-eval</a></h2>
-				<p>Seeded 20-item draw from a 1000-item validation pool. Answered-only scoring; hand in early anytime.</p>
-			</article>
-			<article class="eval-hub-item">
-				<h2><a href="/evals/hellaswag/about/">Methodology</a></h2>
-				<p>Pool construction, seed replay, scoring rules, and dataset citation.</p>
-			</article>
-			<article class="eval-hub-item">
-				<h2><a href="/evals/leaderboard/">LLM context leaderboard</a></h2>
-				<p>Frontier to local open-weight rows with source links. Insert your mini-eval score after a run.</p>
-			</article>
-		</div>
+		<section class="eval-idea" aria-labelledby="eval-idea-heading">
+			<h2 id="eval-idea-heading">Why take a subset yourself</h2>
+			<p>
+				Leaderboard scores <strong>compress</strong> a whole evaluation into one number.
+				That helps compare models — and it also throws away difficulty mix, failure modes,
+				prompting, and whether “human-level” on paper feels anything like answering the items.
+			</p>
+			<p>
+				The core idea here: sit the same kind of multiple-choice items a model was scored on
+				(a <em>seeded subset</em> of the real benchmark), so you can see what a published
+				accuracy means — and what it does not.
+			</p>
+			<p class="eval-help">
+				Human runs use answered-only scoring and are not full-benchmark replications.
+				<a href="/evals/hellaswag/about/">HellaSwag methodology</a>
+			</p>
+		</section>
+
+		<div id="leaderboard-root" class="eval-body"></div>
 	</section>
 </BaseLayout>
+
+<script>
+	import { mountLeaderboard } from '../../lib/evals/leaderboard';
+	import data from '../../data/llm-leaderboard.json';
+
+	const root = document.getElementById('leaderboard-root');
+	if (root) {
+		mountLeaderboard(root, data);
+	}
+</script>

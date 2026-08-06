@@ -13,7 +13,7 @@ JSON-LD for SEO, open graph for clean previews.
 
 - **Homepage** — hero, featured work, project showcase, and contact
 - **Blog** — problem-first engineering posts (homelab, LLM inference, infrastructure)
-- **Evals** — `/evals/` hub: HellaSwag mini-eval, methodology, and citeable LLM context leaderboard
+- **Evals** — `/evals/` citeable LLM leaderboard; take a human subset of a benchmark (e.g. HellaSwag) to see what the numbers leave out
 - **RSS feed** — `/rss.xml` for subscribers
 - **Open Graph** — rich link previews on LinkedIn, X, WhatsApp, Discord, and more
 - **CV** — downloadable PDF from the hero and nav

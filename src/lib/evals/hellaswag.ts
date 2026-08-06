@@ -121,7 +121,7 @@ function leaderboardHref(pct: number, answered: number, drawn: number, seed: str
 		seed,
 		early: early ? '1' : '0',
 	});
-	return `/evals/leaderboard/?${params.toString()}`;
+	return `/evals/?${params.toString()}`;
 }
 
 export function mountHellaSwagEval(root: HTMLElement): void {

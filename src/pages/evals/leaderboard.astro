@@ -3,36 +3,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-	title="LLM context leaderboard | Manuel Oelmaier"
-	description="Citeable model scores from papers and system cards, with an optional You row from the HellaSwag mini-eval."
-	ogTitle="LLM context leaderboard"
+	title="Redirecting to Evals | Manuel Oelmaier"
+	description="The LLM leaderboard lives at /evals/."
 >
-	<section class="fade-in eval-page eval-page-wide">
+	<section class="fade-in eval-page">
 		<header class="page-header">
-			<p class="eval-kicker">Context</p>
-			<h1>LLM leaderboard</h1>
+			<h1>Moved</h1>
 			<p class="section-subtitle">
-				Where a human mini-eval sits among published model numbers — with sources on every cell.
-			</p>
-			<p class="eval-page-links">
-				<a href="/evals/hellaswag/">Take HellaSwag</a>
-				·
-				<a href="/evals/hellaswag/about/">Methodology</a>
-				·
-				<a href="/evals/">All evals</a>
+				The leaderboard is now on the <a id="evals-redirect" href="/evals/">Evals</a> page.
 			</p>
 		</header>
-
-		<div id="leaderboard-root" class="eval-body"></div>
 	</section>
 </BaseLayout>
 
-<script>
-	import { mountLeaderboard } from '../../lib/evals/leaderboard';
-	import data from '../../data/llm-leaderboard.json';
-
-	const root = document.getElementById('leaderboard-root');
-	if (root) {
-		mountLeaderboard(root, data);
+<script is:inline>
+	const search = window.location.search;
+	const target = `/evals/${search}`;
+	const link = document.getElementById('evals-redirect');
+	if (link instanceof HTMLAnchorElement) {
+		link.href = target;
 	}
+	location.replace(target);
 </script>

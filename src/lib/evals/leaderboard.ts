@@ -1,5 +1,5 @@
 /**
- * LLM context leaderboard — insert You-row, bold column bests, render table.
+ * LLM context leaderboard — insert You-row, bold column bests, take-subset column links.
  */
 
 type ScoreCell = {
@@ -9,6 +9,15 @@ type ScoreCell = {
 	metric: string;
 	setting: string;
 	source: { label: string; url: string };
+};
+
+type BenchmarkMeta = {
+	id: string;
+	column: string;
+	label: string;
+	takeHref: string | null;
+	aboutHref: string | null;
+	takeLabel: string;
 };
 
 type LeaderboardRow = {
@@ -33,6 +42,7 @@ type LeaderboardData = {
 	updated: string;
 	caveat: string;
 	columns: { hellaswag: string; knowledge: string };
+	benchmarks?: BenchmarkMeta[];
 	rows: LeaderboardRow[];
 };
 
@@ -45,6 +55,25 @@ const TIER_LABEL: Record<string, string> = {
 	historical: 'Historical',
 	you: 'You',
 };
+
+const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
+	{
+		id: 'hellaswag',
+		column: 'hellaswag',
+		label: 'HellaSwag',
+		takeHref: '/evals/hellaswag/',
+		aboutHref: '/evals/hellaswag/about/',
+		takeLabel: 'Take a subset',
+	},
+	{
+		id: 'knowledge',
+		column: 'knowledge',
+		label: 'Knowledge / reasoning',
+		takeHref: null,
+		aboutHref: null,
+		takeLabel: 'Human subset coming later',
+	},
+];
 
 function escapeHtml(text: string): string {
 	return text
@@ -138,9 +167,39 @@ function sortRows(rows: LeaderboardRow[]): LeaderboardRow[] {
 	});
 }
 
+function columnHeader(bench: BenchmarkMeta): string {
+	const take = bench.takeHref
+		? `<a class="eval-take-link" href="${escapeHtml(bench.takeHref)}">${escapeHtml(bench.takeLabel)}</a>`
+		: `<span class="eval-take-soon">${escapeHtml(bench.takeLabel)}</span>`;
+	const about = bench.aboutHref
+		? ` · <a class="eval-th-about" href="${escapeHtml(bench.aboutHref)}">method</a>`
+		: '';
+	return `<th scope="col" class="eval-th-bench">
+		<span class="eval-th-label">${escapeHtml(bench.label)}</span>
+		<span class="eval-th-actions">${take}${about}</span>
+	</th>`;
+}
+
 export function mountLeaderboard(root: HTMLElement, data: LeaderboardData): void {
 	const you = parseYouFromUrl();
 	const rows: LeaderboardRow[] = data.rows.map((r) => ({ ...r }));
+	const benchmarks = data.benchmarks ?? DEFAULT_BENCHMARKS;
+	const hsBench = benchmarks.find((b) => b.column === 'hellaswag') ?? {
+		id: 'hellaswag',
+		column: 'hellaswag',
+		label: data.columns.hellaswag,
+		takeHref: '/evals/hellaswag/',
+		aboutHref: '/evals/hellaswag/about/',
+		takeLabel: 'Take a subset',
+	};
+	const knowBench = benchmarks.find((b) => b.column === 'knowledge') ?? {
+		id: 'knowledge',
+		column: 'knowledge',
+		label: data.columns.knowledge,
+		takeHref: null,
+		aboutHref: null,
+		takeLabel: 'Human subset coming later',
+	};
 
 	if (you) {
 		rows.push({
@@ -217,7 +276,7 @@ export function mountLeaderboard(root: HTMLElement, data: LeaderboardData): void
 
 	root.innerHTML = `
 		<p class="eval-caveat">${escapeHtml(data.caveat)}</p>
-		${you ? '' : `<p class="eval-help">Take the <a href="/evals/hellaswag/">HellaSwag mini-eval</a> to insert a <strong>You</strong> row here.</p>`}
+		${you ? '' : `<p class="eval-help">Use <strong>Take a subset</strong> in a column header, then return here to insert a <strong>You</strong> row.</p>`}
 		<div class="eval-table-wrap">
 			<table class="eval-table eval-lb-table">
 				<thead>
@@ -225,8 +284,8 @@ export function mountLeaderboard(root: HTMLElement, data: LeaderboardData): void
 						<th scope="col">Rank</th>
 						<th scope="col">Model</th>
 						<th scope="col">Params</th>
-						<th scope="col">${escapeHtml(data.columns.hellaswag)}</th>
-						<th scope="col">${escapeHtml(data.columns.knowledge)}</th>
+						${columnHeader(hsBench)}
+						${columnHeader(knowBench)}
 					</tr>
 				</thead>
 				<tbody>${body}</tbody>
@@ -234,8 +293,8 @@ export function mountLeaderboard(root: HTMLElement, data: LeaderboardData): void
 		</div>
 		<p class="eval-help">
 			<strong class="eval-best-num">Bold</strong> marks the best numeric value in each score column.
-			Missing cells show “not reported”. Rank uses HellaSwag only.
-			Data updated ${escapeHtml(data.updated)}.
+			Missing cells show “not reported”. Rank uses HellaSwag only when a full-eval number exists.
+			This table is meant to be updated as new citeable cards appear — last refresh ${escapeHtml(data.updated)}.
 		</p>
 	`;
 }

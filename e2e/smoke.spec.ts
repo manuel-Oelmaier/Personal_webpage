@@ -18,12 +18,15 @@ test.describe('core pages', () => {
     await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(3);
   });
 
-  test('evals hub lists mini-eval and leaderboard', async ({ page }) => {
+  test('evals page is the leaderboard with take-subset link', async ({ page }) => {
     await page.goto('/evals/');
 
-    await expect(page.getByRole('heading', { name: 'Test yourself like a model', level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'HellaSwag mini-eval' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'LLM context leaderboard' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'LLM leaderboard', level: 1 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Why take a subset yourself', level: 2 })).toBeVisible();
+    await expect(page.getByRole('table')).toBeVisible();
+    await expect(page.getByText('Claude Mythos 5')).toBeVisible();
+    await expect(page.getByRole('table').getByRole('link', { name: 'Take a subset' })).toBeVisible();
+    await expect(page.getByText('not reported').first()).toBeVisible();
   });
 
   test('hellaswag eval page mounts runner', async ({ page }) => {
@@ -35,13 +38,11 @@ test.describe('core pages', () => {
     await expect(page.getByRole('link', { name: 'Methodology', exact: true })).toBeVisible();
   });
 
-  test('leaderboard renders citeable rows', async ({ page }) => {
-    await page.goto('/evals/leaderboard/');
+  test('legacy leaderboard URL redirects to evals', async ({ page }) => {
+    await page.goto('/evals/leaderboard/?you=80&answered=10&drawn=20&seed=abcd');
 
+    await expect(page).toHaveURL(/\/evals\/\?.*you=80/);
     await expect(page.getByRole('heading', { name: 'LLM leaderboard', level: 1 })).toBeVisible();
-    await expect(page.getByRole('table')).toBeVisible();
-    await expect(page.getByText('Claude Mythos 5')).toBeVisible();
-    await expect(page.getByText('not reported').first()).toBeVisible();
   });
 
   test('blog post opens from archive', async ({ page }) => {
