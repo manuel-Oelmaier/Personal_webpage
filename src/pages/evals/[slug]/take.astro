@@ -1,0 +1,95 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+type BenchEntry = CollectionEntry<'benchmarks'>;
+
+interface Props {
+	entry: BenchEntry;
+}
+
+type StaticPath = {
+	params: { slug: string };
+	props: Props;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+	const entries = await getCollection('benchmarks');
+	return entries
+		.filter((entry) => entry.data.takeable)
+		.map((entry) => ({
+			params: { slug: entry.id.replace(/\.md$/, '') },
+			props: { entry },
+		}));
+}
+
+const { entry } = Astro.props;
+const { title, description } = entry.data;
+const slug = entry.id.replace(/\.md$/, '');
+const hasPack = slug === 'hellaswag' || slug === 'mmlu-pro';
+---
+
+<BaseLayout
+	title={`${title} human mini-eval | Manuel Oelmaier`}
+	description={description}
+	ogTitle={`${title} human mini-eval`}
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Human mini-eval</p>
+			<h1>{title}</h1>
+			<p class="section-subtitle">{description}</p>
+			<p class="eval-page-links">
+				<a href="/evals/">Leaderboard</a>
+				·
+				<a href={`/evals/${slug}/`}>Methodology</a>
+			</p>
+		</header>
+
+		<div class="eval-body">
+			{
+				hasPack ? (
+					<div id="eval-root" class="eval-root" data-bench={slug}></div>
+				) : (
+					<section class="eval-panel" aria-labelledby="eval-soon-heading">
+						<h2 id="eval-soon-heading">Pack not built yet</h2>
+						<p class="eval-lede">
+							The {title} hub and leaderboard column are live. The seeded human draw for this
+							benchmark is next — same pattern as HellaSwag once the pack lands under
+							<code>/evals/{slug}/</code>.
+						</p>
+						<p class="eval-nav-row">
+							<a class="button-link" href={`/evals/${slug}/`}>
+								Back to methodology
+							</a>
+							<a class="button-link button-outline" href="/evals/">
+								Leaderboard
+							</a>
+						</p>
+					</section>
+				)
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+{
+	hasPack && (
+		<script>
+			import { mountMcqEval } from '../../../lib/evals/mcqEval';
+
+			const root = document.getElementById('eval-root');
+			const bench = root?.dataset.bench;
+			if (root && bench) {
+				mountMcqEval(root, {
+					benchmarkId: bench,
+					packUrl: `/evals/${bench}/pack.json`,
+					keyUrl: `/evals/${bench}/key.json`,
+					hubHref: `/evals/${bench}/`,
+					boardColumn: bench === 'hellaswag' ? 'hellaswag' : 'mmlu_pro',
+				});
+			}
+		</script>
+	)
+}

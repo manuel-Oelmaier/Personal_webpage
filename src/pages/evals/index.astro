@@ -13,7 +13,8 @@ import leaderboard from '../../data/llm-leaderboard.json';
 			<p class="eval-kicker">Evals</p>
 			<h1>LLM leaderboard</h1>
 			<p class="section-subtitle">
-				Published model numbers with sources — plus a way to feel what those numbers leave out.
+				Citeable model numbers with sources — plus short human subsets of the same benchmarks,
+				so a published percentage is less abstract.
 			</p>
 			<p class="eval-updated">
 				Table updated <time datetime={leaderboard.updated}>{leaderboard.updated}</time>
@@ -35,7 +36,8 @@ import leaderboard from '../../data/llm-leaderboard.json';
 			</p>
 			<p class="eval-help">
 				Human runs use answered-only scoring and are not full-benchmark replications.
-				<a href="/evals/hellaswag/about/">HellaSwag methodology</a>
+				Start with <a href="/evals/mmlu-pro/">MMLU-Pro</a>
+				or the historical <a href="/evals/hellaswag/">HellaSwag</a> probe.
 			</p>
 		</section>
 
@@ -44,11 +46,11 @@ import leaderboard from '../../data/llm-leaderboard.json';
 </BaseLayout>
 
 <script>
-	import { mountLeaderboard } from '../../lib/evals/leaderboard';
+	import { mountLeaderboard, type LeaderboardData } from '../../lib/evals/leaderboard';
 	import data from '../../data/llm-leaderboard.json';
 
 	const root = document.getElementById('leaderboard-root');
 	if (root) {
-		mountLeaderboard(root, data);
+		mountLeaderboard(root, data as LeaderboardData);
 	}
 </script>

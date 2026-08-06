@@ -13,10 +13,44 @@ JSON-LD for SEO, open graph for clean previews.
 
 - **Homepage** — hero, featured work, project showcase, and contact
 - **Blog** — problem-first engineering posts (homelab, LLM inference, infrastructure)
-- **Evals** — `/evals/` citeable LLM leaderboard; take a human subset of a benchmark (e.g. HellaSwag) to see what the numbers leave out
+- **Evals** — `/evals/` citeable LLM leaderboard; benchmark hubs + human mini-evals so a published percentage is less abstract
 - **RSS feed** — `/rss.xml` for subscribers
 - **Open Graph** — rich link previews on LinkedIn, X, WhatsApp, Discord, and more
 - **CV** — downloadable PDF from the hero and nav
+
+## Evals
+
+**Goal:** a quick, understandable overview of model performance for people who are relatively new to LLM benchmarks.
+
+**User journey:** leaderboard (`/evals/`) → open a benchmark hub → take a short seeded subset (when takeable) → return to see a **You** row vs published model numbers → retry with another seed.
+
+**Benchmark content** lives in `src/content/benchmarks/` (same Astro content-collection pattern as blog posts). Each Markdown file has frontmatter:
+
+```yaml
+title: "MMLU-Pro"
+description: "One-sentence summary for hub + OG."
+purpose: "What this bench measures, in plain language."
+scoring: "zero-shot · exact match · answered-only"
+citation:
+  label: "Wang et al., 2024"
+  url: "https://arxiv.org/abs/2406.01574"
+datasetSource: "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro"
+questionCount: 20
+categories: ["math", "law", "physics"]
+published: 2024-06-03
+takeable: true
+```
+
+- **Live** when `published` is set (hub at `/evals/{slug}/`).
+- **`takeable: true`** only for human MCQ-style probes with a pack under `public/evals/{slug}/`. SciCode is `takeable: false` (needs code execution — not a browser mini-eval).
+- Prompt parity with lab harnesses is **not** claimed for card scores; no API self-eval fills for frontier models.
+
+Rebuild packs:
+
+```bash
+python3 scripts/evals/build_hellaswag_pack.py
+python3 scripts/evals/build_mmlu_pro_pack.py
+```
 
 ## Tech stack
 
@@ -38,6 +72,7 @@ JSON-LD for SEO, open graph for clean previews.
 │   ├── layouts/        # BaseLayout (meta, OG, JSON-LD)
 │   ├── lib/evals/      # Client-side human mini-eval runner
 │   ├── content/blog/   # Blog posts (Markdown + frontmatter)
+│   ├── content/benchmarks/ # Eval benchmark hubs (Markdown + frontmatter)
 │   ├── styles/         # Global CSS
 │   └── assets/         # Images, icons, project screenshots
 ├── public/             # Static files (CV, OG, eval JSON packs, robots.txt)
@@ -94,6 +129,10 @@ pnpm test
 ```
 
 Writing standards: [`docs/blog-guidelines.md`](docs/blog-guidelines.md)
+
+## Adding a benchmark
+
+Create `src/content/benchmarks/{slug}.md` with the frontmatter above. Hub and (if `takeable`) `/evals/{slug}/take/` routes are generated automatically. For a new MCQ takeable bench, add a pack builder under `scripts/evals/` and wire `mountMcqEval` in the take page (see HellaSwag / MMLU-Pro).
 
 ## Testing
 

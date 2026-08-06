@@ -7,7 +7,12 @@ export const publicPages = [
   '/blog/efficient-llm-inference-thesis/',
   '/evals/',
   '/evals/hellaswag/',
+  '/evals/hellaswag/take/',
   '/evals/hellaswag/about/',
+  '/evals/mmlu-pro/',
+  '/evals/mmlu-pro/take/',
+  '/evals/gpqa-diamond/',
+  '/evals/scicode/',
   '/evals/leaderboard/',
 ] as const;
 

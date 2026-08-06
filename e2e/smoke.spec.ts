@@ -25,17 +25,26 @@ test.describe('core pages', () => {
     await expect(page.getByRole('heading', { name: 'Why take a subset yourself', level: 2 })).toBeVisible();
     await expect(page.getByRole('table')).toBeVisible();
     await expect(page.getByText('Claude Mythos 5')).toBeVisible();
-    await expect(page.getByRole('table').getByRole('link', { name: 'Take a subset' })).toBeVisible();
+    await expect(page.getByRole('table').getByRole('link', { name: 'Take a subset' }).first()).toBeVisible();
     await expect(page.getByText('not reported').first()).toBeVisible();
   });
 
-  test('hellaswag eval page mounts runner', async ({ page }) => {
+  test('hellaswag hub and take pages', async ({ page }) => {
     await page.goto('/evals/hellaswag/');
+    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Take a .* subset/i })).toBeVisible();
 
+    await page.goto('/evals/hellaswag/take/');
     await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Start eval' })).toBeVisible();
     await expect(page.getByLabel('Run seed')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Methodology', exact: true })).toBeVisible();
+  });
+
+  test('legacy hellaswag about URL redirects to hub', async ({ page }) => {
+    await page.goto('/evals/hellaswag/about/');
+    await expect(page).toHaveURL(/\/evals\/hellaswag\/?$/);
+    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
   });
 
   test('legacy leaderboard URL redirects to evals', async ({ page }) => {

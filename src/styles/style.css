@@ -1504,6 +1504,7 @@ footer {
 }
 
 .eval-model-kind,
+.eval-published,
 .eval-tier {
     display: block;
     font-size: 0.78rem;
@@ -1521,6 +1522,29 @@ footer {
 .eval-params {
     white-space: nowrap;
     color: var(--text-muted);
+}
+
+.eval-bench-meta {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+    margin: 1.25rem 0 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.eval-bench-meta dt {
+    font-size: 0.78rem;
+    color: var(--text-nav);
+    margin: 0;
+}
+
+.eval-bench-meta dd {
+    margin: 0.15rem 0 0;
+    color: var(--text-body);
+    word-break: break-word;
+}
+
+.eval-bench-body {
+    margin-top: 1.5rem;
 }
 
 .eval-score-cell {

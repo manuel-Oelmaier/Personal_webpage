@@ -1,0 +1,140 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type BenchEntry = CollectionEntry<'benchmarks'>;
+
+interface Props {
+	entry: BenchEntry;
+}
+
+type StaticPath = {
+	params: { slug: string };
+	props: Props;
+};
+
+function formatPubDate(date: Date): string {
+	return date.toLocaleDateString('en-US', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+	});
+}
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+	const entries = await getCollection('benchmarks');
+	return entries.map((entry) => ({
+		params: { slug: entry.id.replace(/\.md$/, '') },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const {
+	title,
+	description,
+	purpose,
+	scoring,
+	citation,
+	datasetSource,
+	questionCount,
+	categories,
+	published,
+	takeable,
+} = entry.data;
+const slug = entry.id.replace(/\.md$/, '');
+const formattedDate = formatPubDate(published);
+---
+
+<BaseLayout
+	title={`${title} · Evals | Manuel Oelmaier`}
+	description={description}
+	ogTitle={`${title} · Evals`}
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Benchmark</p>
+			<h1>{title}</h1>
+			<p class="section-subtitle">{description}</p>
+			<p class="eval-page-links">
+				<a href="/evals/">Leaderboard</a>
+				{
+					takeable && (
+						<>
+							·
+							<a href={`/evals/${slug}/take/`}>Take a subset</a>
+						</>
+					)
+				}
+			</p>
+		</header>
+
+		<div class="eval-body">
+			<aside class="post-problem" aria-labelledby="eval-purpose-heading">
+				<span class="post-problem-label" id="eval-purpose-heading">Purpose</span>
+				<p>{purpose}</p>
+			</aside>
+
+			<dl class="eval-bench-meta">
+				<div>
+					<dt>Scoring</dt>
+					<dd>{scoring}</dd>
+				</div>
+				<div>
+					<dt>Human draw size</dt>
+					<dd>{takeable ? `${questionCount} items` : 'not takeable'}</dd>
+				</div>
+				<div>
+					<dt>Published</dt>
+					<dd>
+						<time datetime={published.toISOString()}>{formattedDate}</time>
+					</dd>
+				</div>
+				<div>
+					<dt>Citation</dt>
+					<dd>
+						<a href={citation.url} rel="noopener noreferrer">{citation.label}</a>
+					</dd>
+				</div>
+				<div>
+					<dt>Dataset</dt>
+					<dd>
+						<a href={datasetSource} rel="noopener noreferrer">{datasetSource}</a>
+					</dd>
+				</div>
+				{
+					categories.length > 0 && (
+						<div>
+							<dt>Categories</dt>
+							<dd>{categories.join(' · ')}</dd>
+						</div>
+					)
+				}
+			</dl>
+
+			{
+				takeable ? (
+					<p class="eval-nav-row">
+						<a class="button-link" href={`/evals/${slug}/take/`}>
+							Take a {questionCount}-item subset
+						</a>
+						<a class="button-link button-outline" href="/evals/">
+							See LLM leaderboard
+						</a>
+					</p>
+				) : (
+					<p class="eval-help">
+						This benchmark is not offered as a browser mini-eval (see methodology below).
+						Compare citeable model numbers on the <a href="/evals/">leaderboard</a>.
+					</p>
+				)
+			}
+
+			<div class="post-content eval-bench-body">
+				<Content />
+			</div>
+		</div>
+	</section>
+</BaseLayout>
