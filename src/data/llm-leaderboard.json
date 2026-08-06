@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "title": "LLM context leaderboard",
+  "updated": "2026-08-06",
+  "caveat": "Protocols differ across papers and system cards. The human mini-eval uses a seeded 20-item HellaSwag draw scored on answered items only — not comparable to full-benchmark rows without that framing.",
+  "columns": {
+    "hellaswag": "HellaSwag",
+    "knowledge": "Knowledge / reasoning"
+  },
+  "rows": [
+    {
+      "id": "human-hellaswag",
+      "name": "Human (HellaSwag paper)",
+      "tier": "human",
+      "paramsLabel": "—",
+      "openWeights": false,
+      "scores": {
+        "hellaswag": {
+          "value": 95.6,
+          "display": "95.6%",
+          "metric": "HellaSwag accuracy",
+          "setting": "human performance, original paper",
+          "source": {
+            "label": "Zellers et al., ACL 2019",
+            "url": "https://arxiv.org/abs/1905.07830"
+          }
+        },
+        "knowledge": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "—",
+          "setting": "—",
+          "source": {
+            "label": "HellaSwag paper (human ceiling for this task)",
+            "url": "https://arxiv.org/abs/1905.07830"
+          }
+        }
+      }
+    },
+    {
+      "id": "claude-mythos-5",
+      "name": "Claude Mythos 5",
+      "tier": "proprietary",
+      "paramsLabel": "frontier (closed)",
+      "openWeights": false,
+      "cardUrl": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+      "scores": {
+        "hellaswag": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "HellaSwag",
+          "setting": "not in system card",
+          "source": {
+            "label": "Claude Fable 5 & Mythos 5 System Card",
+            "url": "https://www-cdn.anthropic.com/d00db56fa754a1b115b6dd7cb2e3c342ee809620.pdf"
+          }
+        },
+        "knowledge": {
+          "value": 94.1,
+          "display": "94.1%",
+          "metric": "GPQA Diamond",
+          "setting": "avg over 5 trials (system card §8.8)",
+          "source": {
+            "label": "System card §8.8 GPQA Diamond",
+            "url": "https://www-cdn.anthropic.com/d00db56fa754a1b115b6dd7cb2e3c342ee809620.pdf"
+          }
+        }
+      }
+    },
+    {
+      "id": "claude-opus-4",
+      "name": "Claude Opus 4",
+      "tier": "proprietary",
+      "paramsLabel": "frontier (closed)",
+      "openWeights": false,
+      "cardUrl": "https://www.anthropic.com/news/claude-4",
+      "scores": {
+        "hellaswag": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "HellaSwag",
+          "setting": "not in launch benchmarks",
+          "source": {
+            "label": "Introducing Claude 4",
+            "url": "https://www.anthropic.com/news/claude-4"
+          }
+        },
+        "knowledge": {
+          "value": 87.4,
+          "display": "87.4%",
+          "metric": "MMMLU",
+          "setting": "no extended thinking (launch post)",
+          "source": {
+            "label": "Anthropic Claude 4 launch post",
+            "url": "https://www.anthropic.com/news/claude-4"
+          }
+        }
+      }
+    },
+    {
+      "id": "gemini-2-5-pro",
+      "name": "Gemini 2.5 Pro",
+      "tier": "proprietary",
+      "paramsLabel": "frontier (closed)",
+      "openWeights": false,
+      "cardUrl": "https://arxiv.org/abs/2507.06261",
+      "scores": {
+        "hellaswag": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "HellaSwag",
+          "setting": "not in Gemini 2.5 report tables cited here",
+          "source": {
+            "label": "Gemini 2.5 technical report",
+            "url": "https://arxiv.org/abs/2507.06261"
+          }
+        },
+        "knowledge": {
+          "value": 84.0,
+          "display": "84.0%",
+          "metric": "GPQA Diamond",
+          "setting": "single attempt (pass@1), model card / launch figures",
+          "source": {
+            "label": "Gemini 2.5 Pro launch reporting",
+            "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-model-thinking-updates-march-2025/"
+          }
+        }
+      }
+    },
+    {
+      "id": "minimax-m2-7",
+      "name": "MiniMax-M2.7",
+      "tier": "open-large",
+      "paramsLabel": "229B MoE",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+      "scores": {
+        "hellaswag": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "HellaSwag",
+          "setting": "not on model card",
+          "source": {
+            "label": "MiniMax-M2.7 Hugging Face card",
+            "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+          }
+        },
+        "knowledge": {
+          "value": 56.22,
+          "display": "56.22%",
+          "metric": "SWE-bench Pro",
+          "setting": "reported on HF model card evaluation results",
+          "source": {
+            "label": "HF card · SWE-bench Pro",
+            "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+          }
+        }
+      }
+    },
+    {
+      "id": "qwen3-6-27b",
+      "name": "Qwen3.6-27B",
+      "tier": "open-mid",
+      "paramsLabel": "27B (FP8 card)",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/Qwen/Qwen3.6-27B-FP8",
+      "scores": {
+        "hellaswag": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "HellaSwag",
+          "setting": "not in Language table on card",
+          "source": {
+            "label": "Qwen3.6-27B-FP8 model card",
+            "url": "https://huggingface.co/Qwen/Qwen3.6-27B-FP8"
+          }
+        },
+        "knowledge": {
+          "value": 86.2,
+          "display": "86.2%",
+          "metric": "MMLU-Pro",
+          "setting": "Language table, Qwen3.6-27B column",
+          "source": {
+            "label": "HF card · MMLU-Pro",
+            "url": "https://huggingface.co/Qwen/Qwen3.6-27B-FP8"
+          }
+        }
+      }
+    },
+    {
+      "id": "gemma3-27b-pt",
+      "name": "Gemma 3 27B (PT)",
+      "tier": "open-mid",
+      "paramsLabel": "27B",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/google/gemma-3-27b-pt",
+      "scores": {
+        "hellaswag": {
+          "value": 85.6,
+          "display": "85.6%",
+          "metric": "HellaSwag",
+          "setting": "10-shot, pretrained (Table 9)",
+          "source": {
+            "label": "Gemma 3 Technical Report, arXiv:2503.19786",
+            "url": "https://arxiv.org/abs/2503.19786"
+          }
+        },
+        "knowledge": {
+          "value": 78.6,
+          "display": "78.6%",
+          "metric": "MMLU",
+          "setting": "5-shot scoring, pretrained appendix",
+          "source": {
+            "label": "Gemma 3 Technical Report (PT MMLU)",
+            "url": "https://arxiv.org/abs/2503.19786"
+          }
+        }
+      }
+    },
+    {
+      "id": "qwen2-5-32b",
+      "name": "Qwen2.5-32B",
+      "tier": "open-mid",
+      "paramsLabel": "32B",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/Qwen/Qwen2.5-32B",
+      "scores": {
+        "hellaswag": {
+          "value": 85.2,
+          "display": "85.2%",
+          "metric": "HellaSwag",
+          "setting": "10-shot, base (Table 3)",
+          "source": {
+            "label": "Qwen2.5 Technical Report, arXiv:2412.15115",
+            "url": "https://arxiv.org/abs/2412.15115"
+          }
+        },
+        "knowledge": {
+          "value": 83.3,
+          "display": "83.3%",
+          "metric": "MMLU",
+          "setting": "5-shot, base (Table 3)",
+          "source": {
+            "label": "Qwen2.5 Technical Report, Table 3",
+            "url": "https://arxiv.org/abs/2412.15115"
+          }
+        }
+      }
+    },
+    {
+      "id": "gemma3-12b-pt",
+      "name": "Gemma 3 12B (PT)",
+      "tier": "open-small",
+      "paramsLabel": "12B",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/google/gemma-3-12b-pt",
+      "scores": {
+        "hellaswag": {
+          "value": 84.2,
+          "display": "84.2%",
+          "metric": "HellaSwag",
+          "setting": "10-shot, pretrained (Table 9)",
+          "source": {
+            "label": "Gemma 3 Technical Report, arXiv:2503.19786",
+            "url": "https://arxiv.org/abs/2503.19786"
+          }
+        },
+        "knowledge": {
+          "value": 74.5,
+          "display": "74.5%",
+          "metric": "MMLU",
+          "setting": "5-shot scoring, pretrained appendix",
+          "source": {
+            "label": "Gemma 3 Technical Report (PT MMLU)",
+            "url": "https://arxiv.org/abs/2503.19786"
+          }
+        }
+      }
+    },
+    {
+      "id": "qwen2-5-14b",
+      "name": "Qwen2.5-14B",
+      "tier": "open-small",
+      "paramsLabel": "14B",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/Qwen/Qwen2.5-14B",
+      "scores": {
+        "hellaswag": {
+          "value": 85.0,
+          "display": "85.0%",
+          "metric": "HellaSwag",
+          "setting": "10-shot, base (Table 3)",
+          "source": {
+            "label": "Qwen2.5 Technical Report, arXiv:2412.15115",
+            "url": "https://arxiv.org/abs/2412.15115"
+          }
+        },
+        "knowledge": {
+          "value": 79.7,
+          "display": "79.7%",
+          "metric": "MMLU",
+          "setting": "5-shot, base (Table 3)",
+          "source": {
+            "label": "Qwen2.5 Technical Report, Table 3",
+            "url": "https://arxiv.org/abs/2412.15115"
+          }
+        }
+      }
+    },
+    {
+      "id": "bert-large",
+      "name": "BERT-large (2019)",
+      "tier": "historical",
+      "paramsLabel": "~340M",
+      "openWeights": true,
+      "hfUrl": "https://huggingface.co/google-bert/bert-large-uncased",
+      "scores": {
+        "hellaswag": {
+          "value": 47.3,
+          "display": "~47%",
+          "metric": "HellaSwag",
+          "setting": "original paper baseline era",
+          "source": {
+            "label": "Zellers et al., ACL 2019",
+            "url": "https://arxiv.org/abs/1905.07830"
+          }
+        },
+        "knowledge": {
+          "value": null,
+          "display": "—",
+          "missingReason": "not reported",
+          "metric": "—",
+          "setting": "—",
+          "source": {
+            "label": "HellaSwag paper",
+            "url": "https://arxiv.org/abs/1905.07830"
+          }
+        }
+      }
+    }
+  ]
+}

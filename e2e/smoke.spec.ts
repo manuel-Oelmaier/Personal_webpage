@@ -18,12 +18,30 @@ test.describe('core pages', () => {
     await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(3);
   });
 
+  test('evals hub lists mini-eval and leaderboard', async ({ page }) => {
+    await page.goto('/evals/');
+
+    await expect(page.getByRole('heading', { name: 'Test yourself like a model', level: 1 })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'HellaSwag mini-eval' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'LLM context leaderboard' })).toBeVisible();
+  });
+
   test('hellaswag eval page mounts runner', async ({ page }) => {
     await page.goto('/evals/hellaswag/');
 
     await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Start eval' })).toBeVisible();
     await expect(page.getByLabel('Run seed')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Methodology', exact: true })).toBeVisible();
+  });
+
+  test('leaderboard renders citeable rows', async ({ page }) => {
+    await page.goto('/evals/leaderboard/');
+
+    await expect(page.getByRole('heading', { name: 'LLM leaderboard', level: 1 })).toBeVisible();
+    await expect(page.getByRole('table')).toBeVisible();
+    await expect(page.getByText('Claude Mythos 5')).toBeVisible();
+    await expect(page.getByText('not reported').first()).toBeVisible();
   });
 
   test('blog post opens from archive', async ({ page }) => {

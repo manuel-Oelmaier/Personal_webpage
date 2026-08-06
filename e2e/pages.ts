@@ -5,7 +5,10 @@ export const publicPages = [
   '/blog/homelab-ai-platform/',
   '/blog/homelab-dns-filtering/',
   '/blog/efficient-llm-inference-thesis/',
+  '/evals/',
   '/evals/hellaswag/',
+  '/evals/hellaswag/about/',
+  '/evals/leaderboard/',
 ] as const;
 
 export type PublicPage = (typeof publicPages)[number];

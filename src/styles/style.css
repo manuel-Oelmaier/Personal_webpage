@@ -165,6 +165,8 @@ a {
 .eval-cite a,
 .eval-method a,
 .eval-help a,
+.eval-lede a,
+.eval-page-links a,
 .post-content :is(p, li) a:not(.cite):not(.reference-link) {
     font-style: italic;
     color: var(--teal-display);
@@ -1406,4 +1408,128 @@ footer {
     color: var(--text-secondary);
     line-height: var(--line-height-prose);
     margin-bottom: 0.75rem;
+}
+
+.eval-page-wide {
+    max-width: min(1100px, 100%);
+}
+
+.eval-page-links {
+    margin-top: 0.85rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.eval-hub {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+}
+
+.eval-hub-item h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+}
+
+.eval-hub-item h2 a {
+    color: var(--text-heading);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+.eval-hub-item p {
+    color: var(--text-secondary);
+    line-height: var(--line-height-prose);
+}
+
+.eval-table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.eval-lb-table th,
+.eval-lb-table td {
+    font-size: 0.92rem;
+}
+
+.eval-lb-row.is-you {
+    background: var(--teal-surface);
+}
+
+.eval-rank {
+    font-family: var(--mono-font);
+    color: var(--teal-prose);
+    white-space: nowrap;
+}
+
+.eval-model a {
+    color: var(--teal-display);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+.eval-model-kind,
+.eval-tier {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-nav);
+    margin-top: 0.2rem;
+}
+
+.eval-you-badge {
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+    color: var(--teal-muted);
+    margin: 0.35rem 0;
+}
+
+.eval-params {
+    white-space: nowrap;
+    color: var(--text-muted);
+}
+
+.eval-score-cell {
+    min-width: 9rem;
+    vertical-align: top;
+}
+
+.eval-score-num,
+.eval-best-num {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--text-heading);
+}
+
+.eval-best-num {
+    font-weight: 700;
+    color: var(--teal-display);
+}
+
+.eval-metric-label,
+.eval-missing-reason {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-nav);
+    margin: 0.15rem 0 0.35rem;
+}
+
+.eval-missing {
+    color: var(--text-muted);
+    font-family: var(--mono-font);
+}
+
+.eval-cite-link {
+    display: block;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--teal-display);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    line-height: 1.4;
+}
+
+.eval-score-cell.is-missing .eval-cite-link {
+    opacity: 0.85;
 }

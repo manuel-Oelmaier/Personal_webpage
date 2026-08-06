@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="HellaSwag methodology | Manuel Oelmaier"
+	description="Protocol for the HellaSwag human mini-eval: pool, seed, answered-only scoring, and citation caveats."
+	ogTitle="HellaSwag methodology"
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Methodology</p>
+			<h1>HellaSwag mini-eval</h1>
+			<p class="section-subtitle">
+				How this site samples, scores, and cites the benchmark.
+			</p>
+			<p class="eval-page-links">
+				<a href="/evals/hellaswag/">Take the quiz</a>
+				·
+				<a href="/evals/leaderboard/">LLM leaderboard</a>
+			</p>
+		</header>
+
+		<div class="eval-body">
+			<section class="eval-method" aria-labelledby="eval-method-heading">
+				<h2 id="eval-method-heading">Protocol</h2>
+				<ul class="eval-method-list">
+					<li>
+						Pool: <strong>1000</strong> items sampled once from the HellaSwag
+						<code>validation</code> split (labels are public; the test split is not used).
+					</li>
+					<li>
+						Each run draws <strong>20</strong> items with a deterministic seed (shown in the UI and URL).
+						Same seed → same questions. Sized for roughly five minutes of careful reading — no timer.
+					</li>
+					<li>
+						<strong>Scoring:</strong> exact match on the choice letter (A–D), client-side, over
+						<strong>answered items only</strong>. Unanswered items are excluded from the denominator.
+						You may hand in early. Answer keys ship with the page for offline scoring — not an anti-cheat setup.
+					</li>
+					<li>
+						A small drawn subset is <strong>not</strong> a full HellaSwag evaluation. Treat scores as a
+						personal probe. Uncertainty / error bars for small <em>n</em> are planned later.
+					</li>
+				</ul>
+			</section>
+
+			<section class="eval-reference" aria-labelledby="eval-ref-heading">
+				<h2 id="eval-ref-heading">Published full-eval context</h2>
+				<p class="eval-help">
+					Orientation only — different protocol from this site’s 20-item draw. See the
+					<a href="/evals/leaderboard/">LLM leaderboard</a> for citeable model rows.
+				</p>
+				<table class="eval-table">
+					<thead>
+						<tr>
+							<th scope="col">System</th>
+							<th scope="col">HellaSwag</th>
+							<th scope="col">Source</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Human performance</td>
+							<td>~95.6%</td>
+							<td><a href="https://arxiv.org/abs/1905.07830" rel="noopener noreferrer">arXiv:1905.07830</a></td>
+						</tr>
+						<tr>
+							<td>BERT-large (2019)</td>
+							<td>~47%</td>
+							<td>Same paper (baseline era)</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="eval-cite" aria-labelledby="eval-cite-heading">
+				<h2 id="eval-cite-heading">Data &amp; license</h2>
+				<p>
+					Dataset:
+					<a href="https://huggingface.co/datasets/Rowan/hellaswag" rel="noopener noreferrer">
+						Rowan/hellaswag
+					</a>
+					· Paper:
+					<a href="https://arxiv.org/abs/1905.07830" rel="noopener noreferrer">arXiv:1905.07830</a>
+					· License: MIT
+				</p>
+				<p class="eval-help">
+					Zellers et al., <em>HellaSwag: Can a Machine Really Finish Your Sentence?</em>, ACL 2019.
+					See also <a href="/evals/hellaswag/ATTRIBUTION.md">ATTRIBUTION.md</a> in the shipped pack.
+				</p>
+				<p class="eval-help">
+					Write-up on evaluation methodology: forthcoming on the <a href="/blog/">blog</a>.
+				</p>
+			</section>
+		</div>
+	</section>
+</BaseLayout>

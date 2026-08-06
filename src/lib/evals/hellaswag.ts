@@ -100,7 +100,9 @@ function escapeHtml(text: string): string {
 
 function readSeedFromUrl(): string | null {
 	const raw = new URLSearchParams(window.location.search).get('seed');
-	if (!raw) {return null;}
+	if (!raw) {
+		return null;
+	}
 	const cleaned = raw.trim().toLowerCase();
 	return /^[0-9a-f]{4,16}$/.test(cleaned) ? cleaned : null;
 }
@@ -109,6 +111,17 @@ function setSeedInUrl(seed: string): void {
 	const url = new URL(window.location.href);
 	url.searchParams.set('seed', seed);
 	history.replaceState(null, '', url.toString());
+}
+
+function leaderboardHref(pct: number, answered: number, drawn: number, seed: string, early: boolean): string {
+	const params = new URLSearchParams({
+		you: String(pct),
+		answered: String(answered),
+		drawn: String(drawn),
+		seed,
+		early: early ? '1' : '0',
+	});
+	return `/evals/leaderboard/?${params.toString()}`;
 }
 
 export function mountHellaSwagEval(root: HTMLElement): void {
@@ -121,20 +134,29 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 	const answers = new Map<string, string | null>();
 	let loadError: string | null = null;
 	let loading = false;
+	let handedInEarly = false;
 
 	const byId = (): Map<string, EvalItem> => {
-		if (!pack) {return new Map<string, EvalItem>();}
+		if (!pack) {
+			return new Map<string, EvalItem>();
+		}
 		return new Map(pack.items.map((item) => [item.id, item]));
 	};
 
 	async function ensureData(): Promise<void> {
-		if (pack && key) {return;}
+		if (pack && key) {
+			return;
+		}
 		loading = true;
 		render();
 		try {
 			const [packRes, keyRes] = await Promise.all([fetch(PACK_URL), fetch(KEY_URL)]);
-			if (!packRes.ok) {throw new Error(`Failed to load pack (${packRes.status})`);}
-			if (!keyRes.ok) {throw new Error(`Failed to load answer key (${keyRes.status})`);}
+			if (!packRes.ok) {
+				throw new Error(`Failed to load pack (${packRes.status})`);
+			}
+			if (!keyRes.ok) {
+				throw new Error(`Failed to load answer key (${keyRes.status})`);
+			}
 			pack = (await packRes.json()) as EvalPack;
 			key = (await keyRes.json()) as AnswerKey;
 			loadError = null;
@@ -147,7 +169,9 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 	}
 
 	function startRun(): void {
-		if (!pack || !key) {return;}
+		if (!pack || !key) {
+			return;
+		}
 		const input = root.querySelector<HTMLInputElement>('#eval-seed-input');
 		const typed = input?.value.trim().toLowerCase() ?? '';
 		if (typed) {
@@ -163,8 +187,11 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 		loadError = null;
 		drawnIds = drawItemIds(pack.items, seed, pack.sessionDefaults.drawSize);
 		answers.clear();
-		for (const id of drawnIds) {answers.set(id, null);}
+		for (const id of drawnIds) {
+			answers.set(id, null);
+		}
 		index = 0;
+		handedInEarly = false;
 		phase = 'running';
 		setSeedInUrl(seed);
 		render();
@@ -173,9 +200,25 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 
 	function selectChoice(choiceId: string): void {
 		const itemId = drawnIds[index];
-		if (!itemId) {return;}
+		if (!itemId) {
+			return;
+		}
 		answers.set(itemId, choiceId);
 		render();
+	}
+
+	function finishRun(early: boolean): void {
+		const answered = [...answers.values()].filter((v) => v !== null).length;
+		if (answered === 0) {
+			loadError = 'Answer at least one question before finishing.';
+			render();
+			return;
+		}
+		loadError = null;
+		handedInEarly = early;
+		phase = 'results';
+		render();
+		root.querySelector<HTMLElement>('#eval-results')?.focus();
 	}
 
 	function goNext(): void {
@@ -185,21 +228,38 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 			root.querySelector<HTMLElement>('.eval-prompt')?.focus();
 			return;
 		}
-		phase = 'results';
-		render();
-		root.querySelector<HTMLElement>('#eval-results')?.focus();
+		finishRun(false);
 	}
 
 	function goPrev(): void {
-		if (index <= 0) {return;}
+		if (index <= 0) {
+			return;
+		}
 		index -= 1;
 		render();
 		root.querySelector<HTMLElement>('.eval-prompt')?.focus();
 	}
 
+	function handInEarly(): void {
+		const answered = [...answers.values()].filter((v) => v !== null).length;
+		if (answered === 0) {
+			loadError = 'Answer at least one question before handing in.';
+			render();
+			return;
+		}
+		const ok = window.confirm(
+			`Hand in early with ${answered} of ${drawnIds.length} answered?\nUnanswered items are excluded from your score.`,
+		);
+		if (ok) {
+			finishRun(true);
+		}
+	}
+
 	function buildRecords(): AnswerRecord[] {
 		const answerKey = key;
-		if (!answerKey) {return [];}
+		if (!answerKey) {
+			return [];
+		}
 		return drawnIds.map((itemId) => ({
 			itemId,
 			chosen: answers.get(itemId) ?? null,
@@ -207,17 +267,31 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 		}));
 	}
 
-	function scoreSummary(records: AnswerRecord[]): { correct: number; total: number; pct: number } {
-		const total = records.length;
-		const correct = records.filter((r) => r.chosen !== null && r.chosen === r.correct).length;
-		const pct = total === 0 ? 0 : Math.round((correct / total) * 1000) / 10;
-		return { correct, total, pct };
+	/** Accuracy over answered items only; unanswered excluded from the denominator. */
+	function scoreSummary(records: AnswerRecord[]): {
+		correct: number;
+		answered: number;
+		drawn: number;
+		unanswered: number;
+		pct: number;
+	} {
+		const drawn = records.length;
+		const answeredRecords = records.filter((r) => r.chosen !== null);
+		const answered = answeredRecords.length;
+		const correct = answeredRecords.filter((r) => r.chosen === r.correct).length;
+		const unanswered = drawn - answered;
+		const pct = answered === 0 ? 0 : Math.round((correct / answered) * 1000) / 10;
+		return { correct, answered, drawn, unanswered, pct };
 	}
 
 	function onKeydown(event: KeyboardEvent): void {
-		if (phase !== 'running') {return;}
+		if (phase !== 'running') {
+			return;
+		}
 		const target = event.target;
-		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {return;}
+		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+			return;
+		}
 
 		const map: Record<string, string> = {
 			'1': 'A',
@@ -262,34 +336,45 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 	function bind(): void {
 		root.querySelector('#eval-start')?.addEventListener('click', () => {
 			void ensureData().then(() => {
-				if (pack && key && !loadError) {startRun();}
+				if (pack && key && !loadError) {
+					startRun();
+				}
 			});
 		});
 		root.querySelector('#eval-new-seed')?.addEventListener('click', () => {
 			seed = generateSeed();
 			const input = root.querySelector<HTMLInputElement>('#eval-seed-input');
-			if (input) {input.value = seed;}
+			if (input) {
+				input.value = seed;
+			}
 			setSeedInUrl(seed);
 		});
 		root.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
 			btn.addEventListener('click', () => {
 				const id = btn.dataset.choice;
-				if (id) {selectChoice(id);}
+				if (id) {
+					selectChoice(id);
+				}
 			});
 		});
 		root.querySelector('#eval-next')?.addEventListener('click', goNext);
 		root.querySelector('#eval-prev')?.addEventListener('click', goPrev);
+		root.querySelector('#eval-hand-in')?.addEventListener('click', handInEarly);
 		root.querySelector('#eval-restart')?.addEventListener('click', () => {
 			phase = 'setup';
 			seed = generateSeed();
 			drawnIds = [];
 			answers.clear();
 			index = 0;
+			handedInEarly = false;
+			loadError = null;
 			setSeedInUrl(seed);
 			render();
 		});
 		root.querySelector('#eval-replay')?.addEventListener('click', () => {
 			phase = 'setup';
+			handedInEarly = false;
+			loadError = null;
 			render();
 		});
 	}
@@ -303,7 +388,8 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 				<h2 id="eval-setup-heading">Start a run</h2>
 				<p class="eval-lede">
 					Draw ${pack?.sessionDefaults.drawSize ?? 20} items from the pool (${poolNote}).
-					The seed is shown so you can share or replay the same subset.
+					Score uses answered items only; you can hand in early.
+					Full protocol on the methodology page (link in the header).
 				</p>
 				<label class="eval-seed-label" for="eval-seed-input">Run seed</label>
 				<div class="eval-seed-row">
@@ -328,7 +414,9 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 			return `<p class="eval-error">No item at index ${index}</p>`;
 		}
 		const item = map.get(itemId);
-		if (!item) {return `<p class="eval-error">Missing item ${escapeHtml(itemId)}</p>`;}
+		if (!item) {
+			return `<p class="eval-error">Missing item ${escapeHtml(itemId)}</p>`;
+		}
 		const chosen = answers.get(itemId) ?? null;
 		const activity = item.meta?.activity_label
 			? `<p class="eval-meta">${escapeHtml(item.meta.activity_label)}</p>`
@@ -355,13 +443,15 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 				${activity}
 				<p class="eval-prompt" tabindex="-1">${escapeHtml(item.prompt)}</p>
 				<div class="eval-choices" role="group" aria-label="Answer choices">${choices}</div>
+				${loadError ? `<p class="eval-error" role="alert">${escapeHtml(loadError)}</p>` : ''}
 				<div class="eval-nav-row">
 					<button type="button" class="button-link button-outline" id="eval-prev" ${index === 0 ? 'disabled' : ''}>Previous</button>
 					<button type="button" class="button-link" id="eval-next" ${chosen ? '' : 'disabled'}>
 						${isLast ? 'Finish' : 'Next'}
 					</button>
+					<button type="button" class="button-link button-outline" id="eval-hand-in">Hand in early</button>
 				</div>
-				<p class="eval-help">Keys: A–D or 1–4 to answer, Enter / → for next.</p>
+				<p class="eval-help">Keys: A–D or 1–4 to answer, Enter / → for next. Unanswered items are excluded from the score.</p>
 			</section>
 		`;
 	}
@@ -369,8 +459,8 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 	function renderResults(): string {
 		const map = byId();
 		const records = buildRecords();
-		const { correct, total, pct } = scoreSummary(records);
-		const unanswered = records.filter((r) => r.chosen === null).length;
+		const { correct, answered, drawn, unanswered, pct } = scoreSummary(records);
+		const boardHref = leaderboardHref(pct, answered, drawn, seed, handedInEarly);
 		const review = records
 			.map((record, i) => {
 				const item = map.get(record.itemId);
@@ -395,16 +485,17 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 		return `
 			<section class="eval-panel" id="eval-results" tabindex="-1" aria-labelledby="eval-results-heading">
 				<h2 id="eval-results-heading">Results</h2>
-				<p class="eval-score">${correct} / ${total} correct (${pct}%)</p>
+				<p class="eval-score">${correct} / ${answered} correct (${pct}%)</p>
 				<p class="eval-seed-chip">Seed <code>${escapeHtml(seed)}</code> — share the URL to replay this draw.</p>
-				${unanswered ? `<p class="eval-help">${unanswered} unanswered counted as incorrect.</p>` : ''}
+				${handedInEarly ? '<p class="eval-help">Handed in early.</p>' : ''}
+				${unanswered ? `<p class="eval-help">${unanswered} unanswered excluded from the score (denominator = ${answered} answered of ${drawn} drawn).</p>` : ''}
 				<p class="eval-caveat">
-					This is a ${total}-item draw from a ${pack?.source.poolSize ?? '—'}-item pool,
-					not a full HellaSwag validation run. Do not treat the percentage as comparable
-					to published model leaderboards without that caveat.
+					This is a ${drawn}-item draw from a ${pack?.source.poolSize ?? '—'}-item pool,
+					scored on answered items only — not a full HellaSwag validation run.
 				</p>
 				<div class="eval-nav-row">
-					<button type="button" class="button-link" id="eval-replay">Same seed again</button>
+					<a class="button-link" href="${escapeHtml(boardHref)}">See where you rank</a>
+					<button type="button" class="button-link button-outline" id="eval-replay">Same seed again</button>
 					<button type="button" class="button-link button-outline" id="eval-restart">New seed</button>
 				</div>
 				<h3 class="eval-review-title">Item review</h3>
@@ -414,15 +505,21 @@ export function mountHellaSwagEval(root: HTMLElement): void {
 	}
 
 	function render(): void {
-		if (phase === 'setup') {root.innerHTML = renderSetup();}
-		else if (phase === 'running') {root.innerHTML = renderRunning();}
-		else {root.innerHTML = renderResults();}
+		if (phase === 'setup') {
+			root.innerHTML = renderSetup();
+		} else if (phase === 'running') {
+			root.innerHTML = renderRunning();
+		} else {
+			root.innerHTML = renderResults();
+		}
 		bind();
 	}
 
 	document.addEventListener('keydown', onKeydown);
 	void ensureData().then(() => {
-		if (phase === 'setup') {render();}
+		if (phase === 'setup') {
+			render();
+		}
 	});
 	render();
 }

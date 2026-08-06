@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Evals | Manuel Oelmaier"
+	description="Human mini-evals and a citeable LLM context leaderboard — start with HellaSwag."
+	ogTitle="Evals | Manuel Oelmaier"
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Evals</p>
+			<h1>Test yourself like a model</h1>
+			<p class="section-subtitle">
+				Serious mini-evals with published protocol caveats — not a game leaderboard.
+			</p>
+		</header>
+
+		<div class="eval-hub">
+			<article class="eval-hub-item">
+				<h2><a href="/evals/hellaswag/">HellaSwag mini-eval</a></h2>
+				<p>Seeded 20-item draw from a 1000-item validation pool. Answered-only scoring; hand in early anytime.</p>
+			</article>
+			<article class="eval-hub-item">
+				<h2><a href="/evals/hellaswag/about/">Methodology</a></h2>
+				<p>Pool construction, seed replay, scoring rules, and dataset citation.</p>
+			</article>
+			<article class="eval-hub-item">
+				<h2><a href="/evals/leaderboard/">LLM context leaderboard</a></h2>
+				<p>Frontier to local open-weight rows with source links. Insert your mini-eval score after a run.</p>
+			</article>
+		</div>
+	</section>
+</BaseLayout>
