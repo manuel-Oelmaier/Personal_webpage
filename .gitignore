@@ -16,6 +16,7 @@ yarn-error.log*
 
 dist/
 .astro
+scripts/evals/.cache/
 
 /playwright-report/
 /test-results/

@@ -7,11 +7,13 @@
 **Live site:** [manueloelmaier.de](https://manueloelmaier.de)
 
 Personal portfolio and technical blog for Manuel Oelmaier — software engineer focused on AI/LLM systems. Built with aggressive minimalism: fast, accessible, no cookies, no tracking.
+JSON-LD for SEO, open graph for clean previews.
 
 ## What's here
 
 - **Homepage** — hero, featured work, project showcase, and contact
 - **Blog** — problem-first engineering posts (homelab, LLM inference, infrastructure)
+- **Evals** — HellaSwag human mini-eval (`/evals/hellaswag/`); seeded 20-item draws from a 1000-item pool
 - **RSS feed** — `/rss.xml` for subscribers
 - **Open Graph** — rich link previews on LinkedIn, X, WhatsApp, Discord, and more
 - **CV** — downloadable PDF from the hero and nav
@@ -32,14 +34,15 @@ Personal portfolio and technical blog for Manuel Oelmaier — software engineer 
 
 ```
 ├── src/
-│   ├── pages/          # Routes (index, blog, RSS)
+│   ├── pages/          # Routes (index, blog, evals, RSS)
 │   ├── layouts/        # BaseLayout (meta, OG, JSON-LD)
+│   ├── lib/evals/      # Client-side human mini-eval runner
 │   ├── content/blog/   # Blog posts (Markdown + frontmatter)
 │   ├── styles/         # Global CSS
 │   └── assets/         # Images, icons, project screenshots
-├── public/             # Static files (CV, OG images, robots.txt)
+├── public/             # Static files (CV, OG, eval JSON packs, robots.txt)
 ├── e2e/                # Playwright tests
-├── scripts/            # OG generator, link checker, GitHub activity fetch
+├── scripts/            # OG generator, eval pack builders, link checker
 ├── docs/               # Internal writing & review guidelines
 └── goals.md            # Site positioning and homepage contract
 ```

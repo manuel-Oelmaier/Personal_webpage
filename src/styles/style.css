@@ -162,6 +162,9 @@ a {
 
 .card p a,
 .blog-intro a,
+.eval-cite a,
+.eval-method a,
+.eval-help a,
 .post-content :is(p, li) a:not(.cite):not(.reference-link) {
     font-style: italic;
     color: var(--teal-display);
@@ -1099,4 +1102,308 @@ footer {
         font-size: 0.75rem;
         letter-spacing: 0.03em;
     }
+}
+
+/* ── HellaSwag / eval mini-benchmark ─────────────── */
+
+.eval-page {
+    max-width: var(--content-narrow);
+    margin: 0 auto;
+    padding: 2rem 0 var(--section-gap);
+}
+
+.eval-kicker {
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--teal-muted);
+    margin-bottom: 0.75rem;
+}
+
+.eval-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.eval-method-list {
+    margin: 1rem 0 0 1.25rem;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: var(--line-height-prose);
+}
+
+.eval-method-list li + li {
+    margin-top: 0.75rem;
+}
+
+.eval-method-list code,
+.eval-seed-chip code,
+.eval-help code {
+    font-family: var(--mono-font);
+    font-size: 0.9em;
+    color: var(--teal-display);
+}
+
+.eval-root {
+    min-height: 12rem;
+}
+
+.eval-panel {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.eval-panel h2 {
+    color: var(--text-heading);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+}
+
+.eval-lede {
+    color: var(--text-secondary);
+    line-height: var(--line-height-prose);
+    margin-bottom: 1.25rem;
+}
+
+.eval-seed-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-nav);
+    margin-bottom: 0.4rem;
+}
+
+.eval-seed-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.eval-seed-input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.35rem;
+    background: var(--bg-surface);
+    color: var(--text-heading);
+    font-family: var(--mono-font);
+    font-size: 1rem;
+}
+
+.eval-seed-input:focus-visible {
+    outline: 2px solid var(--teal-ui);
+    outline-offset: 2px;
+}
+
+.eval-help {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0.5rem 0 1rem;
+}
+
+.eval-error {
+    color: hsl(0, 70%, 72%);
+    margin: 0.75rem 0;
+}
+
+.eval-run-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 1rem;
+}
+
+.eval-progress {
+    font-family: var(--mono-font);
+    color: var(--teal-prose);
+    font-size: 0.95rem;
+}
+
+.eval-seed-chip {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.eval-meta {
+    font-size: 0.85rem;
+    color: var(--text-nav);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.eval-prompt {
+    color: var(--text-heading);
+    font-size: 1.15rem;
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+}
+
+.eval-prompt:focus {
+    outline: none;
+}
+
+.eval-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+}
+
+.eval-choice {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    text-align: left;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    line-height: 1.55;
+}
+
+.eval-choice:hover {
+    border-color: var(--teal-border);
+    color: var(--text-heading);
+    background: var(--teal-surface);
+}
+
+.eval-choice.is-selected {
+    border-color: var(--teal-ui);
+    color: var(--text-heading);
+    background: var(--teal-surface);
+}
+
+.eval-choice:focus-visible {
+    outline: 2px solid var(--teal-ui);
+    outline-offset: 2px;
+}
+
+.eval-choice-id {
+    font-family: var(--mono-font);
+    font-weight: 600;
+    color: var(--teal-display);
+}
+
+.eval-nav-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.button-link:disabled,
+.eval-choice:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.eval-score {
+    font-size: 1.75rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-heading);
+    margin: 0.5rem 0 1rem;
+}
+
+.eval-caveat {
+    color: var(--text-secondary);
+    line-height: var(--line-height-prose);
+    margin: 1rem 0;
+    padding-left: 0.85rem;
+    border-left: 2px solid var(--teal-border);
+}
+
+.eval-review-title {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-heading);
+    font-size: 1.1rem;
+}
+
+.eval-review-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.eval-review-item {
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--border-faint);
+}
+
+.eval-review-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--mono-font);
+    font-size: 0.85rem;
+    color: var(--text-nav);
+    margin-bottom: 0.35rem;
+}
+
+.eval-review-status {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.eval-review-item.is-correct .eval-review-status {
+    color: var(--teal-display);
+}
+
+.eval-review-item.is-wrong .eval-review-status,
+.eval-review-item.is-skipped .eval-review-status {
+    color: hsl(20, 70%, 70%);
+}
+
+.eval-review-prompt {
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 0.35rem;
+}
+
+.eval-review-answers {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.eval-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.98rem;
+}
+
+.eval-table th,
+.eval-table td {
+    text-align: left;
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--border-faint);
+    color: var(--text-secondary);
+    vertical-align: top;
+}
+
+.eval-table th {
+    color: var(--text-heading);
+    font-weight: 600;
+}
+
+.eval-cite p {
+    color: var(--text-secondary);
+    line-height: var(--line-height-prose);
+    margin-bottom: 0.75rem;
 }

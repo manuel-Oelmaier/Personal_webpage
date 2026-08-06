@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="HellaSwag human mini-eval | Manuel Oelmaier"
+	description="Take a seeded 20-question draw from a HellaSwag validation pool — same multiple-choice format used to evaluate language models."
+	ogTitle="HellaSwag human mini-eval"
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Human mini-eval</p>
+			<h1>HellaSwag</h1>
+			<p class="section-subtitle">
+				Commonsense sentence completion — finish the context by choosing the most plausible ending.
+			</p>
+		</header>
+
+		<div class="eval-body">
+			<section class="eval-method" aria-labelledby="eval-method-heading">
+				<h2 id="eval-method-heading">Methodology</h2>
+				<ul class="eval-method-list">
+					<li>
+						Pool: <strong>1000</strong> items sampled once from the HellaSwag
+						<code>validation</code> split (labels are public; the test split is not used).
+					</li>
+					<li>
+						Each run draws <strong>20</strong> items with a deterministic seed (shown in the UI and URL).
+						Same seed → same questions. Sized for roughly five minutes of careful reading — no timer.
+					</li>
+					<li>
+						Scoring is exact match on the choice letter (A–D), client-side. Answer keys ship with the
+						page so this works offline after load; this is not an anti-cheat setup.
+					</li>
+					<li>
+						A 20-item draw is <strong>not</strong> a full HellaSwag evaluation. Treat scores as a
+						personal probe, not as leaderboard-comparable numbers.
+					</li>
+				</ul>
+			</section>
+
+			<div id="eval-root" class="eval-root"></div>
+
+			<section class="eval-reference" aria-labelledby="eval-ref-heading">
+				<h2 id="eval-ref-heading">Reference accuracies (full eval, different protocol)</h2>
+				<p class="eval-help">
+					Published figures on the full benchmark for orientation only — not matched to this 20-item draw.
+				</p>
+				<table class="eval-table">
+					<thead>
+						<tr>
+							<th scope="col">System</th>
+							<th scope="col">HellaSwag (approx.)</th>
+							<th scope="col">Note</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Human performance</td>
+							<td>~95%</td>
+							<td>From the original paper</td>
+						</tr>
+						<tr>
+							<td>BERT-large (2019)</td>
+							<td>~47%</td>
+							<td>Original paper baseline era</td>
+						</tr>
+						<tr>
+							<td>Modern large LLMs</td>
+							<td>~85–95%+</td>
+							<td>Varies by model and prompting; check current leaderboards</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="eval-cite" aria-labelledby="eval-cite-heading">
+				<h2 id="eval-cite-heading">Data &amp; license</h2>
+				<p>
+					Dataset:
+					<a href="https://huggingface.co/datasets/Rowan/hellaswag" rel="noopener noreferrer">
+						Rowan/hellaswag
+					</a>
+					· Paper:
+					<a href="https://arxiv.org/abs/1905.07830" rel="noopener noreferrer">arXiv:1905.07830</a>
+					· License: MIT
+				</p>
+				<p class="eval-help">
+					Zellers et al., <em>HellaSwag: Can a Machine Really Finish Your Sentence?</em>, ACL 2019.
+					See also <a href="/evals/hellaswag/ATTRIBUTION.md">ATTRIBUTION.md</a> in the shipped pack.
+				</p>
+				<p class="eval-help">
+					Write-up on evaluation methodology: forthcoming on the <a href="/blog/">blog</a>.
+				</p>
+			</section>
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	import { mountHellaSwagEval } from '../../lib/evals/hellaswag';
+
+	const root = document.getElementById('eval-root');
+	if (root) {
+		mountHellaSwagEval(root);
+	}
+</script>

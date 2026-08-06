@@ -18,6 +18,14 @@ test.describe('core pages', () => {
     await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(3);
   });
 
+  test('hellaswag eval page mounts runner', async ({ page }) => {
+    await page.goto('/evals/hellaswag/');
+
+    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Start eval' })).toBeVisible();
+    await expect(page.getByLabel('Run seed')).toBeVisible();
+  });
+
   test('blog post opens from archive', async ({ page }) => {
     await page.goto('/blog/');
     await page.getByRole('link', { name: 'Read More' }).first().click();
