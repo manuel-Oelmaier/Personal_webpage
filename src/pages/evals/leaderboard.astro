@@ -3,14 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-	title="Redirecting to Evals | Manuel Oelmaier"
-	description="The LLM leaderboard lives at /evals/."
+	title="Redirecting | Manuel Oelmaier"
+	description="The LLM board lives on the benchmarks blog post."
 >
 	<section class="fade-in eval-page">
 		<header class="page-header">
 			<h1>Moved</h1>
 			<p class="section-subtitle">
-				The leaderboard is now on the <a id="evals-redirect" href="/evals/">Evals</a> page.
+				The board is in
+				<a id="evals-redirect" href="/blog/feeling-llm-benchmarks/#evals-board">
+					What a leaderboard percentage actually feels like
+				</a>.
 			</p>
 		</header>
 	</section>
@@ -18,7 +21,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <script is:inline>
 	const search = window.location.search;
-	const target = `/evals/${search}`;
+	const hash = search ? '' : '#evals-board';
+	const target = `/blog/feeling-llm-benchmarks/${search}${hash}`;
 	const link = document.getElementById('evals-redirect');
 	if (link instanceof HTMLAnchorElement) {
 		link.href = target;

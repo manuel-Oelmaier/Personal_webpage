@@ -1,7 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
+import EvalsBoard from '../../components/evals/EvalsBoard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogSlug } from '../../lib/blog';
 
 type BlogEntry = CollectionEntry<'blog'>;
 
@@ -25,7 +27,7 @@ function formatPubDate(date: Date): string {
 export async function getStaticPaths(): Promise<StaticPath[]> {
     const blogEntries = await getCollection('blog');
     return blogEntries.map((entry) => ({
-        params: { slug: entry.id.replace('.md', '') },
+        params: { slug: blogSlug(entry.id) },
         props: { entry },
     }));
 }
@@ -36,9 +38,10 @@ const { title, description, pubDate, tags, problem } = entry.data;
 const isMeta = tags.includes('meta');
 const formattedDate = formatPubDate(pubDate);
 const tagLine = tags.length > 0 ? ` • ${tags.join(', ')}` : '';
-const readingTime = Math.ceil(entry.body.split(/\s+/).length / 200);
+const readingTime = Math.ceil((entry.body ?? '').split(/\s+/).length / 200);
 
-const slug = entry.id.replace('.md', '');
+const slug = blogSlug(entry.id);
+const isEvalsPost = slug === 'feeling-llm-benchmarks';
 const site = Astro.site ?? new URL('https://manueloelmaier.de');
 const postUrl = new URL(`/blog/${slug}/`, site);
 const ogImage = `/og/blog/${slug}.jpg`;
@@ -76,7 +79,7 @@ const articleSchema = {
     articlePublishedTime={publishedIso}
     jsonLd={articleSchema}
 >
-    <article class="fade-in blog-post">
+    <article class={`fade-in blog-post${isEvalsPost ? ' blog-post-evals' : ''}`}>
         <h1 class="post-title">{title}</h1>
         <p class="post-meta">Published on {formattedDate}{tagLine} · {readingTime} min read</p>
         <hr class="post-divider" />
@@ -89,7 +92,7 @@ const articleSchema = {
         )}
 
         <div class="post-content">
-            <Content />
+            <Content components={{ EvalsBoard }} />
         </div>
 
         <div class="post-footer">

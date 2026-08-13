@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
+import { blogSlug, rssContent } from '../lib/blog';
 
 export async function GET(context: APIContext): Promise<Response> {
   const blogEntries = (await getCollection('blog')).sort(
@@ -15,9 +16,9 @@ export async function GET(context: APIContext): Promise<Response> {
     customData: '<language>en-us</language>',
     description: 'Problem-first write-ups on infrastructure, AI, and engineering.',
     items: blogEntries.map((entry) => ({
-      content: entry.body,
+      content: rssContent(entry.body),
       description: entry.data.description,
-      link: `/blog/${entry.id.replace('.md', '')}/`,
+      link: `/blog/${blogSlug(entry.id)}/`,
       pubDate: entry.data.pubDate,
       title: entry.data.title,
     })),

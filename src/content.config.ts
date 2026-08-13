@@ -22,6 +22,9 @@ const benchmarks = defineCollection({
       url: z.string().url(),
     }),
     datasetSource: z.string().url(),
+    /** Full upstream benchmark size (all questions / subproblems). */
+    datasetSize: z.number().int().positive(),
+    /** Human mini-eval draw size when takeable. */
     questionCount: z.number().int().positive(),
     categories: z.array(z.string()).default([]),
     published: z.coerce.date(),

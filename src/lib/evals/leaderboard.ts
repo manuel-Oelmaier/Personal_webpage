@@ -1,39 +1,46 @@
 /**
- * LLM context leaderboard — insert You-row, bold column bests, take-subset column links.
+ * LLM context leaderboard — AA scores, averages, You-row helpers (pure).
  */
 
-type ScoreCell = {
+import type { TakeableScoreKey, YouRun, YouScoresStore } from './youScores';
+import { mostRecentBench } from './youScores';
+
+export type ScoreCell = {
 	value: number | null;
 	display: string;
 	missingReason?: string;
-	metric: string;
-	setting: string;
-	source: { label: string; url: string };
 };
 
-type ScoreKey = 'mmlu_pro' | 'gpqa_diamond' | 'scicode' | 'hellaswag';
+export type ScoreKey = 'gpqa_diamond' | 'mmmu_pro' | 'scicode';
 
-type BenchmarkMeta = {
+export type BenchmarkMeta = {
 	id: string;
 	column: ScoreKey;
 	label: string;
+	datasetSize?: number;
 	takeHref: string | null;
 	aboutHref: string | null;
 	takeLabel: string;
 };
 
-type LeaderboardRow = {
+export type LeaderboardRow = {
 	id: string;
 	name: string;
 	tier: string;
 	published?: string;
 	paramsLabel: string;
-	openWeights: boolean;
 	hfUrl?: string;
 	cardUrl?: string;
 	scores: Record<ScoreKey, ScoreCell>;
 	isYou?: boolean;
-	youMeta?: { answered: number; drawn: number; seed: string; early: boolean; bench: ScoreKey };
+	youRuns?: Partial<Record<TakeableScoreKey, YouRun>>;
+};
+
+type Attribution = {
+	label: string;
+	url: string;
+	methodologyUrl: string;
+	detail: string;
 };
 
 export type LeaderboardData = {
@@ -41,108 +48,130 @@ export type LeaderboardData = {
 	title: string;
 	updated: string;
 	caveat: string;
+	attribution?: Attribution;
 	columns: Record<ScoreKey, string>;
-	rankColumn: ScoreKey;
+	averageKeys: ScoreKey[];
 	benchmarks?: BenchmarkMeta[];
 	rows: LeaderboardRow[];
 };
 
-const SCORE_KEYS: ScoreKey[] = ['mmlu_pro', 'gpqa_diamond', 'scicode', 'hellaswag'];
+export type AverageSummary = {
+	value: number | null;
+	coverage: number;
+	total: number;
+	display: string;
+};
 
-const TIER_LABEL: Record<string, string> = {
+export type ClosestMatch = {
+	row: LeaderboardRow;
+	modelScore: number;
+	delta: number;
+	bench: ScoreKey;
+};
+
+export type SortKey = 'name' | ScoreKey | 'average';
+export type SortDir = 'asc' | 'desc';
+
+export const SCORE_KEYS: ScoreKey[] = ['gpqa_diamond', 'mmmu_pro', 'scicode'];
+
+export const DEFAULT_AVERAGE_KEYS: ScoreKey[] = ['gpqa_diamond', 'mmmu_pro', 'scicode'];
+
+export const YOU_BENCH_LABEL: Record<ScoreKey, string> = {
+	gpqa_diamond: 'GPQA Diamond',
+	mmmu_pro: 'MMMU-Pro',
+	scicode: 'SciCode',
+};
+
+export const YOU_BENCH_HUB: Record<ScoreKey, string> = {
+	gpqa_diamond: '/evals/gpqa-diamond/',
+	mmmu_pro: '/evals/mmmu-pro/',
+	scicode: '/evals/scicode/',
+};
+
+export const TIER_LABEL: Record<string, string> = {
 	proprietary: 'Proprietary frontier',
 	'open-large': 'Open large / MoE',
 	'open-mid': 'Open mid (~27–31B)',
 	'open-small': 'Open small (~9–12B)',
-	historical: 'Historical',
 	you: 'You',
 };
 
-const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
-	{
-		id: 'mmlu-pro',
-		column: 'mmlu_pro',
-		label: 'MMLU-Pro',
-		takeHref: '/evals/mmlu-pro/take/',
-		aboutHref: '/evals/mmlu-pro/',
-		takeLabel: 'Take a subset',
-	},
+export const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
 	{
 		id: 'gpqa-diamond',
 		column: 'gpqa_diamond',
 		label: 'GPQA Diamond',
-		takeHref: null,
+		datasetSize: 198,
+		takeHref: '/evals/gpqa-diamond/take/',
 		aboutHref: '/evals/gpqa-diamond/',
-		takeLabel: 'Pack coming later',
+		takeLabel: 'Take a subset',
+	},
+	{
+		id: 'mmmu-pro',
+		column: 'mmmu_pro',
+		label: 'MMMU-Pro',
+		datasetSize: 1730,
+		takeHref: '/evals/mmmu-pro/take/',
+		aboutHref: '/evals/mmmu-pro/',
+		takeLabel: 'Take a subset',
 	},
 	{
 		id: 'scicode',
 		column: 'scicode',
 		label: 'SciCode',
-		takeHref: null,
+		datasetSize: 338,
+		takeHref: '/evals/scicode/browse/',
 		aboutHref: '/evals/scicode/',
-		takeLabel: 'Not takeable',
-	},
-	{
-		id: 'hellaswag',
-		column: 'hellaswag',
-		label: 'HellaSwag',
-		takeHref: '/evals/hellaswag/take/',
-		aboutHref: '/evals/hellaswag/',
-		takeLabel: 'Take a subset',
+		takeLabel: 'Browse problems',
 	},
 ];
 
-function escapeHtml(text: string): string {
-	return text
-		.replaceAll('&', '&amp;')
-		.replaceAll('<', '&lt;')
-		.replaceAll('>', '&gt;')
-		.replaceAll('"', '&quot;');
+export const DEFAULT_ATTRIBUTION: Attribution = {
+	label: 'Artificial Analysis',
+	url: 'https://artificialanalysis.ai/',
+	methodologyUrl: 'https://artificialanalysis.ai/methodology/intelligence-benchmarking',
+	detail:
+		'GPQA Diamond, MMMU-Pro, and SciCode scores are copied from Artificial Analysis model pages (Intelligence Index).',
+};
+
+export function emptyCell(reason: string): ScoreCell {
+	return { value: null, display: '—', missingReason: reason };
 }
 
-function emptyCell(reason: string, hub: string): ScoreCell {
+export function isScoreKey(key: string): key is ScoreKey {
+	return SCORE_KEYS.includes(key as ScoreKey);
+}
+
+export function computeAverage(row: LeaderboardRow, averageKeys: ScoreKey[]): AverageSummary {
+	const total = averageKeys.length;
+	const values: number[] = [];
+	for (const key of averageKeys) {
+		const v = row.scores[key].value;
+		if (v !== null) {
+			values.push(v);
+		}
+	}
+	const coverage = values.length;
+	if (coverage === 0) {
+		return { value: null, coverage: 0, total, display: '—' };
+	}
+	const mean = values.reduce((a, b) => a + b, 0) / coverage;
+	const rounded = Math.round(mean * 10) / 10;
 	return {
-		value: null,
-		display: '—',
-		missingReason: reason,
-		metric: '—',
-		setting: '—',
-		source: { label: '—', url: hub },
+		value: rounded,
+		coverage,
+		total,
+		display: `${rounded}%`,
 	};
 }
 
-function parseYouFromUrl(): {
-	pct: number;
-	answered: number;
-	drawn: number;
-	seed: string;
-	early: boolean;
-	bench: ScoreKey;
-} | null {
-	const params = new URLSearchParams(window.location.search);
-	const youRaw = params.get('you');
-	const answeredRaw = params.get('answered');
-	if (youRaw === null || answeredRaw === null) {
-		return null;
-	}
-	const pct = Number(youRaw);
-	const answered = Number(answeredRaw);
-	const drawn = Number(params.get('drawn') ?? answered);
-	const seed = (params.get('seed') ?? '').toLowerCase();
-	const early = params.get('early') === '1';
-	const benchRaw = params.get('bench') ?? 'hellaswag';
-	const bench = (SCORE_KEYS.includes(benchRaw as ScoreKey) ? benchRaw : 'hellaswag') as ScoreKey;
-	if (!Number.isFinite(pct) || !Number.isFinite(answered) || answered <= 0) {
-		return null;
-	}
-	return { pct, answered, drawn: Number.isFinite(drawn) ? drawn : answered, seed, early, bench };
-}
-
-function bestValue(rows: LeaderboardRow[], key: ScoreKey): number | null {
+export function bestValue(rows: LeaderboardRow[], key: ScoreKey): number | null {
 	let best: number | null = null;
 	for (const row of rows) {
-		const v = row.scores[key]?.value ?? null;
+		if (row.isYou) {
+			continue;
+		}
+		const v = row.scores[key].value;
 		if (v === null) {
 			continue;
 		}
@@ -153,193 +182,181 @@ function bestValue(rows: LeaderboardRow[], key: ScoreKey): number | null {
 	return best;
 }
 
-function modelLink(row: LeaderboardRow): string {
-	const href = row.hfUrl ?? row.cardUrl;
-	if (!href) {
-		return escapeHtml(row.name);
+export function findClosest(models: LeaderboardRow[], pct: number, bench: ScoreKey): ClosestMatch | null {
+	let best: ClosestMatch | null = null;
+	for (const row of models) {
+		if (row.isYou) {
+			continue;
+		}
+		const modelScore = row.scores[bench].value;
+		if (modelScore === null) {
+			continue;
+		}
+		const delta = Math.abs(modelScore - pct);
+		if (best === null || delta < best.delta) {
+			best = { row, modelScore, delta, bench };
+		}
 	}
-	const kind = row.hfUrl ? 'Hugging Face' : 'model card';
-	return `<a href="${escapeHtml(href)}" rel="noopener noreferrer">${escapeHtml(row.name)}</a>
-		<span class="eval-model-kind">${kind}</span>`;
+	return best;
 }
 
-function renderScoreCell(cell: ScoreCell, isBest: boolean): string {
-	const bestClass = isBest ? ' eval-best' : '';
-	if (cell.value === null) {
-		return `<td class="eval-score-cell is-missing">
-			<span class="eval-missing">—</span>
-			<span class="eval-missing-reason">${escapeHtml(cell.missingReason ?? 'not reported')}</span>
-			<a class="eval-cite-link" href="${escapeHtml(cell.source.url)}" rel="noopener noreferrer">${escapeHtml(cell.source.label)}</a>
-		</td>`;
+export function displayName(row: LeaderboardRow): string {
+	if (row.isYou || !row.paramsLabel) {
+		return row.name;
 	}
-	const inner = isBest
-		? `<strong class="eval-best-num">${escapeHtml(cell.display)}</strong>`
-		: `<span class="eval-score-num">${escapeHtml(cell.display)}</span>`;
-	return `<td class="eval-score-cell${bestClass}">
-		${inner}
-		<span class="eval-metric-label">${escapeHtml(cell.metric)}</span>
-		<a class="eval-cite-link" href="${escapeHtml(cell.source.url)}" rel="noopener noreferrer">${escapeHtml(cell.source.label)}</a>
-	</td>`;
+	if (/closed|frontier/i.test(row.paramsLabel) && !/\d/.test(row.paramsLabel)) {
+		return row.name;
+	}
+	const name = row.name;
+	const params = row.paramsLabel;
+	const nameLower = name.toLowerCase();
+	const sizeMatch = params.match(/(\d+(?:\.\d+)?)\s*B\b/i);
+	if (sizeMatch?.[1] && nameLower.includes(`${sizeMatch[1].toLowerCase()}b`)) {
+		return name;
+	}
+	if (nameLower.includes(params.toLowerCase())) {
+		return name;
+	}
+	return `${name} (${params})`;
 }
 
-function sortRows(rows: LeaderboardRow[], rankColumn: ScoreKey): LeaderboardRow[] {
-	const secondary: ScoreKey = rankColumn === 'mmlu_pro' ? 'gpqa_diamond' : 'mmlu_pro';
+export function buildYouRow(store: YouScoresStore, columns: Record<ScoreKey, string>): LeaderboardRow | null {
+	const keys = (Object.keys(store) as TakeableScoreKey[]).filter((k) => store[k]);
+	if (keys.length === 0) {
+		return null;
+	}
+	const scores = Object.fromEntries(
+		SCORE_KEYS.map((key) => [key, emptyCell('not applicable')]),
+	) as Record<ScoreKey, ScoreCell>;
+	const youRuns: Partial<Record<TakeableScoreKey, YouRun>> = {};
+	for (const key of keys) {
+		const run = store[key];
+		if (!run) {
+			continue;
+		}
+		youRuns[key] = run;
+		scores[key] = { value: run.pct, display: `${run.pct}%` };
+	}
+	const labels = keys.map((k) => columns[k]);
+	const name = keys.length === 1
+		? `You (${labels[0]} mini-eval)`
+		: 'You (mini-evals)';
+	return {
+		id: 'you-mini-eval',
+		name,
+		tier: 'you',
+		paramsLabel: 'human run',
+		isYou: true,
+		youRuns,
+		scores,
+	};
+}
+
+export function resolveAverageKeys(data: LeaderboardData): ScoreKey[] {
+	const keys = data.averageKeys.length > 0 ? data.averageKeys : DEFAULT_AVERAGE_KEYS;
+	return keys.filter((k): k is ScoreKey => isScoreKey(k));
+}
+
+export function orderedBenchmarks(data: LeaderboardData): BenchmarkMeta[] {
+	const benchmarks = data.benchmarks ?? DEFAULT_BENCHMARKS;
+	return SCORE_KEYS.map((key) => benchmarks.find((b) => b.column === key)).filter(
+		(b): b is BenchmarkMeta => Boolean(b),
+	);
+}
+
+export function bestAverage(
+	rows: LeaderboardRow[],
+	averages: Map<string, AverageSummary>,
+	averageKeys: ScoreKey[],
+): number | null {
+	let bestAvg: number | null = null;
+	for (const row of rows) {
+		if (row.isYou) {
+			continue;
+		}
+		const avg = averages.get(row.id);
+		if (avg?.value === null || avg === undefined) {
+			continue;
+		}
+		if (avg.coverage < averageKeys.length) {
+			continue;
+		}
+		if (bestAvg === null || avg.value > bestAvg) {
+			bestAvg = avg.value;
+		}
+	}
+	return bestAvg;
+}
+
+function compareNullable(
+	a: number | null,
+	b: number | null,
+	dir: SortDir,
+): number {
+	if (a !== null && b !== null && a !== b) {
+		return dir === 'desc' ? b - a : a - b;
+	}
+	if (a !== null && b === null) {
+		return -1;
+	}
+	if (a === null && b !== null) {
+		return 1;
+	}
+	return 0;
+}
+
+/** Sort rows; You row always pinned to top. */
+export function sortRows(
+	rows: LeaderboardRow[],
+	averages: Map<string, AverageSummary>,
+	sortKey: SortKey,
+	sortDir: SortDir,
+): LeaderboardRow[] {
 	return [...rows].sort((a, b) => {
-		const av = a.scores[rankColumn]?.value ?? null;
-		const bv = b.scores[rankColumn]?.value ?? null;
-		if (av !== null && bv !== null && av !== bv) {
-			return bv - av;
-		}
-		if (av !== null && bv === null) {
+		if (a.isYou && !b.isYou) {
 			return -1;
 		}
-		if (av === null && bv !== null) {
+		if (!a.isYou && b.isYou) {
 			return 1;
 		}
-		const as = a.scores[secondary]?.value ?? null;
-		const bs = b.scores[secondary]?.value ?? null;
-		if (as !== null && bs !== null && as !== bs) {
-			return bs - as;
+
+		if (sortKey === 'name') {
+			const cmp = a.name.localeCompare(b.name);
+			return sortDir === 'asc' ? cmp : -cmp;
 		}
-		if (as !== null && bs === null) {
-			return -1;
+
+		if (sortKey === 'average') {
+			const aa = averages.get(a.id) ?? { value: null, coverage: 0, total: 0, display: '—' };
+			const bb = averages.get(b.id) ?? { value: null, coverage: 0, total: 0, display: '—' };
+			if (sortDir === 'desc' && aa.coverage !== bb.coverage) {
+				return bb.coverage - aa.coverage;
+			}
+			if (sortDir === 'asc' && aa.coverage !== bb.coverage) {
+				return aa.coverage - bb.coverage;
+			}
+			const byValue = compareNullable(aa.value, bb.value, sortDir);
+			if (byValue !== 0) {
+				return byValue;
+			}
+			return a.name.localeCompare(b.name);
 		}
-		if (as === null && bs !== null) {
-			return 1;
+
+		const av = a.scores[sortKey].value;
+		const bv = b.scores[sortKey].value;
+		const byValue = compareNullable(av, bv, sortDir);
+		if (byValue !== 0) {
+			return byValue;
 		}
 		return a.name.localeCompare(b.name);
 	});
 }
 
-function columnHeader(bench: BenchmarkMeta): string {
-	const take = bench.takeHref
-		? `<a class="eval-take-link" href="${escapeHtml(bench.takeHref)}">${escapeHtml(bench.takeLabel)}</a>`
-		: `<span class="eval-take-soon">${escapeHtml(bench.takeLabel)}</span>`;
-	const about = bench.aboutHref
-		? ` · <a class="eval-th-about" href="${escapeHtml(bench.aboutHref)}">method</a>`
-		: '';
-	return `<th scope="col" class="eval-th-bench">
-		<span class="eval-th-label">${escapeHtml(bench.label)}</span>
-		<span class="eval-th-actions">${take}${about}</span>
-	</th>`;
-}
-
-export function mountLeaderboard(root: HTMLElement, data: LeaderboardData): void {
-	const you = parseYouFromUrl();
-	const rows: LeaderboardRow[] = data.rows.map((r) => ({ ...r, scores: { ...r.scores } }));
-	const benchmarks = data.benchmarks ?? DEFAULT_BENCHMARKS;
-	const rankColumn = data.rankColumn ?? 'mmlu_pro';
-	const ordered = SCORE_KEYS.map((key) => benchmarks.find((b) => b.column === key)).filter(
-		(b): b is BenchmarkMeta => Boolean(b),
-	);
-
-	if (you) {
-		const hubByBench: Record<ScoreKey, string> = {
-			mmlu_pro: '/evals/mmlu-pro/',
-			gpqa_diamond: '/evals/gpqa-diamond/',
-			scicode: '/evals/scicode/',
-			hellaswag: '/evals/hellaswag/',
-		};
-		const hub = hubByBench[you.bench];
-		const label = data.columns[you.bench] ?? you.bench;
-		const scores = Object.fromEntries(
-			SCORE_KEYS.map((key) => [key, emptyCell('not applicable', hub)]),
-		) as Record<ScoreKey, ScoreCell>;
-		scores[you.bench] = {
-			value: you.pct,
-			display: `${you.pct}%`,
-			metric: `${label} mini-eval`,
-			setting: `answered-only · n=${you.answered}/${you.drawn}`,
-			source: {
-				label: 'This site’s seeded draw',
-				url: hub,
-			},
-		};
-		rows.push({
-			id: 'you-mini-eval',
-			name: `You (${label} mini-eval)`,
-			tier: 'you',
-			paramsLabel: 'human run',
-			openWeights: false,
-			isYou: true,
-			youMeta: {
-				answered: you.answered,
-				drawn: you.drawn,
-				seed: you.seed,
-				early: you.early,
-				bench: you.bench,
-			},
-			scores,
-		});
+export function primaryYouBench(
+	store: YouScoresStore,
+	urlBench: TakeableScoreKey | null,
+): TakeableScoreKey | null {
+	if (urlBench && store[urlBench]) {
+		return urlBench;
 	}
-
-	const sorted = sortRows(rows, rankColumn);
-	const bests = Object.fromEntries(SCORE_KEYS.map((key) => [key, bestValue(sorted, key)])) as Record<
-		ScoreKey,
-		number | null
-	>;
-
-	let rank = 0;
-	const body = sorted
-		.map((row) => {
-			const hasRank = row.scores[rankColumn]?.value !== null;
-			if (hasRank) {
-				rank += 1;
-			}
-			const rankLabel = hasRank ? String(rank) : '—';
-			const youClass = row.isYou ? ' is-you' : '';
-			const badge = row.youMeta
-				? `<p class="eval-you-badge">answered ${row.youMeta.answered}/${row.youMeta.drawn}`
-					+ (row.youMeta.seed ? ` · seed <code>${escapeHtml(row.youMeta.seed)}</code>` : '')
-					+ (row.youMeta.early ? ' · handed in early' : '')
-					+ `</p>`
-				: '';
-			const published = row.published
-				? `<time class="eval-published" datetime="${escapeHtml(row.published)}">Published ${escapeHtml(row.published)}</time>`
-				: '';
-			const scoreCells = SCORE_KEYS.map((key) => {
-				const cell = row.scores[key] ?? emptyCell('not reported', '/evals/');
-				const best = bests[key];
-				return renderScoreCell(cell, cell.value !== null && best !== null && cell.value === best);
-			}).join('');
-			return `<tr class="eval-lb-row${youClass}">
-				<td class="eval-rank">${rankLabel}</td>
-				<td class="eval-model">
-					${modelLink(row)}
-					${badge}
-					${published}
-					<span class="eval-tier">${escapeHtml(TIER_LABEL[row.tier] ?? row.tier)}</span>
-				</td>
-				<td class="eval-params">${escapeHtml(row.paramsLabel)}</td>
-				${scoreCells}
-			</tr>`;
-		})
-		.join('');
-
-	const headers = ordered.map(columnHeader).join('');
-	const rankLabel = data.columns[rankColumn] ?? rankColumn;
-
-	root.innerHTML = `
-		<p class="eval-caveat">${escapeHtml(data.caveat)}</p>
-		${you ? '' : `<p class="eval-help">Use <strong>Take a subset</strong> in a column header, then return here to insert a <strong>You</strong> row.</p>`}
-		<div class="eval-table-wrap">
-			<table class="eval-table eval-lb-table">
-				<thead>
-					<tr>
-						<th scope="col">Rank</th>
-						<th scope="col">Model</th>
-						<th scope="col">Params</th>
-						${headers}
-					</tr>
-				</thead>
-				<tbody>${body}</tbody>
-			</table>
-		</div>
-		<p class="eval-help">
-			<strong class="eval-best-num">Bold</strong> marks the best numeric value in each score column.
-			Missing cells show “not reported”. Rank uses ${escapeHtml(rankLabel)} when a citeable number exists
-			(then GPQA Diamond as tie-break). HellaSwag is kept as a saturated / often-unreported probe column.
-			This table is meant to be updated as new citeable cards appear — last refresh ${escapeHtml(data.updated)}.
-		</p>
-	`;
+	return mostRecentBench(store);
 }

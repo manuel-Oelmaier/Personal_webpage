@@ -2,11 +2,12 @@
 title: "GPQA Diamond"
 description: "Graduate-level science multiple choice (biology, physics, chemistry) designed to be hard even for domain experts."
 purpose: "Stress-tests deep scientific reasoning on Google-proof questions written by specialists."
-scoring: "exact match · answered-only (human mini-eval when pack ships) · cards often report pass@1 / multi-trial averages"
+scoring: "exact match · answered-only (human mini-eval) · AA reports harness accuracy"
 citation:
   label: "Rein et al., GPQA, 2023"
   url: "https://arxiv.org/abs/2311.12022"
 datasetSource: "https://huggingface.co/datasets/Idavidrein/gpqa"
+datasetSize: 198
 questionCount: 20
 categories:
   - "biology"
@@ -18,10 +19,11 @@ takeable: true
 
 ## Protocol (this site)
 
-- Human mini-eval pack: **coming next** (same MCQ draw pattern as HellaSwag / MMLU-Pro). Hub and leaderboard column are live now so citeable card scores have a home.
-- When the pack ships: 20-item seeded draw, answered-only scoring, client-side keys.
-- Published model scores on the leaderboard come from system cards — protocols differ (thinking budgets, trial averages).
+- Full set: **198** Diamond questions. Pool here: **100** seeded subsample; choices shuffled per item.
+- Each run: **20**-item draw from a hex seed. Answered-only scoring, client-side.
+- Compare against Artificial Analysis scores on the
+  [blog board](/blog/feeling-llm-benchmarks/#evals-board).
 
-## Why it is on the leaderboard
+## Take
 
-GPQA Diamond is a common frontier headline number in 2026. It is also a useful humbling human probe once the take UI is available.
+[Start the GPQA Diamond mini-eval](/evals/gpqa-diamond/take/).

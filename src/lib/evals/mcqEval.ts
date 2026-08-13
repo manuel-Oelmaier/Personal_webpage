@@ -2,13 +2,19 @@
  * Shared MCQ human mini-eval — seeded draw, scoring, and UI for takeable benchmarks.
  */
 
+import { writeYouScore } from './youScores';
+
 export type McqEvalOptions = {
 	benchmarkId: string;
 	packUrl: string;
 	keyUrl: string;
 	hubHref: string;
-	/** Leaderboard score column key (e.g. hellaswag, mmlu_pro). */
+	/** Leaderboard / You-row key (e.g. mmmu_pro, gpqa_diamond). */
 	boardColumn: string;
+	/** Where “closest model” links (defaults to the blog board). */
+	boardHref?: string;
+	/** Start a seeded run as soon as the pack loads (unless ?you= is already set). */
+	autoStart?: boolean;
 };
 
 type Choice = { id: string; text: string };
@@ -17,7 +23,16 @@ type EvalItem = {
 	id: string;
 	prompt: string;
 	choices: Choice[];
-	meta?: { activity_label?: string; category?: string; subject?: string; ind?: number };
+	imageUrls?: string[];
+	meta?: {
+		activity_label?: string;
+		category?: string;
+		subject?: string;
+		subdomain?: string;
+		ind?: number;
+		source_id?: string;
+		difficulty?: string;
+	};
 };
 
 type EvalPack = {
@@ -135,7 +150,8 @@ function leaderboardHref(
 		early: early ? '1' : '0',
 		bench: opts.boardColumn,
 	});
-	return `/evals/?${params.toString()}`;
+	const base = (opts.boardHref ?? '/blog/feeling-llm-benchmarks/').replace(/\?.*$/, '');
+	return `${base}?${params.toString()}#evals-board`;
 }
 
 export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
@@ -217,6 +233,9 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		if (!itemId) {
 			return;
 		}
+		if (answers.get(itemId) !== null && answers.get(itemId) !== undefined) {
+			return;
+		}
 		answers.set(itemId, choiceId);
 		render();
 	}
@@ -231,6 +250,14 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		loadError = null;
 		handedInEarly = early;
 		phase = 'results';
+		const { pct, drawn } = scoreSummary(buildRecords());
+		writeYouScore(opts.boardColumn, {
+			pct,
+			answered,
+			drawn,
+			seed,
+			early,
+		});
 		render();
 		root.querySelector<HTMLElement>('#eval-results')?.focus();
 	}
@@ -252,21 +279,6 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		index -= 1;
 		render();
 		root.querySelector<HTMLElement>('.eval-prompt')?.focus();
-	}
-
-	function handInEarly(): void {
-		const answered = [...answers.values()].filter((v) => v !== null).length;
-		if (answered === 0) {
-			loadError = 'Answer at least one question before handing in.';
-			render();
-			return;
-		}
-		const ok = window.confirm(
-			`Hand in early with ${answered} of ${drawnIds.length} answered?\nUnanswered items are excluded from your score.`,
-		);
-		if (ok) {
-			finishRun(true);
-		}
 	}
 
 	function buildRecords(): AnswerRecord[] {
@@ -296,6 +308,23 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		const unanswered = drawn - answered;
 		const pct = answered === 0 ? 0 : Math.round((correct / answered) * 1000) / 10;
 		return { correct, answered, drawn, unanswered, pct };
+	}
+
+	function progressSummary(): {
+		correct: number;
+		answered: number;
+		drawn: number;
+		pct: number;
+	} {
+		return scoreSummary(buildRecords());
+	}
+
+	function compareHref(early: boolean): string | null {
+		const { answered, drawn, pct } = progressSummary();
+		if (answered === 0) {
+			return null;
+		}
+		return leaderboardHref(opts, pct, answered, drawn, seed, early);
 	}
 
 	function onKeydown(event: KeyboardEvent): void {
@@ -369,9 +398,7 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		});
 		root.querySelector('#eval-next')?.addEventListener('click', goNext);
 		root.querySelector('#eval-prev')?.addEventListener('click', goPrev);
-		root.querySelector('#eval-hand-in')?.addEventListener('click', handInEarly);
 		root.querySelector('#eval-restart')?.addEventListener('click', () => {
-			phase = 'setup';
 			seed = generateSeed();
 			drawnIds = [];
 			answers.clear();
@@ -379,27 +406,43 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 			handedInEarly = false;
 			loadError = null;
 			setSeedInUrl(seed);
+			if (opts.autoStart && pack && key) {
+				startRun();
+				return;
+			}
+			phase = 'setup';
 			render();
 		});
 		root.querySelector('#eval-replay')?.addEventListener('click', () => {
-			phase = 'setup';
 			handedInEarly = false;
 			loadError = null;
+			if (opts.autoStart && pack && key) {
+				startRun();
+				return;
+			}
+			phase = 'setup';
 			render();
 		});
 	}
 
 	function renderSetup(): string {
 		const poolNote = pack
-			? `${pack.source.poolSize} items from <code>${escapeHtml(pack.source.split)}</code>`
+			? `${pack.source.poolSize}-item pool`
 			: 'pool loads when you start';
+		if (loading && opts.autoStart) {
+			return `
+				<section class="eval-panel" aria-labelledby="eval-setup-heading">
+					<h2 id="eval-setup-heading">Loading mini-eval…</h2>
+					<p class="eval-lede">Drawing ${pack?.sessionDefaults.drawSize ?? 20} items from the pool.</p>
+				</section>
+			`;
+		}
 		return `
 			<section class="eval-panel" aria-labelledby="eval-setup-heading">
 				<h2 id="eval-setup-heading">Start a run</h2>
 				<p class="eval-lede">
 					Draw ${pack?.sessionDefaults.drawSize ?? 20} items from the pool (${poolNote}).
-					Score uses answered items only; you can hand in early.
-					Full protocol on the <a href="${escapeHtml(opts.hubHref)}">methodology page</a>.
+					Each answer reveals correct/wrong immediately. Score uses answered items only.
 				</p>
 				<label class="eval-seed-label" for="eval-seed-input">Run seed</label>
 				<div class="eval-seed-row">
@@ -428,40 +471,79 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 			return `<p class="eval-error">Missing item ${escapeHtml(itemId)}</p>`;
 		}
 		const chosen = answers.get(itemId) ?? null;
-		const metaLabel = item.meta?.activity_label ?? item.meta?.category ?? item.meta?.subject;
+		const correct = key?.answers[itemId] ?? null;
+		const revealed = chosen !== null && correct !== null;
+		const isCorrect = revealed && chosen === correct;
+		const metaLabel = item.meta?.activity_label
+			?? item.meta?.category
+			?? item.meta?.subject
+			?? item.meta?.subdomain;
 		const meta = metaLabel ? `<p class="eval-meta">${escapeHtml(metaLabel)}</p>` : '';
+		const images = (item.imageUrls ?? [])
+			.map(
+				(src) =>
+					`<figure class="eval-figure"><img class="eval-item-image" src="${escapeHtml(src)}" alt="Benchmark figure for this question" loading="eager" decoding="async" /></figure>`,
+			)
+			.join('');
 		const choices = item.choices
 			.map((choice) => {
-				const selected = chosen === choice.id;
+				let stateClass = '';
+				if (revealed) {
+					if (choice.id === correct) {
+						stateClass = ' is-correct';
+					} else if (choice.id === chosen) {
+						stateClass = ' is-wrong';
+					} else {
+						stateClass = ' is-dimmed';
+					}
+				} else if (chosen === choice.id) {
+					stateClass = ' is-selected';
+				}
 				return `
-					<button type="button" class="eval-choice${selected ? ' is-selected' : ''}"
-						data-choice="${escapeHtml(choice.id)}" aria-pressed="${selected ? 'true' : 'false'}">
+					<button type="button" class="eval-choice${stateClass}"
+						data-choice="${escapeHtml(choice.id)}"
+						aria-pressed="${chosen === choice.id ? 'true' : 'false'}"
+						${revealed ? 'disabled' : ''}>
 						<span class="eval-choice-id">${escapeHtml(choice.id)}</span>
 						<span class="eval-choice-text">${escapeHtml(choice.text)}</span>
 					</button>
 				`;
 			})
 			.join('');
+		const feedback = revealed
+			? `<p class="eval-feedback ${isCorrect ? 'is-correct' : 'is-wrong'}" role="status">
+					${isCorrect ? 'Correct.' : `Wrong — answer is <strong>${escapeHtml(correct)}</strong>.`}
+				</p>`
+			: '';
 		const isLast = index === drawnIds.length - 1;
 		const lastLetter = item.choices[item.choices.length - 1]?.id ?? 'D';
+		const soFar = progressSummary();
+		const compare = compareHref(true);
+		const compareBtn = compare
+			? `<a class="button-link button-outline" href="${escapeHtml(compare)}">See how you compare so far (${soFar.pct}% · ${soFar.answered} answered)</a>`
+			: '';
 		return `
 			<section class="eval-panel eval-run" aria-labelledby="eval-run-heading">
 				<div class="eval-run-bar">
 					<p id="eval-run-heading" class="eval-progress">Question ${index + 1} / ${drawnIds.length}</p>
-					<p class="eval-seed-chip">Seed <code>${escapeHtml(seed)}</code></p>
+					<p class="eval-seed-chip">Seed <code>${escapeHtml(seed)}</code>
+						${soFar.answered > 0 ? ` · so far ${soFar.correct}/${soFar.answered} (${soFar.pct}%)` : ''}
+					</p>
 				</div>
 				${meta}
 				<p class="eval-prompt" tabindex="-1">${escapeHtml(item.prompt)}</p>
+				${images}
 				<div class="eval-choices" role="group" aria-label="Answer choices">${choices}</div>
+				${feedback}
 				${loadError ? `<p class="eval-error" role="alert">${escapeHtml(loadError)}</p>` : ''}
 				<div class="eval-nav-row">
 					<button type="button" class="button-link button-outline" id="eval-prev" ${index === 0 ? 'disabled' : ''}>Previous</button>
 					<button type="button" class="button-link" id="eval-next" ${chosen ? '' : 'disabled'}>
 						${isLast ? 'Finish' : 'Next'}
 					</button>
-					<button type="button" class="button-link button-outline" id="eval-hand-in">Hand in early</button>
+					${compareBtn}
 				</div>
-				<p class="eval-help">Keys: A–${escapeHtml(lastLetter)} or 1–${item.choices.length} to answer, Enter / → for next. Unanswered items are excluded from the score.</p>
+				<p class="eval-help">Keys: A–${escapeHtml(lastLetter)} or 1–${item.choices.length} to answer, Enter / → for next.</p>
 			</section>
 		`;
 	}
@@ -478,12 +560,16 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 				const ok = record.chosen !== null && record.chosen === record.correct;
 				const status = record.chosen === null ? 'skipped' : ok ? 'correct' : 'wrong';
 				const prompt = item ? escapeHtml(item.prompt) : record.itemId;
+				const thumb = item?.imageUrls?.[0]
+					? `<img class="eval-review-thumb" src="${escapeHtml(item.imageUrls[0])}" alt="" loading="lazy" />`
+					: '';
 				return `
 					<li class="eval-review-item is-${status}">
 						<p class="eval-review-head">
 							<span>#${i + 1}</span>
 							<span class="eval-review-status">${status}</span>
 						</p>
+						${thumb}
 						<p class="eval-review-prompt">${prompt}</p>
 						<p class="eval-review-answers">
 							Your answer: <strong>${record.chosen ?? '—'}</strong>
@@ -503,9 +589,11 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 				<p class="eval-caveat">
 					This is a ${drawn}-item draw from a ${pack?.source.poolSize ?? '—'}-item pool
 					(${escapeHtml(benchTitle)}), scored on answered items only — not a full-benchmark run.
+					Use the review below to notice what was hard; then compare against Artificial Analysis
+					scores on the board for closest model.
 				</p>
 				<div class="eval-nav-row">
-					<a class="button-link" href="${escapeHtml(boardHref)}">See where you rank</a>
+					<a class="button-link" href="${escapeHtml(boardHref)}">See how you compare</a>
 					<button type="button" class="button-link button-outline" id="eval-replay">Same seed again</button>
 					<button type="button" class="button-link button-outline" id="eval-restart">New seed</button>
 				</div>
@@ -527,7 +615,16 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 	}
 
 	document.addEventListener('keydown', onKeydown);
+	const skipAutoStart = new URLSearchParams(window.location.search).has('you');
 	void ensureData().then(() => {
+		if (loadError) {
+			render();
+			return;
+		}
+		if (opts.autoStart && !skipAutoStart && phase === 'setup' && pack && key) {
+			startRun();
+			return;
+		}
 		if (phase === 'setup') {
 			render();
 		}

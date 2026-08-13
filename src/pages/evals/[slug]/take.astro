@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 type BenchEntry = CollectionEntry<'benchmarks'>;
@@ -14,6 +14,14 @@ type StaticPath = {
 	props: Props;
 };
 
+function formatPubDate(date: Date): string {
+	return date.toLocaleDateString('en-US', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+	});
+}
+
 export async function getStaticPaths(): Promise<StaticPath[]> {
 	const entries = await getCollection('benchmarks');
 	return entries
@@ -25,9 +33,30 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 }
 
 const { entry } = Astro.props;
-const { title, description } = entry.data;
+const { Content } = await render(entry);
+const {
+	title,
+	description,
+	purpose,
+	scoring,
+	citation,
+	datasetSource,
+	datasetSize,
+	questionCount,
+	categories,
+	published,
+} = entry.data;
 const slug = entry.id.replace(/\.md$/, '');
-const hasPack = slug === 'hellaswag' || slug === 'mmlu-pro';
+const formattedDate = formatPubDate(published);
+const packBySlug: Record<string, string> = {
+	'mmlu-pro': 'mmlu_pro',
+	'mmmu-pro': 'mmmu_pro',
+	'gpqa-diamond': 'gpqa_diamond',
+};
+const boardColumn = packBySlug[slug] ?? null;
+const hasPack = boardColumn !== null;
+const boardHref = '/blog/feeling-llm-benchmarks/';
+const autoStart = true;
 ---
 
 <BaseLayout
@@ -40,30 +69,79 @@ const hasPack = slug === 'hellaswag' || slug === 'mmlu-pro';
 			<p class="eval-kicker">Human mini-eval</p>
 			<h1>{title}</h1>
 			<p class="section-subtitle">{description}</p>
-			<p class="eval-page-links">
-				<a href="/evals/">Leaderboard</a>
-				·
-				<a href={`/evals/${slug}/`}>Methodology</a>
-			</p>
 		</header>
 
 		<div class="eval-body">
+			<aside class="post-problem" aria-labelledby="eval-purpose-heading">
+				<span class="post-problem-label" id="eval-purpose-heading">Purpose</span>
+				<p>{purpose}</p>
+			</aside>
+
+			<dl class="eval-bench-meta">
+				<div>
+					<dt>Scoring</dt>
+					<dd>{scoring}</dd>
+				</div>
+				<div>
+					<dt>Full benchmark</dt>
+					<dd>{datasetSize.toLocaleString('en-US')} questions</dd>
+				</div>
+				<div>
+					<dt>Human draw size</dt>
+					<dd>{questionCount} of {datasetSize.toLocaleString('en-US')}</dd>
+				</div>
+				<div>
+					<dt>Published</dt>
+					<dd>
+						<time datetime={published.toISOString()}>{formattedDate}</time>
+					</dd>
+				</div>
+				<div>
+					<dt>Citation</dt>
+					<dd>
+						<a href={citation.url} rel="noopener noreferrer">{citation.label}</a>
+					</dd>
+				</div>
+				<div>
+					<dt>Dataset</dt>
+					<dd>
+						<a href={datasetSource} rel="noopener noreferrer">{datasetSource}</a>
+					</dd>
+				</div>
+				{
+					categories.length > 0 && (
+						<div>
+							<dt>Categories</dt>
+							<dd>{categories.join(' · ')}</dd>
+						</div>
+					)
+				}
+			</dl>
+
+			<div class="post-content eval-bench-body">
+				<Content />
+			</div>
+
 			{
-				hasPack ? (
-					<div id="eval-root" class="eval-root" data-bench={slug}></div>
+				hasPack && boardColumn ? (
+					<div
+						id="eval-root"
+						class="eval-root"
+						data-bench={slug}
+						data-board-column={boardColumn}
+						data-board-href={boardHref}
+						data-auto-start={autoStart ? '1' : '0'}
+					></div>
 				) : (
 					<section class="eval-panel" aria-labelledby="eval-soon-heading">
 						<h2 id="eval-soon-heading">Pack not built yet</h2>
 						<p class="eval-lede">
 							The {title} hub and leaderboard column are live. The seeded human draw for this
-							benchmark is next — same pattern as HellaSwag once the pack lands under
+							benchmark is next — same pattern as MMMU-Pro once the pack lands under
 							<code>/evals/{slug}/</code>.
 						</p>
 						<p class="eval-nav-row">
-							<a class="button-link" href={`/evals/${slug}/`}>
-								Back to methodology
-							</a>
-							<a class="button-link button-outline" href="/evals/">
+							<a class="button-link button-outline" href={`${boardHref}#evals-board`}>
 								Leaderboard
 							</a>
 						</p>
@@ -81,13 +159,18 @@ const hasPack = slug === 'hellaswag' || slug === 'mmlu-pro';
 
 			const root = document.getElementById('eval-root');
 			const bench = root?.dataset.bench;
-			if (root && bench) {
+			const boardColumn = root?.dataset.boardColumn;
+			const boardHref = root?.dataset.boardHref;
+			const autoStart = root?.dataset.autoStart === '1';
+			if (root && bench && boardColumn) {
 				mountMcqEval(root, {
 					benchmarkId: bench,
 					packUrl: `/evals/${bench}/pack.json`,
 					keyUrl: `/evals/${bench}/key.json`,
 					hubHref: `/evals/${bench}/`,
-					boardColumn: bench === 'hellaswag' ? 'hellaswag' : 'mmlu_pro',
+					boardColumn,
+					boardHref: boardHref || '/blog/feeling-llm-benchmarks/',
+					autoStart,
 				});
 			}
 		</script>

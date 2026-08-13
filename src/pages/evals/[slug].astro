@@ -39,6 +39,7 @@ const {
 	scoring,
 	citation,
 	datasetSource,
+	datasetSize,
 	questionCount,
 	categories,
 	published,
@@ -58,17 +59,6 @@ const formattedDate = formatPubDate(published);
 			<p class="eval-kicker">Benchmark</p>
 			<h1>{title}</h1>
 			<p class="section-subtitle">{description}</p>
-			<p class="eval-page-links">
-				<a href="/evals/">Leaderboard</a>
-				{
-					takeable && (
-						<>
-							·
-							<a href={`/evals/${slug}/take/`}>Take a subset</a>
-						</>
-					)
-				}
-			</p>
 		</header>
 
 		<div class="eval-body">
@@ -83,8 +73,12 @@ const formattedDate = formatPubDate(published);
 					<dd>{scoring}</dd>
 				</div>
 				<div>
+					<dt>Full benchmark</dt>
+					<dd>{datasetSize.toLocaleString('en-US')} questions</dd>
+				</div>
+				<div>
 					<dt>Human draw size</dt>
-					<dd>{takeable ? `${questionCount} items` : 'not takeable'}</dd>
+					<dd>{takeable ? `${questionCount} of ${datasetSize.toLocaleString('en-US')}` : 'not takeable'}</dd>
 				</div>
 				<div>
 					<dt>Published</dt>
@@ -120,14 +114,30 @@ const formattedDate = formatPubDate(published);
 						<a class="button-link" href={`/evals/${slug}/take/`}>
 							Take a {questionCount}-item subset
 						</a>
-						<a class="button-link button-outline" href="/evals/">
+						<a class="button-link button-outline" href="/blog/feeling-llm-benchmarks/#evals-board">
 							See LLM leaderboard
+						</a>
+						<a class="button-link button-outline" href="/evals/">
+							All evals
+						</a>
+					</p>
+				) : slug === 'scicode' ? (
+					<p class="eval-nav-row">
+						<a class="button-link" href="/evals/scicode/browse/">
+							Browse sample problems
+						</a>
+						<a class="button-link button-outline" href="/blog/feeling-llm-benchmarks/#evals-board">
+							See LLM leaderboard
+						</a>
+						<a class="button-link button-outline" href="/evals/">
+							All evals
 						</a>
 					</p>
 				) : (
 					<p class="eval-help">
 						This benchmark is not offered as a browser mini-eval (see methodology below).
-						Compare citeable model numbers on the <a href="/evals/">leaderboard</a>.
+						Compare citeable model numbers on the
+						<a href="/blog/feeling-llm-benchmarks/#evals-board">leaderboard</a>.
 					</p>
 				)
 			}

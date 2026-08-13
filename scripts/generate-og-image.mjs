@@ -247,9 +247,9 @@ async function generateBlogPost(slug, { title, problem, intro }) {
 }
 
 async function generateBlogPosts() {
-  const files = readdirSync(blogDir).filter((f) => f.endsWith('.md'));
+  const files = readdirSync(blogDir).filter((f) => /\.(md|mdx)$/.test(f));
   for (const file of files) {
-    const slug = file.replace(/\.md$/, '');
+    const slug = file.replace(/\.(mdx|md)$/, '');
     const meta = parsePost(join(blogDir, file));
     await generateBlogPost(slug, meta);
   }

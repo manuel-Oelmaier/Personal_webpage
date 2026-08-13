@@ -1,0 +1,9 @@
+---
+import LeaderboardTable from './LeaderboardTable';
+import leaderboardData from '../../data/llm-leaderboard.json';
+import type { LeaderboardData } from '../../lib/evals/leaderboard';
+---
+
+<div id="evals-board" class="eval-in-post" aria-label="Model scores">
+	<LeaderboardTable client:load data={leaderboardData as LeaderboardData} />
+</div>

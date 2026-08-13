@@ -1,0 +1,229 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+/**
+ * Illustrative SciCode-shaped items — not from the release.
+ * Protocol note: real SciCode withholds unit tests from the model prompt;
+ * the harness runs them after generation (see paper / Inspect Evals).
+ */
+
+const entry = await getEntry('benchmarks', 'scicode');
+if (!entry) {
+	throw new Error('Missing benchmarks/scicode content entry');
+}
+
+const { Content } = await render(entry);
+const {
+	purpose,
+	scoring,
+	citation,
+	datasetSource,
+	datasetSize,
+	categories,
+	published,
+} = entry.data;
+const formattedDate = published.toLocaleDateString('en-US', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+});
+
+const samples = [
+	{
+		id: 'illust-physics-orbit',
+		domain: 'Physics',
+		title: 'Orbital period from semi-major axis',
+		prompt: `You are given the semi-major axis a (meters) of a circular orbit around Earth and Earth's gravitational parameter mu (m³/s²).
+
+Implement:
+
+def period_seconds(a: float, mu: float) -> float
+
+Return the orbital period in seconds using Kepler's third law for circular orbits:
+T = 2π √(a³ / μ).`,
+		tests: [
+			{
+				label: 'LEO-ish check',
+				code: `import math
+a = 6_778_000.0
+mu = 3.986004418e14
+got = period_seconds(a, mu)
+assert math.isclose(got, 2 * math.pi * math.sqrt(a**3 / mu), rel_tol=1e-9)`,
+			},
+			{
+				label: 'Identity scaling',
+				code: `import math
+# Doubling a increases T by 2^(3/2)
+t1 = period_seconds(1e7, 3.986e14)
+t2 = period_seconds(2e7, 3.986e14)
+assert math.isclose(t2 / t1, 2 ** 1.5, rel_tol=1e-9)`,
+			},
+		],
+		solution: `import math
+
+def period_seconds(a: float, mu: float) -> float:
+    return 2 * math.pi * math.sqrt((a ** 3) / mu)`,
+	},
+	{
+		id: 'illust-chem-ph',
+		domain: 'Chemistry',
+		title: 'Buffer pH (Henderson–Hasselbalch)',
+		prompt: `Given acid dissociation constant Ka and concentrations of weak acid HA and conjugate base A− (mol/L), implement:
+
+def ph_buffer(ka: float, c_ha: float, c_a: float) -> float
+
+Return pH = pKa + log10([A−]/[HA]) with pKa = −log10(Ka). Assume concentrations are positive.`,
+		tests: [
+			{
+				label: 'Equimolar acetic-ish',
+				code: `import math
+# Ka ≈ 1.8e-5, equal [HA] and [A-] → pH ≈ pKa
+got = ph_buffer(1.8e-5, 0.1, 0.1)
+assert math.isclose(got, -math.log10(1.8e-5), rel_tol=1e-9)`,
+			},
+			{
+				label: 'Tenfold base',
+				code: `import math
+got = ph_buffer(1e-5, 0.01, 0.1)
+assert math.isclose(got, 5.0 + 1.0, abs_tol=1e-9)  # pKa=5, log10(10)=1`,
+			},
+		],
+		solution: `import math
+
+def ph_buffer(ka: float, c_ha: float, c_a: float) -> float:
+    pka = -math.log10(ka)
+    return pka + math.log10(c_a / c_ha)`,
+	},
+	{
+		id: 'illust-bio-gc',
+		domain: 'Biology',
+		title: 'GC content of a DNA string',
+		prompt: `Implement:
+
+def gc_fraction(seq: str) -> float
+
+Return the fraction of characters that are G or C (case-insensitive) in a DNA string of A/C/G/T only.
+Empty string → 0.0.`,
+		tests: [
+			{
+				label: 'Empty',
+				code: `assert gc_fraction("") == 0.0`,
+			},
+			{
+				label: 'Mixed case',
+				code: `assert abs(gc_fraction("aCgT") - 0.5) < 1e-12
+assert abs(gc_fraction("GGCC") - 1.0) < 1e-12
+assert abs(gc_fraction("atat") - 0.0) < 1e-12`,
+			},
+		],
+		solution: `def gc_fraction(seq: str) -> float:
+    if not seq:
+        return 0.0
+    s = seq.upper()
+    return sum(1 for ch in s if ch in "GC") / len(s)`,
+	},
+];
+
+const boardHref = '/blog/feeling-llm-benchmarks/#evals-board';
+---
+
+<BaseLayout
+	title="SciCode - sample problems "
+	description="Illustrative SciCode-style prompts with unit tests and gold solutions "
+	ogTitle="SciCode · descriptions and examples"
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<p class="eval-kicker">Browse · not scored</p>
+			<h1>SciCode problem shape</h1>
+			<p class="section-subtitle">
+				SciCode grades generated scientific code against tests. Walk a few
+				<strong>illustrative</strong> subproblems (invented for this page — not from the release).
+			</p>
+		</header>
+
+		<div class="eval-body">
+			<aside class="post-problem" aria-labelledby="eval-purpose-heading">
+				<span class="post-problem-label" id="eval-purpose-heading">Purpose</span>
+				<p>{purpose}</p>
+			</aside>
+
+			<dl class="eval-bench-meta">
+				<div>
+					<dt>Scoring</dt>
+					<dd>{scoring}</dd>
+				</div>
+				<div>
+					<dt>Full benchmark</dt>
+					<dd>{datasetSize.toLocaleString('en-US')} subproblems</dd>
+				</div>
+				<div>
+					<dt>Published</dt>
+					<dd>
+						<time datetime={published.toISOString()}>{formattedDate}</time>
+					</dd>
+				</div>
+				<div>
+					<dt>Citation</dt>
+					<dd>
+						<a href={citation.url} rel="noopener noreferrer">{citation.label}</a>
+					</dd>
+				</div>
+				<div>
+					<dt>Dataset</dt>
+					<dd>
+						<a href={datasetSource} rel="noopener noreferrer">{datasetSource}</a>
+					</dd>
+				</div>
+				{
+					categories.length > 0 && (
+						<div>
+							<dt>Categories</dt>
+							<dd>{categories.join(' · ')}</dd>
+						</div>
+					)
+				}
+			</dl>
+
+			<div class="post-content eval-bench-body">
+				<Content />
+			</div>
+
+			{
+				samples.map((s, i) => (
+					<article class="eval-panel scicode-quiz-item" aria-labelledby={s.id}>
+						<p class="eval-kicker">
+							{s.domain} · sample {i + 1}/{samples.length}
+						</p>
+						<h2 id={s.id}>{s.title}</h2>
+						<p class="eval-meta">Prompt (what the model would see)</p>
+						<pre class="eval-code-sample"><code>{s.prompt}</code></pre>
+
+						<details class="scicode-reveal">
+							<summary>Unit tests ({s.tests.length}) — hidden from the model during eval</summary>
+							<ol class="scicode-test-list">
+								{s.tests.map((t) => (
+									<li>
+										<p class="eval-meta">{t.label}</p>
+										<pre class="eval-code-sample"><code>{t.code}</code></pre>
+									</li>
+								))}
+							</ol>
+						</details>
+
+						<details class="scicode-reveal">
+							<summary>Gold solution — also withheld from the model prompt</summary>
+							<pre class="eval-code-sample"><code>{s.solution}</code></pre>
+						</details>
+					</article>
+				))
+			}
+
+			<p class="eval-nav-row">
+				<a class="button-link" href={boardHref}>See LLM leaderboard</a>
+				<a class="button-link button-outline" href="/evals/">All evals</a>
+			</p>
+		</div>
+	</section>
+</BaseLayout>

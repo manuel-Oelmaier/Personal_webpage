@@ -2,20 +2,33 @@
 
 Offline scripts that turn public LLM benchmarks into static JSON pools for `/evals/`.
 
-## HellaSwag
+## MMMU-Pro
 
 ```bash
-python3 scripts/evals/build_hellaswag_pack.py
+uv run --with datasets --with pyarrow --with Pillow \
+  python3 scripts/evals/build_mmmu_pro_pack.py
 ```
 
-Writes `public/evals/hellaswag/{pack,key,ATTRIBUTION}.*`. Downloads `hellaswag_val.jsonl` (stdlib only; cached under `scripts/evals/.cache/`).
+Writes `public/evals/mmmu-pro/{pack,key,ATTRIBUTION}.*` plus compressed JPEGs under `images/`. Streams `MMMU/MMMU_Pro` standard (4 options) test split; **single-image only**, pool 100 / draw 20.
 
-## MMLU-Pro
+## GPQA Diamond
+
+```bash
+uv run --with huggingface_hub python3 scripts/evals/build_gpqa_diamond_pack.py
+```
+
+Gated dataset — needs `HF_TOKEN` with access to `Idavidrein/gpqa`. Writes `public/evals/gpqa-diamond/{pack,key,ATTRIBUTION}.*` (pool 100 / draw 20).
+
+## MMLU-Pro (optional text probe)
 
 ```bash
 python3 scripts/evals/build_mmlu_pro_pack.py
 ```
 
-Writes `public/evals/mmlu-pro/{pack,key,ATTRIBUTION}.*`. Downloads a JSON mirror of `TIGER-Lab/MMLU-Pro` test split (stdlib only; cached under `scripts/evals/.cache/`). Same `BUILD_SEED` regenerates the same pool.
+## Refreshing leaderboard scores
 
-SciCode has no pack (not takeable). GPQA Diamond pack is next.
+Manual import into `src/data/llm-leaderboard.json` from [Artificial Analysis](https://artificialanalysis.ai/) model pages (or BenchLM AA mirrors): **GPQA Diamond**, **MMMU-Pro**, **SciCode**. Prefer the public AA leaderboard tables over scraping model-page side panels. Leave missing cells as `null` when AA has not published a score. Bump `updated`. Board UI is a React island on `/blog/feeling-llm-benchmarks/`.
+
+Human mini-eval scores (MMMU-Pro / GPQA Diamond) are stored in the browser via `localStorage` (`evals:you-scores:v1`), not in this JSON. Shareable `?you=` URLs still merge into that store on board load.
+
+Do **not** fill missing cells by calling model APIs from this repo.

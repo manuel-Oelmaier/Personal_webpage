@@ -15,43 +15,100 @@ test.describe('core pages', () => {
     await page.goto('/blog/');
 
     await expect(page.getByRole('heading', { name: 'Blog', level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(3);
+    await expect(page.getByRole('link', { name: 'Read More' })).toHaveCount(4);
   });
 
-  test('evals page is the leaderboard with take-subset link', async ({ page }) => {
-    await page.goto('/evals/');
+  test('evals board lives on the blog post', async ({ page }) => {
+    await page.goto('/blog/feeling-llm-benchmarks/?you=70&answered=5&drawn=20&seed=abcd&bench=mmmu_pro');
 
-    await expect(page.getByRole('heading', { name: 'LLM leaderboard', level: 1 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Why take a subset yourself', level: 2 })).toBeVisible();
     await expect(page.getByRole('table')).toBeVisible();
-    await expect(page.getByText('Claude Mythos 5')).toBeVisible();
-    await expect(page.getByRole('table').getByRole('link', { name: 'Take a subset' }).first()).toBeVisible();
-    await expect(page.getByText('not reported').first()).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: /MMMU-Pro/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'MMMU-Pro' })).toHaveAttribute('href', '/evals/mmmu-pro/');
+    await expect(page.getByRole('columnheader', { name: /Average/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'GPT-5.6 Sol' })).toHaveAttribute(
+      'href',
+      'https://artificialanalysis.ai/models/gpt-5-6-sol',
+    );
+    await expect(page.getByRole('link', { name: 'MiniMax-M3' })).toBeVisible();
+    await expect(page.getByText(/You \(MMMU-Pro mini-eval\)/)).toBeVisible();
   });
 
-  test('hellaswag hub and take pages', async ({ page }) => {
-    await page.goto('/evals/hellaswag/');
-    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Take a .* subset/i })).toBeVisible();
+  test('evals board restores You scores from localStorage', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'evals:you-scores:v1',
+        JSON.stringify({
+          mmmu_pro: {
+            pct: 65,
+            answered: 10,
+            drawn: 20,
+            seed: 'beef',
+            early: false,
+            savedAt: '2026-08-01T12:00:00.000Z',
+          },
+          gpqa_diamond: {
+            pct: 40,
+            answered: 8,
+            drawn: 20,
+            seed: 'cafe',
+            early: true,
+            savedAt: '2026-08-02T12:00:00.000Z',
+          },
+        }),
+      );
+    });
+    await page.goto('/blog/feeling-llm-benchmarks/');
 
-    await page.goto('/evals/hellaswag/take/');
-    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Start eval' })).toBeVisible();
-    await expect(page.getByLabel('Run seed')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Methodology', exact: true })).toBeVisible();
+    await expect(page.getByText(/You \(mini-evals\)/)).toBeVisible();
+    await expect(page.getByText(/MMMU-Pro: answered 10\/20/)).toBeVisible();
+    await expect(page.getByText(/GPQA Diamond: answered 8\/20/)).toBeVisible();
   });
 
-  test('legacy hellaswag about URL redirects to hub', async ({ page }) => {
+  test('evals hub lists mini-evals', async ({ page }) => {
+    await page.goto('/evals/');
+    await expect(page.getByRole('heading', { name: 'Human mini-evals', level: 1 })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'MMMU-Pro' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'GPQA Diamond' })).toBeVisible();
+  });
+
+  test('mmmu-pro take auto-starts', async ({ page }) => {
+    await page.goto('/evals/mmmu-pro/take/');
+    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('button', { name: 'Next' })).toBeDisabled();
+  });
+
+  test('gpqa-diamond take auto-starts', async ({ page }) => {
+    await page.goto('/evals/gpqa-diamond/take/');
+    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
+  });
+
+  test('scicode browse page shows illustrative prompts', async ({ page }) => {
+    await page.goto('/evals/scicode/browse/');
+    await expect(page.getByRole('heading', { name: /SciCode problem shape/i, level: 1 })).toBeVisible();
+    await expect(page.getByText(/Are unit tests hidden/i)).toBeVisible();
+    await expect(page.getByText(/Yes — from the model/i)).toBeVisible();
+    await expect(page.getByText(/Unit tests \(2\) — hidden from the model during eval/i).first()).toBeVisible();
+    await expect(page.getByText(/Gold solution — also withheld/i).first()).toBeVisible();
+  });
+
+  test('blog board links to take pages', async ({ page }) => {
+    await page.goto('/blog/feeling-llm-benchmarks/');
+    await expect(page.getByRole('table')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'MMMU-Pro quiz' })).toHaveCount(0);
+  });
+
+  test('legacy hellaswag URLs redirect away', async ({ page }) => {
     await page.goto('/evals/hellaswag/about/');
-    await expect(page).toHaveURL(/\/evals\/hellaswag\/?$/);
-    await expect(page.getByRole('heading', { name: 'HellaSwag', level: 1 })).toBeVisible();
+    await expect(page).toHaveURL(/\/blog\/feeling-llm-benchmarks\/?/);
+    await page.goto('/evals/hellaswag/take/');
+    await expect(page).toHaveURL(/\/evals\/mmmu-pro\/take\/?$/);
   });
 
-  test('legacy leaderboard URL redirects to evals', async ({ page }) => {
+  test('legacy leaderboard URL redirects to blog', async ({ page }) => {
     await page.goto('/evals/leaderboard/?you=80&answered=10&drawn=20&seed=abcd');
 
-    await expect(page).toHaveURL(/\/evals\/\?.*you=80/);
-    await expect(page.getByRole('heading', { name: 'LLM leaderboard', level: 1 })).toBeVisible();
+    await expect(page).toHaveURL(/\/blog\/feeling-llm-benchmarks\/\?.*you=80/);
+    await expect(page.getByRole('heading', { name: /leaderboard percentage/i, level: 1 })).toBeVisible();
   });
 
   test('blog post opens from archive', async ({ page }) => {

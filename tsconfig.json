@@ -10,6 +10,8 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "types": ["node"]
   }
 }

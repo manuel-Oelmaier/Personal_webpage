@@ -7,6 +7,7 @@ citation:
   label: "Tian et al., SciCode, 2024"
   url: "https://arxiv.org/abs/2407.13168"
 datasetSource: "https://github.com/scicode-bench/SciCode"
+datasetSize: 338
 questionCount: 1
 categories:
   - "physics"
@@ -18,10 +19,8 @@ published: 2024-07-18
 takeable: false
 ---
 
-## Why there is no “Take a subset” here
+## Size
 
-SciCode grades **generated code against scientific test cases**. Running that in the browser (or asking visitors to execute model output) is not a reasonable human mini-eval for this site. The hub and leaderboard column exist so citeable SciCode numbers from papers and cards still have context.
+SciCode is **80** main problems / **338** subproblems. AA SciCode scores on this board use the Artificial Analysis harness over that set.
 
-## How to read the column
 
-Compare published subproblem / main-problem pass rates from the same card or report. Protocols (background knowledge on/off, carrying prior subproblem code) differ — always open the citation.

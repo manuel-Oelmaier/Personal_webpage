@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { blogSlug } from '../lib/blog';
 
 function formatPubDate(date: Date): string {
     return date.toLocaleDateString('en-US', {
@@ -41,7 +42,7 @@ const allPosts = (await getCollection('blog')).sort(
                         </time>
                         <h3 class="title">{entry.data.title}</h3>
                         <p>{entry.data.description}</p>
-                        <a href={`/blog/${entry.id.replace('.md', '')}`} class="button-link blog-button card-action">
+                        <a href={`/blog/${blogSlug(entry.id)}`} class="button-link blog-button card-action">
                             Read More
                         </a>
                     </article>

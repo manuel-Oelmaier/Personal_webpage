@@ -8,21 +8,24 @@
 
 Personal portfolio and technical blog for Manuel Oelmaier — software engineer focused on AI/LLM systems. Built with aggressive minimalism: fast, accessible, no cookies, no tracking.
 JSON-LD for SEO, open graph for clean previews.
+Feel free to copy whatever you want: CC0
 
 ## What's here
 
 - **Homepage** — hero, featured work, project showcase, and contact
 - **Blog** — problem-first engineering posts (homelab, LLM inference, infrastructure)
-- **Evals** — `/evals/` citeable LLM leaderboard; benchmark hubs + human mini-evals so a published percentage is less abstract
+- **Evals** — interactive companion at `/evals/` (linked from the blog post); not in main nav
 - **RSS feed** — `/rss.xml` for subscribers
 - **Open Graph** — rich link previews on LinkedIn, X, WhatsApp, Discord, and more
 - **CV** — downloadable PDF from the hero and nav
 
 ## Evals
 
-**Goal:** a quick, understandable overview of model performance for people who are relatively new to LLM benchmarks.
+**Goal:** blog-framed explainer with an interactive companion — after a mini-eval, show which listed model you landed closest to.
 
-**User journey:** leaderboard (`/evals/`) → open a benchmark hub → take a short seeded subset (when takeable) → return to see a **You** row vs published model numbers → retry with another seed.
+**Entry:** [blog post](/blog/feeling-llm-benchmarks/) (board embedded; `/evals/` redirects there). Not in main nav.
+
+**Scores:** `src/data/llm-leaderboard.json` from [Artificial Analysis](https://artificialanalysis.ai/) — GPQA Diamond, MMMU-Pro, SciCode. **Average** = mean of those three. Human take: `/evals/mmmu-pro/take/` (80-image pool, draw 20).
 
 **Benchmark content** lives in `src/content/benchmarks/` (same Astro content-collection pattern as blog posts). Each Markdown file has frontmatter:
 
@@ -42,13 +45,12 @@ takeable: true
 ```
 
 - **Live** when `published` is set (hub at `/evals/{slug}/`).
-- **`takeable: true`** only for human MCQ-style probes with a pack under `public/evals/{slug}/`. SciCode is `takeable: false` (needs code execution — not a browser mini-eval).
-- Prompt parity with lab harnesses is **not** claimed for card scores; no API self-eval fills for frontier models.
+- **`takeable: true`** for human MCQ probes with a pack under `public/evals/{slug}/`. MMLU-Pro is takeable as an understanding probe (not an AA board column). SciCode is browse-only at `/evals/scicode/browse/`.
+- Legacy `/evals/hellaswag/*` URLs redirect away.
 
 Rebuild packs:
 
 ```bash
-python3 scripts/evals/build_hellaswag_pack.py
 python3 scripts/evals/build_mmlu_pro_pack.py
 ```
 
@@ -57,7 +59,7 @@ python3 scripts/evals/build_mmlu_pro_pack.py
 | Layer | Choice |
 | :--- | :--- |
 | Framework | [Astro](https://astro.build) 5 (static output) |
-| Content | Markdown + Astro Content Collections |
+| Content | Markdown / MDX + Astro Content Collections |
 | Styling | Plain CSS (inlined at build time) |
 | Images | `astro:assets` + Sharp |
 | Tests | Playwright (e2e, a11y, layout snapshots, OG meta) |
@@ -71,7 +73,7 @@ python3 scripts/evals/build_mmlu_pro_pack.py
 │   ├── pages/          # Routes (index, blog, evals, RSS)
 │   ├── layouts/        # BaseLayout (meta, OG, JSON-LD)
 │   ├── lib/evals/      # Client-side human mini-eval runner
-│   ├── content/blog/   # Blog posts (Markdown + frontmatter)
+│   ├── content/blog/   # Blog posts (Markdown / MDX + frontmatter)
 │   ├── content/benchmarks/ # Eval benchmark hubs (Markdown + frontmatter)
 │   ├── styles/         # Global CSS
 │   └── assets/         # Images, icons, project screenshots
@@ -132,7 +134,7 @@ Writing standards: [`docs/blog-guidelines.md`](docs/blog-guidelines.md)
 
 ## Adding a benchmark
 
-Create `src/content/benchmarks/{slug}.md` with the frontmatter above. Hub and (if `takeable`) `/evals/{slug}/take/` routes are generated automatically. For a new MCQ takeable bench, add a pack builder under `scripts/evals/` and wire `mountMcqEval` in the take page (see HellaSwag / MMLU-Pro).
+Create `src/content/benchmarks/{slug}.md` with the frontmatter above. Hub and (if `takeable`) `/evals/{slug}/take/` routes are generated automatically. For a new MCQ takeable bench, add a pack builder under `scripts/evals/` and wire `mountMcqEval` in the take page (see MMLU-Pro).
 
 ## Testing
 
