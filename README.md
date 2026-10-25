@@ -178,7 +178,7 @@ The deploy workflow fetches fresh GitHub activity data before building. See [`sc
 | **SEO** | 100 |
 | **PWA** | Not Applicable |
 
-*Last dynamic audit: 2026-07-08 via GitHub Actions.*
+*Last dynamic audit: 2026-09-20 via GitHub Actions.*
 
 ## Further reading
 
