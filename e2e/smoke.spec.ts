@@ -23,7 +23,10 @@ test.describe('core pages', () => {
 
     await expect(page.getByRole('table')).toBeVisible();
     await expect(page.getByRole('columnheader', { name: /MMMU-Pro/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'MMMU-Pro' })).toHaveAttribute('href', '/evals/mmmu-pro/');
+    await expect(page.getByRole('columnheader').getByRole('link', { name: 'MMMU-Pro' })).toHaveAttribute('href', '/evals/mmmu-pro/');
+    await expect(page.locator('.eval-nav-row').getByRole('link', { name: 'take GPQA Diamond' })).toHaveAttribute('href', '/evals/gpqa-diamond/');
+    await expect(page.locator('.eval-nav-row').getByRole('link', { name: 'take MMMU-Pro' })).toHaveAttribute('href', '/evals/mmmu-pro/');
+    await expect(page.locator('.eval-nav-row').getByRole('link', { name: 'take SciCode' })).toHaveAttribute('href', '/evals/scicode/');
     await expect(page.getByRole('columnheader', { name: /Average/i })).toBeVisible();
     await expect(page.getByRole('link', { name: 'GPT-5.6 Sol' })).toHaveAttribute(
       'href',
@@ -64,31 +67,41 @@ test.describe('core pages', () => {
     await expect(page.getByText(/GPQA Diamond: answered 8\/20/)).toBeVisible();
   });
 
-  test('evals hub lists mini-evals', async ({ page }) => {
+  test('evals index redirects to the blog board', async ({ page }) => {
     await page.goto('/evals/');
-    await expect(page.getByRole('heading', { name: 'Human mini-evals', level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'MMMU-Pro' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'GPQA Diamond' })).toBeVisible();
+    await expect(page).toHaveURL(/\/blog\/feeling-llm-benchmarks\/?/);
+    await expect(page.getByRole('table')).toBeVisible();
   });
 
-  test('mmmu-pro take auto-starts', async ({ page }) => {
+  test('mmmu-pro hub mounts the mini-eval', async ({ page }) => {
+    await page.goto('/evals/mmmu-pro/');
+    await expect(page.getByRole('heading', { name: 'MMMU-Pro', level: 1 })).toBeVisible();
+    await expect(page.getByText(/Each run draws 20 of the 100 questions/i)).toBeVisible();
+    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
+  });
+
+  test('gpqa-diamond hub mounts the mini-eval', async ({ page }) => {
+    await page.goto('/evals/gpqa-diamond/');
+    await expect(page.getByRole('heading', { name: 'GPQA Diamond', level: 1 })).toBeVisible();
+    await expect(page.getByText(/Each run draws 20 of the 198 questions/i)).toBeVisible();
+    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
+  });
+
+  test('scicode hub walks subproblems', async ({ page }) => {
+    await page.goto('/evals/scicode/');
+    await expect(page.getByRole('heading', { name: 'SciCode', level: 1 })).toBeVisible();
+    await expect(page.getByText(/Subproblem 1\s*\/\s*\d+/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/Hidden from the model/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Next subproblem|Finish/ })).toBeVisible();
+  });
+
+  test('legacy take and browse URLs redirect to hubs', async ({ page }) => {
     await page.goto('/evals/mmmu-pro/take/');
-    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
-    await expect(page.getByRole('button', { name: 'Next' })).toBeDisabled();
-  });
-
-  test('gpqa-diamond take auto-starts', async ({ page }) => {
+    await expect(page).toHaveURL(/\/evals\/mmmu-pro\/?$/);
     await page.goto('/evals/gpqa-diamond/take/');
-    await expect(page.getByText(/Question 1\s*\/\s*20/i)).toBeVisible({ timeout: 15000 });
-  });
-
-  test('scicode browse page shows illustrative prompts', async ({ page }) => {
+    await expect(page).toHaveURL(/\/evals\/gpqa-diamond\/?$/);
     await page.goto('/evals/scicode/browse/');
-    await expect(page.getByRole('heading', { name: /SciCode problem shape/i, level: 1 })).toBeVisible();
-    await expect(page.getByText(/Are unit tests hidden/i)).toBeVisible();
-    await expect(page.getByText(/Yes — from the model/i)).toBeVisible();
-    await expect(page.getByText(/Unit tests \(2\) — hidden from the model during eval/i).first()).toBeVisible();
-    await expect(page.getByText(/Gold solution — also withheld/i).first()).toBeVisible();
+    await expect(page).toHaveURL(/\/evals\/scicode\/?$/);
   });
 
   test('blog board links to take pages', async ({ page }) => {
@@ -101,7 +114,7 @@ test.describe('core pages', () => {
     await page.goto('/evals/hellaswag/about/');
     await expect(page).toHaveURL(/\/blog\/feeling-llm-benchmarks\/?/);
     await page.goto('/evals/hellaswag/take/');
-    await expect(page).toHaveURL(/\/evals\/mmmu-pro\/take\/?$/);
+    await expect(page).toHaveURL(/\/evals\/mmmu-pro\/?$/);
   });
 
   test('legacy leaderboard URL redirects to blog', async ({ page }) => {

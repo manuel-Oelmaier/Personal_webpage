@@ -1,178 +1,39 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-
-type BenchEntry = CollectionEntry<'benchmarks'>;
-
-interface Props {
-	entry: BenchEntry;
+/**
+ * Legacy /evals/{slug}/take/ → hub. Preserves ?seed= so shared runs still work.
+ */
+export function getStaticPaths() {
+	return [
+		{ params: { slug: 'gpqa-diamond' } },
+		{ params: { slug: 'mmmu-pro' } },
+		{ params: { slug: 'mmlu-pro' } },
+	];
 }
 
-type StaticPath = {
-	params: { slug: string };
-	props: Props;
+const TAKE_DEST: Record<string, string> = {
+	'gpqa-diamond': '/evals/gpqa-diamond/',
+	'mmmu-pro': '/evals/mmmu-pro/',
+	'mmlu-pro': '/evals/mmmu-pro/',
 };
 
-function formatPubDate(date: Date): string {
-	return date.toLocaleDateString('en-US', {
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric',
-	});
-}
-
-export async function getStaticPaths(): Promise<StaticPath[]> {
-	const entries = await getCollection('benchmarks');
-	return entries
-		.filter((entry) => entry.data.takeable)
-		.map((entry) => ({
-			params: { slug: entry.id.replace(/\.md$/, '') },
-			props: { entry },
-		}));
-}
-
-const { entry } = Astro.props;
-const { Content } = await render(entry);
-const {
-	title,
-	description,
-	purpose,
-	scoring,
-	citation,
-	datasetSource,
-	datasetSize,
-	questionCount,
-	categories,
-	published,
-} = entry.data;
-const slug = entry.id.replace(/\.md$/, '');
-const formattedDate = formatPubDate(published);
-const packBySlug: Record<string, string> = {
-	'mmlu-pro': 'mmlu_pro',
-	'mmmu-pro': 'mmmu_pro',
-	'gpqa-diamond': 'gpqa_diamond',
-};
-const boardColumn = packBySlug[slug] ?? null;
-const hasPack = boardColumn !== null;
-const boardHref = '/blog/feeling-llm-benchmarks/';
-const autoStart = true;
+const slug = Astro.params.slug ?? '';
+const dest = TAKE_DEST[slug] ?? '/blog/feeling-llm-benchmarks/';
 ---
 
-<BaseLayout
-	title={`${title} human mini-eval | Manuel Oelmaier`}
-	description={description}
-	ogTitle={`${title} human mini-eval`}
->
-	<section class="fade-in eval-page">
-		<header class="page-header">
-			<p class="eval-kicker">Human mini-eval</p>
-			<h1>{title}</h1>
-			<p class="section-subtitle">{description}</p>
-		</header>
-
-		<div class="eval-body">
-			<aside class="post-problem" aria-labelledby="eval-purpose-heading">
-				<span class="post-problem-label" id="eval-purpose-heading">Purpose</span>
-				<p>{purpose}</p>
-			</aside>
-
-			<dl class="eval-bench-meta">
-				<div>
-					<dt>Scoring</dt>
-					<dd>{scoring}</dd>
-				</div>
-				<div>
-					<dt>Full benchmark</dt>
-					<dd>{datasetSize.toLocaleString('en-US')} questions</dd>
-				</div>
-				<div>
-					<dt>Human draw size</dt>
-					<dd>{questionCount} of {datasetSize.toLocaleString('en-US')}</dd>
-				</div>
-				<div>
-					<dt>Published</dt>
-					<dd>
-						<time datetime={published.toISOString()}>{formattedDate}</time>
-					</dd>
-				</div>
-				<div>
-					<dt>Citation</dt>
-					<dd>
-						<a href={citation.url} rel="noopener noreferrer">{citation.label}</a>
-					</dd>
-				</div>
-				<div>
-					<dt>Dataset</dt>
-					<dd>
-						<a href={datasetSource} rel="noopener noreferrer">{datasetSource}</a>
-					</dd>
-				</div>
-				{
-					categories.length > 0 && (
-						<div>
-							<dt>Categories</dt>
-							<dd>{categories.join(' · ')}</dd>
-						</div>
-					)
-				}
-			</dl>
-
-			<div class="post-content eval-bench-body">
-				<Content />
-			</div>
-
-			{
-				hasPack && boardColumn ? (
-					<div
-						id="eval-root"
-						class="eval-root"
-						data-bench={slug}
-						data-board-column={boardColumn}
-						data-board-href={boardHref}
-						data-auto-start={autoStart ? '1' : '0'}
-					></div>
-				) : (
-					<section class="eval-panel" aria-labelledby="eval-soon-heading">
-						<h2 id="eval-soon-heading">Pack not built yet</h2>
-						<p class="eval-lede">
-							The {title} hub and leaderboard column are live. The seeded human draw for this
-							benchmark is next — same pattern as MMMU-Pro once the pack lands under
-							<code>/evals/{slug}/</code>.
-						</p>
-						<p class="eval-nav-row">
-							<a class="button-link button-outline" href={`${boardHref}#evals-board`}>
-								Leaderboard
-							</a>
-						</p>
-					</section>
-				)
-			}
-		</div>
-	</section>
-</BaseLayout>
-
-{
-	hasPack && (
-		<script>
-			import { mountMcqEval } from '../../../lib/evals/mcqEval';
-
-			const root = document.getElementById('eval-root');
-			const bench = root?.dataset.bench;
-			const boardColumn = root?.dataset.boardColumn;
-			const boardHref = root?.dataset.boardHref;
-			const autoStart = root?.dataset.autoStart === '1';
-			if (root && bench && boardColumn) {
-				mountMcqEval(root, {
-					benchmarkId: bench,
-					packUrl: `/evals/${bench}/pack.json`,
-					keyUrl: `/evals/${bench}/key.json`,
-					hubHref: `/evals/${bench}/`,
-					boardColumn,
-					boardHref: boardHref || '/blog/feeling-llm-benchmarks/',
-					autoStart,
-				});
-			}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="refresh" content={`0;url=${dest}`} />
+		<link rel="canonical" href={dest} />
+		<title>Moved</title>
+	</head>
+	<body>
+		<p><a id="eval-redirect" href={dest}>Continue to the benchmark</a></p>
+		<script is:inline>
+			const link = document.getElementById('eval-redirect');
+			const dest = link instanceof HTMLAnchorElement ? (link.getAttribute('href') ?? '/evals/') : '/evals/';
+			location.replace(dest + window.location.search + window.location.hash);
 		</script>
-	)
-}
+	</body>
+</html>

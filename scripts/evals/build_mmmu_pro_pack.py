@@ -181,6 +181,7 @@ def main() -> None:
             "config": CONFIG,
             "split": SPLIT,
             "poolSize": len(items),
+            "fullSetSize": 1730,
             "datasetRevision": "main",
             "method": (
                 f"streamed single-image subsample · build_seed={BUILD_SEED} "

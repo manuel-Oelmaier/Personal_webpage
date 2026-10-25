@@ -22,7 +22,6 @@ from huggingface_hub import hf_hub_download
 
 DATASET = "Idavidrein/gpqa"
 FILENAME = "gpqa_diamond.csv"
-POOL_SIZE = 100
 BUILD_SEED = 20260806
 DRAW_SIZE = 20
 CHOICE_IDS = string.ascii_uppercase
@@ -78,18 +77,13 @@ def main() -> int:
     )
     with open(path, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-    if len(rows) < POOL_SIZE:
-        raise RuntimeError(f"expected at least {POOL_SIZE} diamond rows, got {len(rows)}")
-
-    rng = random.Random(BUILD_SEED)
-    indices = list(range(len(rows)))
-    rng.shuffle(indices)
-    selected = sorted(indices[:POOL_SIZE])
+    if not rows:
+        raise RuntimeError("gpqa_diamond.csv had no rows")
 
     items: list[dict] = []
     answers: dict[str, str] = {}
-    for out_i, src_i in enumerate(selected):
-        item, letter = to_item(rows[src_i], out_i)
+    for src_i, row in enumerate(rows):
+        item, letter = to_item(row, src_i)
         items.append(item)
         answers[item["id"]] = letter
 
@@ -104,9 +98,10 @@ def main() -> int:
             "dataset": DATASET,
             "config": "gpqa_diamond",
             "split": "csv",
-            "poolSize": POOL_SIZE,
+            "poolSize": len(items),
+            "fullSetSize": len(items),
             "datasetRevision": Path(path).parent.name,
-            "method": f"seeded subsample · build_seed={BUILD_SEED} · shuffled choices",
+            "method": f"full Diamond set · shuffled choices · build_seed={BUILD_SEED}",
             "buildSeed": BUILD_SEED,
         },
         "sessionDefaults": {"drawSize": DRAW_SIZE},
@@ -128,7 +123,7 @@ def main() -> int:
                 "Citation: Rein et al., GPQA: A Graduate-Level Google-Proof Q&A Benchmark, 2023.",
                 "https://arxiv.org/abs/2311.12022",
                 "",
-                "This site hosts a seeded subsample for a browser human mini-eval.",
+                "This site hosts the full Diamond split for a browser human mini-eval (20-item seeded draws).",
                 "Respect the upstream dataset license / gated access terms.",
                 "",
             ]

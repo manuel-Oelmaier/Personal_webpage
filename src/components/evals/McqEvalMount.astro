@@ -1,0 +1,71 @@
+---
+interface Props {
+	slug: string;
+	autoStart?: boolean;
+	boardHref?: string;
+}
+
+const PACK_BY_SLUG: Record<string, string> = {
+	'mmmu-pro': 'mmmu_pro',
+	'gpqa-diamond': 'gpqa_diamond',
+};
+
+const {
+	slug,
+	autoStart = true,
+	boardHref = '/blog/feeling-llm-benchmarks/',
+} = Astro.props;
+
+const boardColumn = PACK_BY_SLUG[slug] ?? null;
+---
+
+{
+	boardColumn ? (
+		<div
+			id="eval-root"
+			class="eval-root"
+			data-bench={slug}
+			data-board-column={boardColumn}
+			data-board-href={boardHref}
+			data-auto-start={autoStart ? '1' : '0'}
+		></div>
+	) : (
+		<section class="eval-panel" aria-labelledby="eval-soon-heading">
+			<h2 id="eval-soon-heading">Pack not built yet</h2>
+			<p class="eval-lede">
+				The hub is live. The seeded human draw for this benchmark is next — same pattern as
+				MMMU-Pro once the pack lands under <code>/evals/{slug}/</code>.
+			</p>
+			<p class="eval-nav-row">
+				<a class="button-link button-outline" href={`${boardHref}#evals-board`}>
+					Leaderboard
+				</a>
+			</p>
+		</section>
+	)
+}
+
+{
+	boardColumn && (
+		<script>
+			import { mountMcqEval } from '../../lib/evals/mcqEval';
+
+			const root = document.getElementById('eval-root');
+			const bench = root?.dataset.bench;
+			const boardColumn = root?.dataset.boardColumn;
+			const boardHref = root?.dataset.boardHref;
+			const autoStart = root?.dataset.autoStart === '1';
+			if (root && bench && boardColumn) {
+				mountMcqEval(root, {
+					benchmarkId: bench,
+					packUrl: `/evals/${bench}/pack.json`,
+					keyUrl: `/evals/${bench}/key.json`,
+					hubHref: `/evals/${bench}/`,
+					boardColumn,
+					boardHref: boardHref || '/blog/feeling-llm-benchmarks/',
+					autoStart,
+				});
+			}
+		</script>
+	)
+}

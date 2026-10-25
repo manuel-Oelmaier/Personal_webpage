@@ -12,4 +12,11 @@ export default defineConfig({
     inlineStylesheets: 'always',
     format: 'directory',
   },
+  redirects: {
+    '/evals/scicode/browse': '/evals/scicode',
+    '/evals/hellaswag': '/blog/feeling-llm-benchmarks',
+    '/evals/hellaswag/about': '/blog/feeling-llm-benchmarks',
+    '/evals/hellaswag/take': '/evals/mmmu-pro',
+    '/evals/mmlu-pro': '/evals/mmmu-pro',
+  },
 });

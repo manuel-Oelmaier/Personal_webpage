@@ -45,6 +45,7 @@ type EvalPack = {
 		dataset: string;
 		split: string;
 		poolSize: number;
+		fullSetSize?: number;
 		datasetRevision: string;
 		method: string;
 		buildSeed?: number;
@@ -154,6 +155,19 @@ function leaderboardHref(
 	return `${base}?${params.toString()}#evals-board`;
 }
 
+function methodSentence(pack: EvalPack | null): string {
+	const draw = pack?.sessionDefaults.drawSize ?? 20;
+	const pool = pack?.source.poolSize;
+	const full = pack?.source.fullSetSize ?? pool;
+	if (!pool || !full) {
+		return 'Each run draws a seeded subset. Same seed → same items. Score is answered-only.';
+	}
+	if (full > pool) {
+		return `Each run draws ${draw} from a ${pool}-item pool (full set is ${full.toLocaleString('en-US')}). Same seed → same items. Score is answered-only.`;
+	}
+	return `Each run draws ${draw} of ${pool} questions (same seed → same items). Score is answered-only.`;
+}
+
 export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 	let pack: EvalPack | null = null;
 	let key: AnswerKey | null = null;
@@ -240,6 +254,57 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		render();
 	}
 
+	function snapshotScore(): {
+		pct: number;
+		answered: number;
+		drawn: number;
+		early: boolean;
+	} | null {
+		if (phase !== 'running' && phase !== 'results') {
+			return null;
+		}
+		const { pct, answered, drawn } = scoreSummary(buildRecords());
+		if (answered === 0) {
+			return null;
+		}
+		return {
+			pct,
+			answered,
+			drawn,
+			early: phase !== 'results' || handedInEarly,
+		};
+	}
+
+	function persistSnapshot(): void {
+		const score = snapshotScore();
+		if (!score) {
+			return;
+		}
+		writeYouScore(opts.boardColumn, {
+			pct: score.pct,
+			answered: score.answered,
+			drawn: score.drawn,
+			seed,
+			early: score.early,
+		});
+	}
+
+	function boardOnlyHref(): string {
+		const base = (opts.boardHref ?? '/blog/feeling-llm-benchmarks/').replace(/\?.*$/, '');
+		return `${base}#evals-board`;
+	}
+
+	function syncCompareLink(): void {
+		const link = document.getElementById('eval-compare-board');
+		if (!(link instanceof HTMLAnchorElement)) {
+			return;
+		}
+		const score = snapshotScore();
+		link.href = score
+			? leaderboardHref(opts, score.pct, score.answered, score.drawn, seed, score.early)
+			: boardOnlyHref();
+	}
+
 	function finishRun(early: boolean): void {
 		const answered = [...answers.values()].filter((v) => v !== null).length;
 		if (answered === 0) {
@@ -250,14 +315,7 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		loadError = null;
 		handedInEarly = early;
 		phase = 'results';
-		const { pct, drawn } = scoreSummary(buildRecords());
-		writeYouScore(opts.boardColumn, {
-			pct,
-			answered,
-			drawn,
-			seed,
-			early,
-		});
+		persistSnapshot();
 		render();
 		root.querySelector<HTMLElement>('#eval-results')?.focus();
 	}
@@ -308,23 +366,6 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 		const unanswered = drawn - answered;
 		const pct = answered === 0 ? 0 : Math.round((correct / answered) * 1000) / 10;
 		return { correct, answered, drawn, unanswered, pct };
-	}
-
-	function progressSummary(): {
-		correct: number;
-		answered: number;
-		drawn: number;
-		pct: number;
-	} {
-		return scoreSummary(buildRecords());
-	}
-
-	function compareHref(early: boolean): string | null {
-		const { answered, drawn, pct } = progressSummary();
-		if (answered === 0) {
-			return null;
-		}
-		return leaderboardHref(opts, pct, answered, drawn, seed, early);
 	}
 
 	function onKeydown(event: KeyboardEvent): void {
@@ -387,6 +428,19 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 				input.value = seed;
 			}
 			setSeedInUrl(seed);
+			if (pack && key && (phase === 'running' || opts.autoStart)) {
+				startRun();
+			}
+		});
+		const seedInput = root.querySelector<HTMLInputElement>('#eval-seed-input');
+		seedInput?.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				startRun();
+			}
+		});
+		seedInput?.addEventListener('change', () => {
+			startRun();
 		});
 		root.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
 			btn.addEventListener('click', () => {
@@ -426,24 +480,18 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 	}
 
 	function renderSetup(): string {
-		const poolNote = pack
-			? `${pack.source.poolSize}-item pool`
-			: 'pool loads when you start';
 		if (loading && opts.autoStart) {
 			return `
 				<section class="eval-panel" aria-labelledby="eval-setup-heading">
 					<h2 id="eval-setup-heading">Loading mini-eval…</h2>
-					<p class="eval-lede">Drawing ${pack?.sessionDefaults.drawSize ?? 20} items from the pool.</p>
+					<p class="eval-lede">${escapeHtml(methodSentence(pack))}</p>
 				</section>
 			`;
 		}
 		return `
 			<section class="eval-panel" aria-labelledby="eval-setup-heading">
 				<h2 id="eval-setup-heading">Start a run</h2>
-				<p class="eval-lede">
-					Draw ${pack?.sessionDefaults.drawSize ?? 20} items from the pool (${poolNote}).
-					Each answer reveals correct/wrong immediately. Score uses answered items only.
-				</p>
+				<p class="eval-lede">${escapeHtml(methodSentence(pack))}</p>
 				<label class="eval-seed-label" for="eval-seed-input">Run seed</label>
 				<div class="eval-seed-row">
 					<input id="eval-seed-input" class="eval-seed-input" type="text" spellcheck="false"
@@ -517,18 +565,14 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 			: '';
 		const isLast = index === drawnIds.length - 1;
 		const lastLetter = item.choices[item.choices.length - 1]?.id ?? 'D';
-		const soFar = progressSummary();
-		const compare = compareHref(true);
-		const compareBtn = compare
-			? `<a class="button-link button-outline" href="${escapeHtml(compare)}">See how you compare so far (${soFar.pct}% · ${soFar.answered} answered)</a>`
-			: '';
 		return `
 			<section class="eval-panel eval-run" aria-labelledby="eval-run-heading">
 				<div class="eval-run-bar">
 					<p id="eval-run-heading" class="eval-progress">Question ${index + 1} / ${drawnIds.length}</p>
-					<p class="eval-seed-chip">Seed <code>${escapeHtml(seed)}</code>
-						${soFar.answered > 0 ? ` · so far ${soFar.correct}/${soFar.answered} (${soFar.pct}%)` : ''}
-					</p>
+					<label class="eval-seed-chip" for="eval-seed-input">Seed
+						<input id="eval-seed-input" class="eval-seed-input eval-seed-inline" type="text"
+							spellcheck="false" autocomplete="off" maxlength="16" value="${escapeHtml(seed)}" />
+					</label>
 				</div>
 				${meta}
 				<p class="eval-prompt" tabindex="-1">${escapeHtml(item.prompt)}</p>
@@ -541,7 +585,6 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 					<button type="button" class="button-link" id="eval-next" ${chosen ? '' : 'disabled'}>
 						${isLast ? 'Finish' : 'Next'}
 					</button>
-					${compareBtn}
 				</div>
 				<p class="eval-help">Keys: A–${escapeHtml(lastLetter)} or 1–${item.choices.length} to answer, Enter / → for next.</p>
 			</section>
@@ -593,7 +636,7 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 					scores on the board for closest model.
 				</p>
 				<div class="eval-nav-row">
-					<a class="button-link" href="${escapeHtml(boardHref)}">See how you compare</a>
+					<a class="button-link" href="${escapeHtml(boardHref)}">Compare yourself to selected LLMs</a>
 					<button type="button" class="button-link button-outline" id="eval-replay">Same seed again</button>
 					<button type="button" class="button-link button-outline" id="eval-restart">New seed</button>
 				</div>
@@ -612,8 +655,10 @@ export function mountMcqEval(root: HTMLElement, opts: McqEvalOptions): void {
 			root.innerHTML = renderResults();
 		}
 		bind();
+		syncCompareLink();
 	}
 
+	document.getElementById('eval-compare-board')?.addEventListener('click', persistSnapshot);
 	document.addEventListener('keydown', onKeydown);
 	const skipAutoStart = new URLSearchParams(window.location.search).has('you');
 	void ensureData().then(() => {

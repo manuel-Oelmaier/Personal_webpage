@@ -1,0 +1,16 @@
+---
+import 'katex/dist/katex.min.css';
+
+const packUrl = '/evals/scicode/pack.json';
+---
+
+<div id="eval-root" class="eval-root" data-pack-url={packUrl}></div>
+<script>
+	import { mountSciCodeEval } from '../../lib/evals/sciCodeEval';
+
+	const root = document.getElementById('eval-root');
+	const packUrl = root?.dataset.packUrl;
+	if (root && packUrl) {
+		mountSciCodeEval(root, packUrl);
+	}
+</script>

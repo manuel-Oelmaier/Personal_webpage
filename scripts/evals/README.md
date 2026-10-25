@@ -17,7 +17,15 @@ Writes `public/evals/mmmu-pro/{pack,key,ATTRIBUTION}.*` plus compressed JPEGs un
 uv run --with huggingface_hub python3 scripts/evals/build_gpqa_diamond_pack.py
 ```
 
-Gated dataset — needs `HF_TOKEN` with access to `Idavidrein/gpqa`. Writes `public/evals/gpqa-diamond/{pack,key,ATTRIBUTION}.*` (pool 100 / draw 20).
+Gated dataset — needs `HF_TOKEN` with access to `Idavidrein/gpqa`. Writes `public/evals/gpqa-diamond/{pack,key,ATTRIBUTION}.*` (full 198 / draw 20).
+
+## SciCode
+
+```bash
+uv run --with huggingface_hub python3 scripts/evals/build_scicode_pack.py
+```
+
+Writes `public/evals/scicode/{pack,ATTRIBUTION}.*` — all 80 problems. The hub walks one seeded problem subproblem-by-subproblem; tests and gold are collapsed as hidden from the model.
 
 ## MMLU-Pro (optional text probe)
 

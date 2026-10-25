@@ -73,7 +73,7 @@ const shareTitle = ogTitle ?? title;
 		{preloadImages.map((src) => (
 			<link rel="preload" as="image" href={src} fetchpriority="high" />
 		))}
-		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+		{jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 		<title>{title}</title>
 	</head>
 	<body>
@@ -89,6 +89,7 @@ const shareTitle = ogTitle ?? title;
 		<main>
 			<slot />
 		</main>
+		<p class="site-notice">Visits are counted without cookies. IP addresses are shortened. This records pages, referrers, and country.</p>
 	<script>
 		const observer = new IntersectionObserver(
 			(entries) => entries.forEach(e => {
@@ -100,6 +101,19 @@ const shareTitle = ogTitle ?? title;
 			{ threshold: 0.08 }
 		);
 		document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+	</script>
+	<script is:inline>
+		var _paq = window._paq = window._paq || [];
+		_paq.push(['disableCookies']);
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function () {
+			var u = 'https://matomo.manueloelmaier.de/';
+			_paq.push(['setTrackerUrl', u + 'matomo.php']);
+			_paq.push(['setSiteId', '1']);
+			var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+			g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+		})();
 	</script>
 	</body>
 </html>

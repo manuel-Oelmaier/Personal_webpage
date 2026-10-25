@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Redirecting | Manuel Oelmaier"
+	description="The LLM board lives on the benchmarks blog post."
+>
+	<section class="fade-in eval-page">
+		<header class="page-header">
+			<h1>Moved</h1>
+			<p class="section-subtitle">
+				The board is in
+				<a id="evals-redirect" href="/blog/feeling-llm-benchmarks/#evals-board">
+					the benchmarks post
+				</a>.
+			</p>
+		</header>
+	</section>
+</BaseLayout>
+
+<script is:inline>
+	const search = window.location.search;
+	const hash = search ? '' : '#evals-board';
+	const target = `/blog/feeling-llm-benchmarks/${search}${hash}`;
+	const link = document.getElementById('evals-redirect');
+	if (link instanceof HTMLAnchorElement) {
+		link.href = target;
+	}
+	location.replace(target);
+</script>

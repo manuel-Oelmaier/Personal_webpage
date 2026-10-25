@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getCollection, render } from 'astro:content';
-import EvalsBoard from '../../components/evals/EvalsBoard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { blogSlug } from '../../lib/blog';
 
@@ -92,7 +91,7 @@ const articleSchema = {
         )}
 
         <div class="post-content">
-            <Content components={{ EvalsBoard }} />
+            <Content />
         </div>
 
         <div class="post-footer">

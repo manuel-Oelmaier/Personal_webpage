@@ -35,7 +35,7 @@ Rough analogy: most of the network runs on summarized memory; every few layers, 
 
 ## Hidden state informed token eviction
 
-My bachelor thesis at TUM (submitted), **Hidden State Informed Token Eviction**, starts from a simple question: **not every token needs exact memory**. Names, numbers, and definitions matter verbatim; filler and already-summarized context do not. The goal is to give an LLM **different levels of importance** for information — a running gist for most of the conversation, and a small exact-detail store for what the gist would distort.
+My bachelor thesis at TUM, **Hidden State Informed Token Eviction**, starts from a simple question: **not every token needs exact memory**. Names, numbers, and definitions matter verbatim; filler and already-summarized context do not. The goal is to give an LLM **different levels of importance** for information — a running gist for most of the conversation, and a small exact-detail store for what the gist would distort.
 
 Published hybrids like Qwen3-Next assign **one memory type per layer** and alternate them through the stack. I am building **both memory types inside the same layer**, with a rule that decides per token how important exact recall is.
 

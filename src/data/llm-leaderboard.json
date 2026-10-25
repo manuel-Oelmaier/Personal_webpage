@@ -1,7 +1,7 @@
 {
   "schemaVersion": 5,
   "title": "LLM context leaderboard",
-  "updated": "2026-08-07",
+  "updated": "2026-08-13",
   "caveat": "All model percentages below are from Artificial Analysis (independent lab runs), not this site and not lab system cards. Protocols differ; a human mini-eval is a probe into difficulty, not a replication.",
   "attribution": {
     "label": "Artificial Analysis",
@@ -25,7 +25,7 @@
       "column": "gpqa_diamond",
       "label": "GPQA Diamond",
       "datasetSize": 198,
-      "takeHref": "/evals/gpqa-diamond/take/",
+      "takeHref": "/evals/gpqa-diamond/",
       "aboutHref": "/evals/gpqa-diamond/",
       "takeLabel": "Take a subset"
     },
@@ -34,7 +34,7 @@
       "column": "mmmu_pro",
       "label": "MMMU-Pro",
       "datasetSize": 1730,
-      "takeHref": "/evals/mmmu-pro/take/",
+      "takeHref": "/evals/mmmu-pro/",
       "aboutHref": "/evals/mmmu-pro/",
       "takeLabel": "Take a subset"
     },
@@ -43,7 +43,7 @@
       "column": "scicode",
       "label": "SciCode",
       "datasetSize": 338,
-      "takeHref": "/evals/scicode/browse/",
+      "takeHref": "/evals/scicode/",
       "aboutHref": "/evals/scicode/",
       "takeLabel": "Browse problems"
     }
@@ -63,23 +63,6 @@
       }
     },
     {
-      "id": "claude-fable-5",
-      "name": "Claude Fable 5",
-      "tier": "proprietary",
-      "published": "2026-06-09",
-      "paramsLabel": "frontier (closed)",
-      "cardUrl": "https://artificialanalysis.ai/models/claude-fable-5",
-      "scores": {
-        "gpqa_diamond": { "value": 92.6, "display": "92.6%" },
-        "mmmu_pro": {
-          "value": null,
-          "display": "—",
-          "missingReason": "not reported by AA"
-        },
-        "scicode": { "value": 60.2, "display": "60.2%" }
-      }
-    },
-    {
       "id": "gemini-3-1-pro",
       "name": "Gemini 3.1 Pro",
       "tier": "proprietary",
@@ -93,16 +76,16 @@
       }
     },
     {
-      "id": "claude-opus-4-6",
-      "name": "Claude Opus 4.6",
+      "id": "claude-opus-5",
+      "name": "Claude Opus 5",
       "tier": "proprietary",
-      "published": "2026-02-05",
+      "published": "2026-07-24",
       "paramsLabel": "frontier (closed)",
-      "cardUrl": "https://artificialanalysis.ai/models/claude-opus-4-6",
+      "cardUrl": "https://artificialanalysis.ai/models/claude-opus-5",
       "scores": {
-        "gpqa_diamond": { "value": 84.0, "display": "84.0%" },
-        "mmmu_pro": { "value": 72.5, "display": "72.5%" },
-        "scicode": { "value": 45.7, "display": "45.7%" }
+        "gpqa_diamond": { "value": 93.2, "display": "93.2%" },
+        "mmmu_pro": { "value": 84.7, "display": "84.7%" },
+        "scicode": { "value": 55.7, "display": "55.7%" }
       }
     },
     {

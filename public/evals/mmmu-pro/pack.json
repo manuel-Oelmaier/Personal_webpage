@@ -9,6 +9,7 @@
     "config": "standard (4 options)",
     "split": "test",
     "poolSize": 100,
+    "fullSetSize": 1730,
     "datasetRevision": "main",
     "method": "streamed single-image subsample · build_seed=20260806 · JPEG max edge 960",
     "buildSeed": 20260806

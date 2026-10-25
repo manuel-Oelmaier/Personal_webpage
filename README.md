@@ -6,7 +6,7 @@
 
 **Live site:** [manueloelmaier.de](https://manueloelmaier.de)
 
-Personal portfolio and technical blog for Manuel Oelmaier — software engineer focused on AI/LLM systems. Built with aggressive minimalism: fast, accessible, no cookies, no tracking.
+Personal portfolio and technical blog for Manuel Oelmaier — software engineer focused on AI/LLM systems. Built with aggressive minimalism: fast, accessible, no cookies. A cookieless Matomo records pages, referrers, and country.
 JSON-LD for SEO, open graph for clean previews.
 Feel free to copy whatever you want: CC0
 
@@ -25,7 +25,7 @@ Feel free to copy whatever you want: CC0
 
 **Entry:** [blog post](/blog/feeling-llm-benchmarks/) (board embedded; `/evals/` redirects there). Not in main nav.
 
-**Scores:** `src/data/llm-leaderboard.json` from [Artificial Analysis](https://artificialanalysis.ai/) — GPQA Diamond, MMMU-Pro, SciCode. **Average** = mean of those three. Human take: `/evals/mmmu-pro/take/` (80-image pool, draw 20).
+**Scores:** `src/data/llm-leaderboard.json` from [Artificial Analysis](https://artificialanalysis.ai/) — GPQA Diamond, MMMU-Pro, SciCode. **Average** = mean of those three. Human take: `/evals/mmmu-pro/` (100-image pool, draw 20) and `/evals/gpqa-diamond/` (full 198, draw 20). SciCode walkthrough: `/evals/scicode/`.
 
 **Benchmark content** lives in `src/content/benchmarks/` (same Astro content-collection pattern as blog posts). Each Markdown file has frontmatter:
 
@@ -44,9 +44,9 @@ published: 2024-06-03
 takeable: true
 ```
 
-- **Live** when `published` is set (hub at `/evals/{slug}/`).
-- **`takeable: true`** for human MCQ probes with a pack under `public/evals/{slug}/`. MMLU-Pro is takeable as an understanding probe (not an AA board column). SciCode is browse-only at `/evals/scicode/browse/`.
-- Legacy `/evals/hellaswag/*` URLs redirect away.
+- **Live** when `published` is set (one page at `/evals/{slug}/`: facts + take or SciCode walkthrough).
+- **`takeable: true`** for human MCQ probes with a pack under `public/evals/{slug}/`. SciCode walks one seeded problem subproblem-by-subproblem (tests withheld).
+- Legacy `/evals/{slug}/take/`, `/evals/scicode/browse/`, and `/evals/hellaswag/*` URLs redirect.
 
 Rebuild packs:
 
@@ -134,7 +134,7 @@ Writing standards: [`docs/blog-guidelines.md`](docs/blog-guidelines.md)
 
 ## Adding a benchmark
 
-Create `src/content/benchmarks/{slug}.md` with the frontmatter above. Hub and (if `takeable`) `/evals/{slug}/take/` routes are generated automatically. For a new MCQ takeable bench, add a pack builder under `scripts/evals/` and wire `mountMcqEval` in the take page (see MMLU-Pro).
+Create `src/content/benchmarks/{slug}.md` with the frontmatter above. The hub at `/evals/{slug}/` is generated automatically. For a new MCQ takeable bench, add a pack builder under `scripts/evals/` and a `PACK_BY_SLUG` entry in `McqEvalMount.astro`.
 
 ## Testing
 

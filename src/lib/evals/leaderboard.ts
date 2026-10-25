@@ -102,7 +102,7 @@ export const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
 		column: 'gpqa_diamond',
 		label: 'GPQA Diamond',
 		datasetSize: 198,
-		takeHref: '/evals/gpqa-diamond/take/',
+		takeHref: '/evals/gpqa-diamond/',
 		aboutHref: '/evals/gpqa-diamond/',
 		takeLabel: 'Take a subset',
 	},
@@ -111,7 +111,7 @@ export const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
 		column: 'mmmu_pro',
 		label: 'MMMU-Pro',
 		datasetSize: 1730,
-		takeHref: '/evals/mmmu-pro/take/',
+		takeHref: '/evals/mmmu-pro/',
 		aboutHref: '/evals/mmmu-pro/',
 		takeLabel: 'Take a subset',
 	},
@@ -120,7 +120,7 @@ export const DEFAULT_BENCHMARKS: BenchmarkMeta[] = [
 		column: 'scicode',
 		label: 'SciCode',
 		datasetSize: 338,
-		takeHref: '/evals/scicode/browse/',
+		takeHref: '/evals/scicode/',
 		aboutHref: '/evals/scicode/',
 		takeLabel: 'Browse problems',
 	},
@@ -305,7 +305,7 @@ function compareNullable(
 	return 0;
 }
 
-/** Sort rows; You row always pinned to top. */
+/** Sort rows. You is inserted by value, not pinned. Coverage tie-break is models-only. */
 export function sortRows(
 	rows: LeaderboardRow[],
 	averages: Map<string, AverageSummary>,
@@ -313,13 +313,6 @@ export function sortRows(
 	sortDir: SortDir,
 ): LeaderboardRow[] {
 	return [...rows].sort((a, b) => {
-		if (a.isYou && !b.isYou) {
-			return -1;
-		}
-		if (!a.isYou && b.isYou) {
-			return 1;
-		}
-
 		if (sortKey === 'name') {
 			const cmp = a.name.localeCompare(b.name);
 			return sortDir === 'asc' ? cmp : -cmp;
@@ -328,11 +321,9 @@ export function sortRows(
 		if (sortKey === 'average') {
 			const aa = averages.get(a.id) ?? { value: null, coverage: 0, total: 0, display: '—' };
 			const bb = averages.get(b.id) ?? { value: null, coverage: 0, total: 0, display: '—' };
-			if (sortDir === 'desc' && aa.coverage !== bb.coverage) {
-				return bb.coverage - aa.coverage;
-			}
-			if (sortDir === 'asc' && aa.coverage !== bb.coverage) {
-				return aa.coverage - bb.coverage;
+			const bothModels = !a.isYou && !b.isYou;
+			if (bothModels && aa.coverage !== bb.coverage) {
+				return sortDir === 'desc' ? bb.coverage - aa.coverage : aa.coverage - bb.coverage;
 			}
 			const byValue = compareNullable(aa.value, bb.value, sortDir);
 			if (byValue !== 0) {

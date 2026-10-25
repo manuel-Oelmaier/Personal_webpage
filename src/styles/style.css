@@ -37,6 +37,7 @@
     --border-card:           rgba(255, 255, 255, 0.05);
     --btn-text:              hsl(216, 40%, 82%);
     --btn-text-hover:        hsl(216, 40%, 95%);
+    --text-body:             var(--btn-text);
 
     /* typography */
     --text-muted:            hsl(210, 15%, 72%);
@@ -110,6 +111,16 @@ html, body {
 
 .site-nav nav a:hover {
     color: var(--text-heading);
+}
+
+.site-notice {
+    margin: 0 auto;
+    padding: 2rem var(--gutter) 3rem;
+    max-width: var(--content-narrow);
+    text-align: center;
+    color: var(--text-nav);
+    font-size: 0.8rem;
+    line-height: 1.5;
 }
 
 main {
@@ -1188,6 +1199,13 @@ strong {
     outline-offset: 2px;
 }
 
+.eval-seed-inline {
+    flex: 0 1 9rem;
+    min-width: 6rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
 .eval-help {
     color: var(--text-muted);
     font-size: 0.95rem;
@@ -1216,6 +1234,9 @@ strong {
 }
 
 .eval-seed-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
     font-size: 0.9rem;
     color: var(--text-muted);
 }
@@ -1230,13 +1251,21 @@ strong {
 
 .eval-prompt {
     color: var(--text-heading);
-    font-size: 1.15rem;
+    font-size: 1.22rem;
+    font-weight: 500;
     line-height: 1.65;
     margin-bottom: 1.25rem;
 }
 
 .eval-prompt:focus {
     outline: none;
+}
+
+.eval-prompt .katex-display,
+.eval-code-sample .katex-display {
+    margin: 0.6em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .eval-choices {
@@ -1254,10 +1283,10 @@ strong {
     text-align: left;
     width: 100%;
     padding: 0.85rem 1rem;
-    border: 1px solid var(--border-subtle);
+    border: 1px solid color-mix(in srgb, var(--text-heading) 22%, transparent);
     border-radius: 0.4rem;
     background: transparent;
-    color: var(--text-secondary);
+    color: var(--text-body);
     cursor: pointer;
     font: inherit;
     line-height: 1.55;
@@ -1313,7 +1342,7 @@ strong {
 .eval-choice-id {
     font-family: var(--mono-font);
     font-weight: 600;
-    color: var(--teal-display);
+    color: var(--text-heading);
 }
 
 .eval-hub-list {
@@ -1337,6 +1366,12 @@ strong {
     flex-wrap: wrap;
     gap: 0.75rem;
     margin: 1rem 0;
+}
+
+.eval-compare-row {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0 0.5rem;
 }
 
 .button-link:disabled,
@@ -1708,6 +1743,13 @@ a.eval-th-label:hover {
 
 .eval-bench-body {
     margin-top: 1.5rem;
+}
+
+.scicode-prior {
+    margin: 0.35rem 0 1rem;
+    padding-left: 1.2rem;
+    color: var(--text-nav);
+    font-size: 0.9rem;
 }
 
 .eval-score-cell {
