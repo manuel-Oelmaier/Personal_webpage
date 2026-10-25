@@ -2,7 +2,11 @@
 /**
  * Legacy /evals/{slug}/take/ → hub. Preserves ?seed= so shared runs still work.
  */
-export function getStaticPaths() {
+type StaticPath = {
+	params: { slug: string };
+};
+
+export function getStaticPaths(): StaticPath[] {
 	return [
 		{ params: { slug: 'gpqa-diamond' } },
 		{ params: { slug: 'mmmu-pro' } },

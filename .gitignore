@@ -22,3 +22,6 @@ scripts/evals/.cache/
 /test-results/
 /e2e/test-results/
 /blob-report/
+
+# Local notes. Do not commit.
+/docs/site-requirements.local.md

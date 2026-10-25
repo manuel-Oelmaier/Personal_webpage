@@ -103,16 +103,26 @@ const shareTitle = ogTitle ?? title;
 		document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 	</script>
 	<script is:inline>
-		var _paq = window._paq = window._paq || [];
+		/** @type {unknown[]} */
+		const _paq = window._paq ?? [];
+		window._paq = _paq;
 		_paq.push(['disableCookies']);
 		_paq.push(['trackPageView']);
 		_paq.push(['enableLinkTracking']);
 		(function () {
-			var u = 'https://matomo.manueloelmaier.de/';
-			_paq.push(['setTrackerUrl', u + 'matomo.php']);
+			const u = 'https://matomo.manueloelmaier.de/';
+			_paq.push(['setTrackerUrl', u + 's.php']);
 			_paq.push(['setSiteId', '1']);
-			var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-			g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+			const d = document;
+			const g = d.createElement('script');
+			const s = d.getElementsByTagName('script')[0];
+			g.async = true;
+			g.src = u + 's.js';
+			if (s !== undefined && s.parentNode !== null) {
+				s.parentNode.insertBefore(g, s);
+			} else {
+				d.head.appendChild(g);
+			}
 		})();
 	</script>
 	</body>

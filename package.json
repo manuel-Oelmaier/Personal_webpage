@@ -15,7 +15,8 @@
     "test": "pnpm check && pnpm build && pnpm test:e2e && pnpm test:links",
     "test:e2e": "playwright test",
     "generate:og": "node scripts/generate-og-image.mjs",
-    "test:links": "bash scripts/check-links.sh"
+    "test:links": "bash scripts/check-links.sh",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

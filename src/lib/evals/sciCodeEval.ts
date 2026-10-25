@@ -158,12 +158,12 @@ export function mountSciCodeEval(root: HTMLElement, packUrl: string): void {
 			loadError = err instanceof Error ? err.message : 'Failed to load SciCode pack';
 		} finally {
 			loading = false;
-			if (!loadError && pack) {
-				startRun();
-				return;
-			}
-			render();
 		}
+		if (!loadError && pack) {
+			startRun();
+			return;
+		}
+		render();
 	}
 
 	function startRun(): void {
